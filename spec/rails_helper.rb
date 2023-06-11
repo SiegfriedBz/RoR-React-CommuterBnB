@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 require 'spec_helper'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
 require 'capybara/rspec'
 require 'capybara/rails'
@@ -9,13 +11,13 @@ require 'super_diff/rspec-rails'
 
 ActiveRecord::Migration.maintain_test_schema!
 
-Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include ActiveSupport::Testing::TimeHelpers
-  config.include JavaScriptErrorReporter, type: :system, js: true 
-  
+  config.include JavaScriptErrorReporter, type: :system, js: true
+
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
 

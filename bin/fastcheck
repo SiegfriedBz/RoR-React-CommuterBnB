@@ -1,15 +1,6 @@
-echo "#\!/bin/sh\n" >> bin/fastcheck
-#\!/bin/sh
+#!/bin/sh
 
-#\!/bin/sh
+set -e
 
-#\!/bin/sh
-
-#\!/bin/sh
-
-#\!/bin/sh
-
-#\!/bin/sh
-
-#\!/bin/sh
-
+echo "Executing rubocop"
+bundle exec rubocop -D
