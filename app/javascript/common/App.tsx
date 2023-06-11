@@ -4,7 +4,7 @@ const App: React.FC = () => {
 
     return (
         <div>React
-            <button className="btn btn-primary">Button</button>
+            <button className="btn btn-primary">bs btn test</button>
         </div>
     )
 }
