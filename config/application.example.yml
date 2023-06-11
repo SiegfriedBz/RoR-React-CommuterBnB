@@ -1,1 +1,5 @@
 # SECRET_KEY_BASE
+
+test:
+  # SELENIUM_DRIVER: 'selenium_chrome'
+  SELENIUM_DRIVER: 'selenium_chrome_headless'
