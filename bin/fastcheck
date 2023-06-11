@@ -4,3 +4,5 @@ set -e
 
 echo "Executing rubocop"
 bundle exec rubocop -D
+
+yarn eslint app/javascript

@@ -57,6 +57,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'renuocop', require: false
   gem 'brakeman', require: false
+  gem 'erb_lint', require: false
 end
 
 group :development do
