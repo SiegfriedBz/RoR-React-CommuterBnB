@@ -1,6 +1,0 @@
-example_id                                          | status  | run_time        |
---------------------------------------------------- | ------- | --------------- |
-./spec/helpers/components_helper_spec.rb[1:1]       | pending | 0.00004 seconds |
-./spec/requests/components_spec.rb[1:1:1]           | failed  | 0.09525 seconds |
-./spec/system/health_spec.rb[1:1]                   | passed  | 0.0473 seconds  |
-./spec/views/components/index.html.erb_spec.rb[1:1] | pending | 0 seconds       |
