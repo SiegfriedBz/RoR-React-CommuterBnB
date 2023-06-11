@@ -1,0 +1,9 @@
+echo "#\!/bin/sh\nset -e\n\nrails s" >> bin/run
+#\!/bin/sh
+set -e
+
+rails s
+#\!/bin/sh
+set -e
+
+rails s
