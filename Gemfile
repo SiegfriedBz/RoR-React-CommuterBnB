@@ -11,6 +11,11 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 
+gem "rack-cors"
+gem "devise"
+gem "devise-jwt"
+gem "jsonapi-serializer"
+
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"
 
