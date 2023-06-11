@@ -56,6 +56,7 @@ group :development, :test do
   gem 'rexml'
   gem 'rspec-rails'
   gem 'renuocop', require: false
+  gem 'brakeman', require: false
 end
 
 group :development do
