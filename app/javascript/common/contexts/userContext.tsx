@@ -18,7 +18,6 @@ export const UserContextProvider: React.FC = ({ children }) => {
     // onSignUp or onLogin, set token in localStorage => set token in user state
     // onLogout, set token in localStorage to null => set token in user state to null
     const [tokenInStorage, setTokenInStorage] = useLocalStorage('bnbToken', null)
-    // tokenInStorage is a STRING OR A JSON STRING ????
 
     useEffect(() => {
         if (typeof tokenInStorage === 'string') {
