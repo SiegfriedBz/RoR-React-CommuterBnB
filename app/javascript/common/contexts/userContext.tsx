@@ -5,7 +5,7 @@ import { IUser, IUserContext } from '../utils/interfaces'
 const initUser = {
     userId: undefined,
     email: undefined,
-    // role: null
+    role: undefined
 }
 
 const UserContext = createContext<any>(null)
@@ -26,13 +26,11 @@ export const UserContextProvider: React.FC = ({ children }) => {
 
             setUser({
                 userId: deserializedToken?.user_id,
-                email: deserializedToken?.email
+                email: deserializedToken?.email,
+                role: deserializedToken?.role
             })
         }
     }, [tokenInStorage])
-
-    console.log("user", user)
-    console.log("tokenInStorage", tokenInStorage)
 
 return (
         <UserContext.Provider value={{ user, setTokenInStorage }}>

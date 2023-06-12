@@ -1,9 +1,9 @@
 import React from 'react';
 
 export interface IUser {
-    email: string,
-    // role: string,
-    token: string
+    userId?: number,
+    email?: string,
+    role?: string,
 }
 
 export interface IUserContext extends IUser {
