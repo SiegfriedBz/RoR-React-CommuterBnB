@@ -31,7 +31,7 @@ export const useFetch = () => {
                 throw new Error(error)
             }
         } catch (err) {
-            setFlashMessage({ message: err.message, type: "alert" })
+            setFlashMessage({ message: err.message, type: "warning" })
             console.log("err", err);
         } finally {
             setIsLoading(false)
@@ -78,7 +78,6 @@ export const useFetch = () => {
     }
 
     const createFlat = async (formData) => {
-        // if (!token) setFlashMessage need to authenticate && return
         return await fetchData(FLATS_URL, { 
             method: 'POST', 
             headers: { 'Authorization': `Bearer ${JSON.parse(token)}` },
