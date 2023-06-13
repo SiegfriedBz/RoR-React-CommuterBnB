@@ -4,6 +4,24 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useFlatsContext } from '../../contexts'
 import { FlashMessage } from '../../components'
 
+interface IFormValues {
+    title: string,
+    description: string,
+    address: string,
+    price_per_night: number,
+    available: boolean,
+    category: "entire place" | "private room",
+}
+
+const initFormValues = {
+    title: "",
+    description: "",
+    address: "",
+    price_per_night: 75,
+    available: true,
+    category: "entire place",
+}
+
 const FlatForm = () => {
     // hooks
     const navigate = useNavigate()
@@ -14,11 +32,15 @@ const FlatForm = () => {
     const { addFlatInContext } = useFlatsContext()
 
     // component state
-    const [formValues, setFormValues] = useState({})
+    const [formValues, setFormValues] = useState<IFormValues>(initFormValues)
     const imagesRef = useRef();
 
     const handleChange = (e) => {
-        const { name, value } = e.target
+        const { type, name, value } = e.target
+        if(type === "checkbox") {
+            setFormValues(prevState => ({ ...prevState, [name]: !prevState[name] }))
+            return
+        }
         setFormValues(prevState => ({ ...prevState, [name]: value }))
     }
 
@@ -29,24 +51,28 @@ const FlatForm = () => {
         formData.append('flat[title]', formValues.title);
         formData.append('flat[description]', formValues.description);
         formData.append('flat[address]', formValues.address);
-        formData.append('flat[price_per_night_in_cents]', formValues.price_per_night_in_cents);
+
+        const pricePerNightInCents = formValues.price_per_night * 100
+        formData.append('flat[price_per_night_in_cents]', String(pricePerNightInCents))
+
+        const category = formValues.category === "entire place" ? "entire_place" : "private_room"
+        formData.append('flat[category]', category)
+
+        formData.append('flat[available]', formValues.available);
 
         if(imagesRef.current.files.length >= 1) {
             for(let i = 0; i < imagesRef.current.files.length; i++) {
                 formData.append('flat[images][]', imagesRef.current.files[i]);
             }
         }
-
-        console.log("handleSubmit formData", formData);
         
-
         const fetchedFlat = await createFlat(formData)
 
         if(!fetchedFlat) {
-            setFlashMessage({ message: 'Something went wrong, please try again', type: "alert" })
+            setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
             setTimeout(() => {
                 setFormValues({})
-                setFlashMessage({ message: null, type: "alert" })
+                setFlashMessage({ message: null, type: "success" })
             }, 1500)
             return
         }
@@ -55,10 +81,10 @@ const FlatForm = () => {
         const { flat, message } = data
 
         if(!flat) {
-            setFlashMessage({ message: 'Something went wrong, please try again', type: "alert" })
+            setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
             setTimeout(() => {
                 setFormValues({})
-                setFlashMessage({ message: null, type: "alert" })
+                setFlashMessage({ message: null, type: "success" })
             }, 1500)
             return
         }
@@ -76,16 +102,30 @@ const FlatForm = () => {
         <form onSubmit={handleSubmit}>
             <>
             {flashMessage.message && <FlashMessage {...flashMessage} />}
-            <div className="form-group">
-                <label htmlFor="title">Title</label>
-                <input type="text" className="form-control" id="title" name="title" onChange={handleChange} />
-                <label htmlFor="description">Description</label>
-                <input type="text" className="form-control" id="description" name="description" onChange={handleChange} />
-                <label htmlFor="address">Address</label>
-                <input type="text" className="form-control" id="address" name="address" onChange={handleChange} />
-                <label htmlFor="price_per_night_in_cents">Price per night in cents</label>
-                <input type="text" className="form-control" id="price_per_night_in_cents" name="price_per_night_in_cents" onChange={handleChange} />
-                <label htmlFor="images">Images</label>
+            <div className="form-group w-50">
+                <label htmlFor="title" className='mt-2'>Title</label>
+                <input type="text" className="form-control" id="title" name="title" onChange={handleChange} required/>
+                <label htmlFor="description" className='mt-2'>Description</label>
+                <input type="text" className="form-control" id="description" name="description" onChange={handleChange} required/>
+                <label htmlFor="address" className='mt-2'>Address</label>
+                <input type="text" className="form-control" id="address" name="address" onChange={handleChange} required/>
+                <label htmlFor="price_per_night" className='mt-2'>Price per night</label>
+                <input type="text" className="form-control" id="price_per_night" name="price_per_night" onChange={handleChange} required/>
+                
+                <div className="d-flex mt-2">
+                <input type="checkbox" checked={formValues.available} className="form-check me-2" id="available" name="available" onChange={handleChange} />
+                <label htmlFor="available">Available now</label>
+                </div>
+
+                <label htmlFor="category" className='mt-2'>Category</label>
+                <div className="d-flex">
+                    <select className="form-select" aria-label="Default select example" name="category" onChange={handleChange}>
+                        <option value="entire place">Entire place</option>
+                        <option value="private room">Private room</option>
+                    </select>
+                </div>
+
+                <label htmlFor="images" className='mt-2'>Images</label>
                 <input type="file" multiple ref={imagesRef} className="form-control" id="images" name="images"/>
 
                 {/* <Dropzone onDrop={onDrop} multiple>
@@ -108,7 +148,7 @@ const FlatForm = () => {
                     </div>
                 )} */}
 
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary mt-2">Submit</button>
             </div>
             </>
         </form>
