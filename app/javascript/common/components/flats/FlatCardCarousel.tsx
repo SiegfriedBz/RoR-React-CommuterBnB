@@ -1,6 +1,9 @@
 import React from 'react'
+import { IFlat } from '../../utils/interfaces'
 
-const FlatCardCarousel: React.FC<string[]> = ({ images }) => {
+const FlatCardCarousel: React.FC<IFlat> = ({ flat }) => {
+
+    const { images } = flat
     
     if(!images) return null
 

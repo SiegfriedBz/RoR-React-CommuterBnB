@@ -4,12 +4,10 @@ import { IFlat } from '../../utils/interfaces'
 import FlatCardCarousel from './FlatCardCarousel'
 
 const FlatCard: React.FC<IFlat> = ({ flat }) => {
-
-    console.log("FlatCard flat", flat)
-    
+        
     return (
         <div className="card">
-            <FlatCardCarousel images={flat?.images} className="card-img-top" />
+            {flat?.images && <FlatCardCarousel flat={flat} className="card-img-top" />}
             <div className="card-body">
                 <h6 className="card-title">{flat.title}</h6>
                 <div className="d-flex justify-content-between align-content-center">
