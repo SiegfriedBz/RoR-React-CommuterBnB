@@ -20,6 +20,16 @@ const Header = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul className="navbar-nav">
+                    <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                menu
+                            </a>
+                            <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><Link className="dropdown-item" to='/create-property'>Add a Property</Link></li>
+                                <li><Link className="dropdown-item" to='/messages'>My Messages</Link></li>
+                            </ul>
+                        </li>
                         <li className="nav-item">
                             <Link className="nav-link" to='/about'>about</Link>
                         </li>
@@ -37,17 +47,6 @@ const Header = () => {
                                 >signup/login
                                 </Link>
                             }
-                        </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                dropdown
-                            </a>
-                            <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><Link className="nav-link" to='/add-flat'>Add a Property</Link></li>
-                                <li><Link className="dropdown-item nav-link" to='/messages'>My Messages</Link></li>
-                                <li><Link className="dropdown-item" to='/add-flat'>Add a Property</Link></li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
