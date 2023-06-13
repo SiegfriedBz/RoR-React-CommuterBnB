@@ -32,7 +32,11 @@ export interface IPopUpInfo {
     isVisible: boolean,
 }
 
-const MapView = () => {
+interface IProps {
+    selectedFlatId?: number,
+}
+
+const MapView: React.FC<IProps> = ({ selectedFlatId }) => {
     // * hooks
     const navigate = useNavigate()
     
@@ -70,7 +74,19 @@ const MapView = () => {
         getflatsMarkers()
     }, [getflatsMarkers])
 
-    // set and open flat popup + center map on flat
+    // FlatDetailsPage: center map on selected flat
+    useEffect(() => {
+        if(!selectedFlatId) return
+
+        const selectedFlat = flats.find(flat => flat.flatId === selectedFlatId)
+        if(!selectedFlat) return
+        
+        const { longitude, latitude } = selectedFlat
+        console.log("MapView useEffect selectedFlat", selectedFlat)
+        mapRef.current?.flyTo({ center: [ longitude, latitude ] })
+    }, [selectedFlatId, flats])
+
+    // flatMarker click => set and open flat popup + center map on flat
     const handleFlatMarkerClick = (flatId) => {
         const flat = flats.find(flat => flat.flatId === flatId)
         if(!flat) return
@@ -80,11 +96,21 @@ const MapView = () => {
             isVisible: true,
         })
         
-        mapRef.current?.flyTo({ center: [ flat.longitude, flat.latitude + 2 ] })
+        const { longitude, latitude } = flat
+        mapRef.current?.flyTo({ center: [ longitude, latitude + 2 ] })
     }
 
     const handlePopUpClose = () => {
         setPopUpInfo({ selectedFlat: {}, isVisible: false })
+    }
+
+    // flat marker badge classes
+    const flatMarkerBadgeClass = (flatId) => {
+        return (
+            flatId === selectedFlatId ? 
+                "badge rounded-pill text-bg-success text-white fw-bold py-2 px-3"
+                : "badge rounded-pill text-bg-info text-white fw-bold py-2 px-3"
+        )
     }
 
     return (
@@ -105,11 +131,11 @@ const MapView = () => {
                     const { flatId, longitude, latitude, pricePerNightInCents } = marker
                         return (
                             <Marker key={flatId} longitude={longitude} latitude={latitude} >
-                                <div
-                                    onClick={() => handleFlatMarkerClick(flatId)}
-                                >
-                                    <span className="badge rounded-pill text-bg-info text-white fw-bold py-2 px-3">${pricePerNightInCents/100}</span>
-                                    </div>
+                                <div onClick={() => handleFlatMarkerClick(flatId)}>
+                                    <span className={flatMarkerBadgeClass(flatId)}>
+                                        ${pricePerNightInCents/100}
+                                    </span>
+                                </div>
                             </Marker>
                         )
                 })}
