@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { useFetch } from '../hooks'
 import { useAppContext, useUserContext } from '../contexts'
 import { FlashMessage } from '../components'
@@ -47,13 +47,12 @@ const AuthPage: React.FC = () => {
         if (!fetchedData) return
 
         const [response, data] = fetchedData
-        const token = response.headers.get('Authorization')
-
+        let token = response.headers.get('Authorization')
+        token = token?.split(' ')[1]
+        
         try {
-        const decodedToken = jwt_decode(token)
-        if (!decodedToken) throw new Error("Invalid token, please try again")
 
-        const serializedToken = JSON.stringify(decodedToken)
+        const serializedToken = JSON.stringify(token)
         setTokenInStorage(serializedToken)
 
         setFlashMessage({ message: data.message, type: "success" })
@@ -68,7 +67,7 @@ const AuthPage: React.FC = () => {
 
     return (
         <>
-            <h1>{isLoginForm ? 'Login' : 'Signup'}</h1>
+            <h2>{isLoginForm ? 'Login' : 'Signup'}</h2>
             <form onSubmit={handleSubmit} className="mb-5">
                 {flashMessage.message && <FlashMessage {...flashMessage} />}
                 <div className="d-flex flex-column w-25">

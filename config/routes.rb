@@ -12,7 +12,14 @@ Rails.application.routes.draw do
   }
 
   get 'home/check'
+  
   root to: 'components#index'
   # get 'components/index'
   get '/*path', to: 'components#index', via: :all, constraints: lambda { |req| req.path.exclude?('api/v1') }
+
+  namespace :api do
+    namespace :v1 do
+      resources :flats
+    end
+  end
 end

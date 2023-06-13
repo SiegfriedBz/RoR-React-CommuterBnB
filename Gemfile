@@ -11,10 +11,13 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 
-gem "rack-cors"
+gem "cloudinary"
 gem "devise"
 gem "devise-jwt"
+gem "figaro"
+gem 'geocoder', '~> 1.8', '>= 1.8.1'
 gem "jsonapi-serializer"
+gem "rack-cors"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"
@@ -80,5 +83,3 @@ group :test do
   gem 'simplecov', require: false
   gem 'super_diff'
 end
-
-gem "figaro"
