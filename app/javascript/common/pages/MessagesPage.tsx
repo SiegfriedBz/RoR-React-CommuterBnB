@@ -2,7 +2,7 @@ import React from 'react'
 
 const MessagesPage = () => {
   return (
-    <h1>MessagesPage</h1>
+    <h2>MessagesPage</h2>
   )
 }
 
