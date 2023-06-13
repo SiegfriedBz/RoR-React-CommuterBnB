@@ -1,5 +1,6 @@
 class Flat < ApplicationRecord
     belongs_to :user
+    has_many_attached :images
 
     geocoded_by :address
     after_validation :geocode
