@@ -8,7 +8,7 @@ export interface IFlat {
     longitude: number,
     latitude: number,
     available: boolean,
-    category: string,
+    category: "entire place" | "private room",
     images: string[] | []
 }
 
