@@ -9,7 +9,7 @@ const HomePage = () => {
         (async () => {
             await getAllFlats()
         })()
-    }, [])
+    }, [getAllFlats])
 
     return (
         <>
