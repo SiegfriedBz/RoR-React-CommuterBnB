@@ -17,9 +17,15 @@ class Api::V1::FlatsController < ApplicationController
           }, status: :ok
     end
 
-    # get flat and associated reviews
+    # TODO : get flat and associated reviews
     def show
-        # flat = Flat.find(params[:id])
+        flat = Flat.find(params[:id])
+        serialized_flat = FlatSerializer.new(flat).serializable_hash[:data][:attributes]
+
+        render json: {
+            flat: serialized_flat
+          }, status: :ok
+
         # flat_reviews = Review.joins(transaction: [:flat_a, :flat_b])
         #           .where('transactions.flat_a_id = ? OR transactions.flat_b_id = ?', flat.id, flat.id)
 
@@ -39,8 +45,10 @@ class Api::V1::FlatsController < ApplicationController
         end
       
         if flat.save
+            serialized_flat = FlatSerializer.new(flat).serializable_hash[:data][:attributes]
+            
             render json: {
-                flat: FlatSerializer.new(flat).serializable_hash[:data][:attributes],
+                flat: serialized_flat,
                 message: 'Flat created sucessfully'
               }, status: :created
         else

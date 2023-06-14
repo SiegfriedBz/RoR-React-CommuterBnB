@@ -17,7 +17,7 @@ const App: React.FC = () => {
                             <Route path="about" element={<AboutPage />} />
                             <Route path="auth" element={<AuthPage />} />
                             
-                            <Route path="/" element={
+                            <Route path="" element={
                                 <FlatsContextProvider>
                                     <HomePage />
                                 </FlatsContextProvider>

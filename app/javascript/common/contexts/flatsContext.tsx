@@ -1,7 +1,8 @@
-import React, { useReducer, createContext, useContext, useCallback } from 'react'
+import React, { useEffect, useReducer, createContext, useContext, useCallback } from 'react'
+import { useFetch } from '../hooks'
 import { flatsReducer } from '../reducers'
 import { flatsActions } from "../actions"
-import { IFlat, IFlatsContext } from '../utils/interfaces'
+import { IFlatsContext } from '../utils/interfaces'
 
 export const initState = {
     flats: [],
@@ -14,8 +15,20 @@ export const useFlatsContext = (): IFlatsContext => {
 }
 
 export const FlatsContextProvider = ({ children }: any ) => {
-
     const [state, dispatch] = useReducer(flatsReducer, initState)
+    const { getAllFlats } = useFetch()
+
+    useEffect(() => {        
+        (async () => {
+            const fetchedData = await getAllFlats()
+            if (!fetchedData) return
+
+            const [response, data] = fetchedData
+            if(!data) return
+
+            setFlatsInContext(data.flats)
+        })()
+    }, [])
 
     const setFlatsInContext: IFlatsContext["setFlatsInContext"] = useCallback((flats) => {
         dispatch({
@@ -32,6 +45,7 @@ export const FlatsContextProvider = ({ children }: any ) => {
     }
 
     const updateFlatInContext: IFlatsContext["updateFlatInContext"] = (flat) => {
+        console.log("updateFlatInContext flat", flat)
         dispatch({
             type: flatsActions.UPDATE_FLAT,
             payload: flat

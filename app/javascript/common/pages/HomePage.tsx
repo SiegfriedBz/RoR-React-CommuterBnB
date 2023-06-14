@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react'
-import { useFetch } from '../hooks'
+import React, { useEffect, useCallback } from 'react'
+import { useFlatsContext } from '../contexts'
 import { FlatsContainer } from '../components'
 
 const HomePage = () => {
-    const { getAllFlats } = useFetch()
-
-    useEffect(() => {
-        (async () => {
-            await getAllFlats()
-        })()
-    }, [getAllFlats])
+    // useEffect fetch flats from server & set context
+    useFlatsContext()
 
     return (
         <>
