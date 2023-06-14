@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useLocalStorage } from './useLocalStorage'
 import { useAppContext, useFlatsContext } from '../contexts'
 
@@ -14,7 +14,7 @@ export const useFetch = () => {
     const [token, setToken] = useLocalStorage('bnbToken', null)
     // context
     const { setFlashMessage, setIsLoading } = useAppContext()
-    const { setFlatsInContext } = useFlatsContext()
+    const { flats, setFlatsInContext } = useFlatsContext()
 
     // fetch
     const fetchData = async (url: string, options={}, expectedStatus: number) => {
@@ -60,22 +60,18 @@ export const useFetch = () => {
         }, expectedStatus)
     }
 
-
     //* flats
-    const getAllFlats = async () => {
+    const getAllFlats = useCallback(async() => {
         const fetchedData = await fetchData(FLATS_URL, {
             headers: { 'Content-Type': 'application/json' } }, 200)
-
-        console.log("getAllFlats fetchedData", fetchedData);
         
         if (!fetchedData) return
 
         const [response, data] = fetchedData
         if(!data) return
 
-        console.log("getAllFlats data", data);
         setFlatsInContext(data.flats)
-    }
+    }, [setFlatsInContext])
 
     const createFlat = async (formData) => {
         return await fetchData(FLATS_URL, { 
