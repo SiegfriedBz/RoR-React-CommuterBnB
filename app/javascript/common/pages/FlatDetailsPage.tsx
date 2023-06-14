@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useParams } from 'react-router-dom'
+import { useFetch } from '../hooks'
 import { useFlatsContext } from '../contexts'
 import FlatCardCarousel from '../components/flats/FlatCardCarousel'
 import MapView from '../components/map/MapView'
@@ -7,6 +8,13 @@ import MapView from '../components/map/MapView'
 const FlatDetailsPage: React.FC = () => {
     const { id } = useParams()
     const { flats } = useFlatsContext()
+    const { getAllFlats } = useFetch()
+
+    useEffect(() => {
+        (async () => {
+            await getAllFlats()
+        })()
+    }, [getAllFlats])
 
     if(!flats) return null
     if(!id) return null
