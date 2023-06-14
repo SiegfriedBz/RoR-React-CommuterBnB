@@ -9,10 +9,15 @@ const flatsReducer = (state, action) => {
             return { ...state, flats: [ ...state.flats, action.payload ] }
         case flatsActions.UPDATE_FLAT:
             const updatedFlat = action.payload
-            const updatedFlats = state.flats.map((flat: IFlat) => {
-                return flat.flatId === updatedFlat.flatId ? updatedFlat : flat
-            })
-            return { ...state, flats: updatedFlats }
+            if(state.flats.length === 0) {
+                return { ...state, flats: [ updatedFlat ] }
+            } else {
+                const updatedFlats = state.flats.map((flat: IFlat) => {
+                    return flat.flatId === updatedFlat.flatId ? updatedFlat : flat
+                })
+                
+                return { ...state, flats: updatedFlats }
+            }
         default:
             return state
     }
