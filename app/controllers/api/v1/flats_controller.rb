@@ -4,7 +4,7 @@ class Api::V1::FlatsController < ApplicationController
     before_action :authenticate_user!, only: [:create, :update, :destroy]
     # rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-    # get all flats data
+    # get all flats
     def index
         flats = Flat.all
 
@@ -17,9 +17,8 @@ class Api::V1::FlatsController < ApplicationController
           }, status: :ok
     end
 
-    # get flat data and its reviews
+    # get flat and associated reviews
     def show
-        debugger
         # flat = Flat.find(params[:id])
         # flat_reviews = Review.joins(transaction: [:flat_a, :flat_b])
         #           .where('transactions.flat_a_id = ? OR transactions.flat_b_id = ?', flat.id, flat.id)
@@ -53,6 +52,6 @@ class Api::V1::FlatsController < ApplicationController
     private
 
     def flat_params
-        params.require(:flat).permit(:title, :description, :address, :price_per_night_in_cents, images: [])
+        params.require(:flat).permit(:title, :description, :address, :price_per_night_in_cents, :available, :category, images: [])
     end
 end
