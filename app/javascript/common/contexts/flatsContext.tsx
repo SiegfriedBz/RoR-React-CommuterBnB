@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useContext } from 'react'
+import React, { useReducer, createContext, useContext, useCallback } from 'react'
 import { flatsReducer } from '../reducers'
 import { flatsActions } from "../actions"
 import { IFlat, IFlatsContext } from '../utils/interfaces'
@@ -17,12 +17,12 @@ export const FlatsContextProvider = ({ children }: any ) => {
 
     const [state, dispatch] = useReducer(flatsReducer, initState)
 
-    const setFlatsInContext: IFlatsContext["setFlatsInContext"] = (flats) => {
+    const setFlatsInContext: IFlatsContext["setFlatsInContext"] = useCallback((flats) => {
         dispatch({
             type: flatsActions.SET_ALL_FLATS,
             payload: flats
         })
-    }
+    }, [dispatch])
 
     const addFlatInContext: IFlatsContext["addFlatInContext"] = (flat) => {
         dispatch({
