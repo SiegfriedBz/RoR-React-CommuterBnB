@@ -8,6 +8,7 @@ import FlatCard from '../flats/FlatCard'
 //===> TODO: move to secrets
 import mapbox_api_token from "./mapbox_api_token"
 const MAPBOX_TOKEN = mapbox_api_token
+
 const mapStyle = 'mapbox://styles/mapbox/streets-v9'
 
 const ZOOMS = {
