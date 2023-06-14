@@ -1,0 +1,10 @@
+example_id                                          | status  | run_time        |
+--------------------------------------------------- | ------- | --------------- |
+./spec/helpers/api/v1/flats_helper_spec.rb[1:1]     | pending | 0.00001 seconds |
+./spec/helpers/components_helper_spec.rb[1:1]       | pending | 0.00005 seconds |
+./spec/models/flat_spec.rb[1:1]                     | pending | 0 seconds       |
+./spec/models/user_spec.rb[1:1]                     | pending | 0.00001 seconds |
+./spec/requests/api/v1/flats_spec.rb[1:1:1]         | pending | 0.00001 seconds |
+./spec/requests/components_spec.rb[1:1:1]           | passed  | 2.7 seconds     |
+./spec/system/health_spec.rb[1:1]                   | passed  | 0.19572 seconds |
+./spec/views/components/index.html.erb_spec.rb[1:1] | pending | 0.00001 seconds |

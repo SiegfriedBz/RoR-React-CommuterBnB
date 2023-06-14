@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <AppContextProvider>
             <UserContextProvider>
                 <FlatsContextProvider>
-                <App />
+                    <App />
                 </FlatsContextProvider>
             </UserContextProvider>
         </AppContextProvider>

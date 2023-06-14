@@ -6,7 +6,6 @@ const HomePage = () => {
     const { getAllFlats } = useFetch()
 
     useEffect(() => {
-        console.log("HomePage");
         (async () => {
             await getAllFlats()
         })()
@@ -14,7 +13,6 @@ const HomePage = () => {
 
     return (
         <>
-            <h2>HomePage</h2>
             <FlatsContainer />
         </>
     )

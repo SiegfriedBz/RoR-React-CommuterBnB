@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
 import { useLocalStorage } from '../hooks'
 import { IUser, IUserContext } from '../utils/interfaces'
-import jwt_decode from 'jwt-decode';
+import jwt_decode from 'jwt-decode'
 
 const initUser = {
     userId: undefined,
