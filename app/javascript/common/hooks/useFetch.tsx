@@ -14,7 +14,6 @@ export const useFetch = () => {
     const [token, setToken] = useLocalStorage('bnbToken', null)
     // context
     const { setFlashMessage, setIsLoading } = useAppContext()
-    const { flats, setFlatsInContext } = useFlatsContext()
 
     // fetch
     const fetchData = async (url: string, options={}, expectedStatus: number) => {
@@ -25,14 +24,14 @@ export const useFetch = () => {
             const response: Response = await fetch(url, { ...fetchDefaultOptions, ...options })
             if (response.status === expectedStatus) {
                 const data = await response.json()
+                
                 return [response, data]
             } else {
                 const error = await response.json()
                 throw new Error(error)
             }
         } catch (err) {
-            setFlashMessage({ message: err.message, type: "warning" })
-            console.log("err", err);
+            setFlashMessage({ message: err.message, type: "danger" })
         } finally {
             setIsLoading(false)
         }
@@ -62,16 +61,14 @@ export const useFetch = () => {
 
     //* flats
     const getAllFlats = useCallback(async() => {
-        const fetchedData = await fetchData(FLATS_URL, {
+        return await fetchData(FLATS_URL, {
             headers: { 'Content-Type': 'application/json' } }, 200)
-        
-        if (!fetchedData) return
+    }, [])
 
-        const [response, data] = fetchedData
-        if(!data) return
-
-        setFlatsInContext(data.flats)
-    }, [setFlatsInContext])
+    const getFlat = async (id) => {
+        return await fetchData(`${FLATS_URL}/${id}`, {
+            headers: { 'Content-Type': 'application/json' } }, 200)
+    }
 
     const createFlat = async (formData) => {
         return await fetchData(FLATS_URL, { 
@@ -84,6 +81,7 @@ export const useFetch = () => {
     return { 
         authenticate,
         getAllFlats,
+        getFlat,
         createFlat
      }
 }
