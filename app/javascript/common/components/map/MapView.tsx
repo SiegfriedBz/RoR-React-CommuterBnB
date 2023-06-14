@@ -34,9 +34,10 @@ export interface IPopUpInfo {
 
 interface IProps {
     selectedFlatId?: number,
+    mapHeight?: number
 }
 
-const MapView: React.FC<IProps> = ({ selectedFlatId }) => {
+const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     // * hooks
     const navigate = useNavigate()
     
@@ -97,7 +98,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId }) => {
         })
         
         const { longitude, latitude } = flat
-        mapRef.current?.flyTo({ center: [ longitude, latitude + 2 ] })
+        mapRef.current?.flyTo({ center: [ longitude, latitude ] })
     }
 
     const handlePopUpClose = () => {
@@ -120,7 +121,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId }) => {
                     ...userMarker,
                     zoom: ZOOMS.LARGE_VIEW
                 }}
-                style={{height: 600}}
+                style={{height: mapHeight}}
                 mapStyle={mapStyle}
                 mapboxAccessToken={MAPBOX_TOKEN}
                 onMove={() => { getflatsMarkers() }}
