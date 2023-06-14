@@ -22,14 +22,22 @@ const FlatDetailsPage: React.FC = () => {
 
     return (
         <div>
-            <h1>FlatDetailsPage</h1>
             <h2>{title}</h2>
             <p>{description}</p>
             <p>{address}</p>
             <br />
-            <FlatCardCarousel flat={flat} />
+            <div className="row row-gap-1">
+                <div className="col-6">
+                    <FlatCardCarousel flat={flat} />
+                </div>
+                <div className="col-6">
+                    <FlatCardCarousel flat={flat} />
+                </div>
+            </div>
             <br />
-            <MapView selectedFlatId={flatId}/>    
+
+                <MapView selectedFlatId={flatId} mapHeight={400}/>   
+
         </div>
     )
 }
