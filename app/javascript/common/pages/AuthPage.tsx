@@ -3,7 +3,6 @@ import { useNavigate} from 'react-router-dom'
 import { useFetch } from '../hooks'
 import { useAppContext, useUserContext } from '../contexts'
 import { FlashMessage } from '../components'
-import jwt_decode from 'jwt-decode'
 
 interface IFormData {
     email: string,
@@ -61,7 +60,7 @@ const AuthPage: React.FC = () => {
             navigate('/')
             }, 1500)
         } catch (err) {
-            setFlashMessage({ message: err.message, type: "alert" })
+            setFlashMessage({ message: err.message, type: "danger" })
         }
     }
 
