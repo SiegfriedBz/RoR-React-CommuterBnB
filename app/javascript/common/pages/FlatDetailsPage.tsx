@@ -1,32 +1,35 @@
-import React, {useEffect} from 'react'
-import { useParams } from 'react-router-dom'
+import React, {useEffect, useCallback} from 'react'
+import { useParams, Navigate } from 'react-router-dom'
 import { useFetch } from '../hooks'
-import { useFlatsContext } from '../contexts'
+import { useAppContext, useFlatsContext } from '../contexts'
 import FlatCardCarousel from '../components/flats/FlatCardCarousel'
 import MapView from '../components/map/MapView'
+import { HostedBy, LoadingSpinners } from '../components'
 
 const FlatDetailsPage: React.FC = () => {
     const { id } = useParams()
-    const { flats } = useFlatsContext()
-    const { getAllFlats } = useFetch()
+    const { isLoading } = useAppContext()
+    const { flats, updateFlatInContext } = useFlatsContext()
+    const { getFlat } = useFetch()
+    
+    const flat = flats.find(flat => flat.flatId === parseInt(id))
 
+    // fetch flat from server & update it in context
     useEffect(() => {
         (async () => {
-            await getAllFlats()
+            const fetchedData = await getFlat(id)
+            if (!fetchedData) return
+
+            const [response, data] = fetchedData
+            if(!data) return
+
+            updateFlatInContext(data.flat)
         })()
-    }, [getAllFlats])
+    }, [id])
 
-    if(!flats) return null
-    if(!id) return null
-
-    const flat = flats.find(flat => flat.flatId === parseInt(id))
-    if(!flat) return null
+    if(!flat) return <LoadingSpinners />
 
     const { flatId, ownerId, title, description, address, longitude, latitude } = flat
-    // 1. render flat with infos fetched from context (from previous getAllFlats fetch)
-    // 2. fetch flat details from backend (getFlatWithOwnerDetailsAndFlatReviews) + update context for this flat
-    // 2': render loading spinners for flat details not yet fetched
-    // 3. render flat with infos fetched from backend
 
     return (
         <div>
@@ -43,9 +46,8 @@ const FlatDetailsPage: React.FC = () => {
                 </div>
             </div>
             <br />
-
-                <MapView selectedFlatId={flatId} mapHeight={400}/>   
-
+            <MapView selectedFlatId={flatId} mapHeight={400}/>
+            {isLoading ? <LoadingSpinners /> : <HostedBy />}
         </div>
     )
 }
