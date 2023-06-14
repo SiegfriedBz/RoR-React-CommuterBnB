@@ -4,7 +4,7 @@ class Api::V1::FlatsController < ApplicationController
     before_action :authenticate_user!, only: [:create, :update, :destroy]
     # rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-    # get all flats data
+    # get all flats
     def index
         flats = Flat.all
 
@@ -17,7 +17,7 @@ class Api::V1::FlatsController < ApplicationController
           }, status: :ok
     end
 
-    # get flat data and its reviews
+    # get flat and associated reviews
     def show
         # flat = Flat.find(params[:id])
         # flat_reviews = Review.joins(transaction: [:flat_a, :flat_b])
