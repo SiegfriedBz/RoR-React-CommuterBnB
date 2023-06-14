@@ -4,6 +4,7 @@ import CreateFlatPage from './CreateFlatPage'
 import FlatDetailsPage from './FlatDetailsPage'
 import AboutPage from './AboutPage'
 import MessagesPage from './MessagesPage'
+import NotFoundPage from './NotFoundPage'
 
 export {
     HomePage,
@@ -12,4 +13,5 @@ export {
     FlatDetailsPage,
     AboutPage,
     MessagesPage,
+    NotFoundPage
 }
