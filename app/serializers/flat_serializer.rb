@@ -6,7 +6,9 @@ class FlatSerializer
 
   attribute :flat_id, &:id
 
-  attribute :owner_id, &:user_id
+  attribute :owner do |flat|
+    { userId: flat.user_id }
+  end
 
   attribute :images do |flat|
     flat.images.present? ? flat.images.map { |image| image.blob.url } : []
