@@ -2,8 +2,11 @@ import React from 'react';
 
 export interface IUser {
     userId?: number,
+    description?: string,
     email?: string,
     role?: string,
+    createdAt?: string,
+    image?: string
 }
 
 export interface IUserContext extends IUser {

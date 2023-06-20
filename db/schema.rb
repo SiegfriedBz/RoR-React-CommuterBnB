@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_12_131938) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_19_122114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,38 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_12_131938) do
     t.index ["user_id"], name: "index_flats_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.string "content"
+    t.bigint "author_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "flat_id", null: false
+    t.bigint "recipient_id", null: false
+    t.bigint "transaction_request_id"
+    t.index ["author_id"], name: "index_messages_on_author_id"
+    t.index ["flat_id"], name: "index_messages_on_flat_id"
+    t.index ["recipient_id"], name: "index_messages_on_recipient_id"
+    t.index ["transaction_request_id"], name: "index_messages_on_transaction_request_id"
+  end
+
+  create_table "transaction_requests", force: :cascade do |t|
+    t.date "starting_date"
+    t.date "ending_date"
+    t.integer "exchange_price_per_night_in_cents"
+    t.boolean "responder_agreed", default: false
+    t.boolean "initiator_agreed", default: false
+    t.bigint "responder_id", null: false
+    t.bigint "initiator_id", null: false
+    t.bigint "responder_flat_id", null: false
+    t.bigint "initiator_flat_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiator_flat_id"], name: "index_transaction_requests_on_initiator_flat_id"
+    t.index ["initiator_id"], name: "index_transaction_requests_on_initiator_id"
+    t.index ["responder_flat_id"], name: "index_transaction_requests_on_responder_flat_id"
+    t.index ["responder_id"], name: "index_transaction_requests_on_responder_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -67,6 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_12_131938) do
     t.datetime "updated_at", null: false
     t.string "jti", null: false
     t.integer "role", default: 0
+    t.text "description", default: ""
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -75,4 +108,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_12_131938) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "flats", "users"
+  add_foreign_key "messages", "flats"
+  add_foreign_key "messages", "transaction_requests"
+  add_foreign_key "messages", "users", column: "author_id"
+  add_foreign_key "messages", "users", column: "recipient_id"
+  add_foreign_key "transaction_requests", "flats", column: "initiator_flat_id"
+  add_foreign_key "transaction_requests", "flats", column: "responder_flat_id"
+  add_foreign_key "transaction_requests", "users", column: "initiator_id"
+  add_foreign_key "transaction_requests", "users", column: "responder_id"
 end

@@ -17,7 +17,12 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :flats
+      resources :messages, only: %i[index create]
+      resources :flats do
+        resources :transaction_requests, only: %i[create]
+      end
+      resources :transaction_requests, only: %i[index update destroy] do
+      end
     end
   end
 
