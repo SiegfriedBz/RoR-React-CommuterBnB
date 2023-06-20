@@ -3,12 +3,17 @@ import { Link } from 'react-router-dom'
 import FlatCardCarousel from './FlatCardCarousel'
 import { IFlat } from '../../utils/interfaces'
 
-const FlatCard: React.FC<IFlat> = ({ flat }) => {
+interface IProps {
+    flat: IFlat,
+    flatCardOnMap?: boolean
+}
+
+const FlatCard: React.FC<IProps> = ({ flat, flatCardOnMap }) => {
     const { flatId, title, city, country, pricePerNightInCents } = flat
     const address = `${city}, ${country}`
 
     return (
-        <div className="flat-card--wrapper h-100">
+        <div className={`flat-card--wrapper ${flatCardOnMap ? "flat-card-on-map" : ""} h-100`}>
             <div className="flat-card--info card-body">
                 <h6 className="card-title text-info fw-bolder">{title}</h6>
                 <div className="d-flex justify-content-between align-content-center">
