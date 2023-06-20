@@ -23,7 +23,9 @@ end
 flat1 = Flat.new(
   title: 'Cosy Flat in Valletta',
   description: 'Awesome flat in Valletta',
-  address: 'Valletta, Malta',
+  street: '',
+  city: "Valletta",
+  country: "Malta",
   price_per_night_in_cents: 10000,
   category: :entire_place
 )
@@ -35,7 +37,9 @@ attach_images(flat1, filenames)
 flat2 = Flat.new(
   title: 'Cosy Room in Heraklion',
   description: 'Awesome room in Heraklion',
-  address: 'Heraklion, Greece',
+  street: '',
+  city: "Heraklion",
+  country: "Greece",
   price_per_night_in_cents: 20000,
   category: :private_room
 )
@@ -47,7 +51,9 @@ attach_images(flat2, filenames)
 flat3 = Flat.new(
   title: 'Cosy Flat in Mylos',
   description: 'Awesome flat in Mylos',
-  address: 'Mylos, Greece',
+  street: '',
+  city: "Mylos",
+  country: "Greece",
   price_per_night_in_cents: 10000,
   category: :entire_place
 )
@@ -59,7 +65,9 @@ attach_images(flat3, filenames)
 flat4 = Flat.new(
   title: 'Cosy Room in Mykonos',
   description: 'Awesome room in Mykonos',
-  address: 'Mykonos, Greece',
+  street: '',
+  city: "Mykonos",
+  country: "Greece",
   price_per_night_in_cents: 20000,
   category: :private_room
 )
@@ -71,7 +79,9 @@ attach_images(flat4, filenames)
 flat5 = Flat.new(
   title: 'Cosy Flat in Paros',
   description: 'Awesome flat in Paros',
-  address: 'Paros, Greece',
+  street: '',
+  city: "Paros",
+  country: "Greece",
   price_per_night_in_cents: 10000,
   category: :entire_place
 )
@@ -83,7 +93,9 @@ attach_images(flat5, filenames)
 flat6 = Flat.new(
   title: 'Cosy Room in Samos',
   description: 'Awesome room in Samos',
-  address: 'Samos, Greece',
+  street: '',
+  city: "Samos",
+  country: "Greece",
   price_per_night_in_cents: 20000,
   category: :private_room
 )
@@ -95,7 +107,9 @@ attach_images(flat6, filenames)
 flat7 = Flat.new(
   title: 'Cosy Flat in Rhodes',
   description: 'Awesome flat in Rhodes',
-  address: 'Rhodes, Greece',
+  street: '',
+  city: "Rhodes",
+  country: "Greece",
   price_per_night_in_cents: 10000,
   category: :entire_place
 )
@@ -107,7 +121,9 @@ attach_images(flat7, filenames)
 flat8 = Flat.new(
   title: 'Cosy Room in Zakynthos',
   description: 'Awesome room in Zakynthos',
-  address: 'Zakynthos, Greece',
+  street: '',
+  city: "Zakynthos",
+  country: "Greece",
   price_per_night_in_cents: 20000,
   category: :private_room
 )
@@ -129,7 +145,9 @@ def print_flat_attributes(flat)
   puts "   Owner id: #{flat.user_id}"
   puts "   Title: #{flat.title}"
   puts "   Description: #{flat.description}"
-  puts "   Address: #{flat.address}"
+  puts "   Street: #{flat.street}"
+  puts "   City: #{flat.city}"
+  puts "   Country: #{flat.country}"
   puts "   Latitude: #{flat.latitude}"
   puts "   Longitude: #{flat.longitude}"
   puts "   Price per Night in cents: #{flat.price_per_night_in_cents}"
