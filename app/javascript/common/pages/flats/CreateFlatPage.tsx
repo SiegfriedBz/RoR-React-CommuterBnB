@@ -1,11 +1,12 @@
 import React from 'react'
 import { FlatForm } from '../../components/flats'
 
-const CreateFlatPage = () => {
+const CreateFlatPage: React.FC = () => {
     return (
         <>
             <FlatForm />
         </>
     )
 }
+
 export default CreateFlatPage

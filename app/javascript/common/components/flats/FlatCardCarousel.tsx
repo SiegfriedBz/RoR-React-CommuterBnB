@@ -3,13 +3,11 @@ import { v4 as uuid } from 'uuid'
 import { IFlat } from '../../utils/interfaces'
 
 const FlatCardCarousel: React.FC<IFlat> = ({ flat }) => {
-
     const { images } = flat
     
     if(!images) return null
 
     const carouselId = `carousel-${uuid()}`
-
     const carouselIndicators = () => {
         return (
             <>

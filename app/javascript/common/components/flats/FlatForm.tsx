@@ -4,7 +4,7 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useFlatsContext } from '../../contexts'
 import { FlashMessage } from '../../components'
 import FlatCardCarousel from './FlatCardCarousel'
-import { FlatCategoryType } from '../../utils/interfaces'
+import { IFlat, FlatCategoryType } from '../../utils/interfaces'
 import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 
 interface IFormValues {
@@ -25,7 +25,7 @@ const initFormValues = {
     category: FlatCategoryEnum.ENTIRE_PLACE,
 }
 
-const FlatForm = () => {
+const FlatForm: React.FC = () => {
     // hooks
     const { id: editFlatId } = useParams()
     const navigate = useNavigate()
@@ -37,13 +37,10 @@ const FlatForm = () => {
 
     // component state
     const [formValues, setFormValues] = useState<IFormValues>(initFormValues)
-    const [flatToEdit, setFlatToEdit] = useState(undefined)
+    const [flatToEdit, setFlatToEdit] = useState<IFlat | undefined>(undefined)
     const imagesRef = useRef();
 
     // set form values if editing
-    console.log("editFlatId", editFlatId);
-    console.log("flatToEdit", flatToEdit);
-
     useEffect(() => {
         if(!flats || !editFlatId) return  
 
@@ -70,7 +67,7 @@ const FlatForm = () => {
     }, [flats, editFlatId])
 
     // handlers
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { type, name, value } = e.target
         if(type === "checkbox") {
             setFormValues(prevState => ({ ...prevState, [name]: !prevState[name] }))
@@ -79,7 +76,7 @@ const FlatForm = () => {
         setFormValues(prevState => ({ ...prevState, [name]: value }))
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.SyntheticEvent<EventTarget>) => {
         e.preventDefault()
 
         let formData = new FormData();

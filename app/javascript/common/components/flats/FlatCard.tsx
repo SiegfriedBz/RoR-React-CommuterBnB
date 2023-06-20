@@ -4,8 +4,6 @@ import { IFlat } from '../../utils/interfaces'
 import FlatCardCarousel from './FlatCardCarousel'
 
 const FlatCard: React.FC<IFlat> = ({ flat }) => {
-    console.log('FlatCard flat', flat);
-        
     return (
         <div className="flat-card--wrapper h-100">
             <div className="flat-card--info card-body">
