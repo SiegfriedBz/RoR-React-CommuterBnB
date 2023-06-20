@@ -4,6 +4,7 @@ import { useAppContext, useFlatsContext } from '../contexts'
 
 const BASE_URL = '/api/v1'
 const FLATS_URL = `${BASE_URL}/flats`
+const TRANSACTION_REQUEST_URL = `${BASE_URL}/transaction_requests`
 
 const fetchDefaultOptions = {
     method: 'GET',
@@ -37,13 +38,12 @@ export const useFetch = () => {
         }
     }
 
-    //* user
+    //* user *//
     interface IFormData {
         email: string,
         password: string,
         password_confirmation?: string
     }
-
     const authenticate = async (formData: IFormData, isLoginForm: boolean) => {
         const path = isLoginForm ? '/login' : '/signup'
         const url = `${BASE_URL}${path}`
@@ -59,13 +59,26 @@ export const useFetch = () => {
         }, expectedStatus)
     }
 
-    //* flats
+    const updateUser = async (changedUser) => {
+        const url = `/api/v1/signup`
+        const body = { user: changedUser } 
+
+        return await fetch(url, {
+            method: 'PATCH',
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json' },
+            body: JSON.stringify(body), 
+        })
+    }
+
+    //* flats *//
     const getAllFlats = useCallback(async() => {
         return await fetchData(FLATS_URL, {
             headers: { 'Content-Type': 'application/json' } }, 200)
     }, [])
 
-    const getFlat = async (id) => {
+    const getFlatDetails = async (id) => {
         return await fetchData(`${FLATS_URL}/${id}`, {
             headers: { 'Content-Type': 'application/json' } }, 200)
     }
@@ -78,10 +91,103 @@ export const useFetch = () => {
         }, 201)
     }
 
+    const updateFlat = async (id, formData) => {
+        return await fetchData(`${FLATS_URL}/${id}`, { 
+            method: 'PATCH', 
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` },
+            body: formData 
+        }, 200)
+    }
+
+    const deleteFlat = async (id) => {
+        return await fetchData(`${FLATS_URL}/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 204)
+    }
+        
+    //* transaction/booking requests *//
+    const createTransactionRequest = async (flatId, formValues) => {
+        const body = { transaction_request: formValues } 
+        
+        return await fetchData(`${FLATS_URL}/${flatId}/transaction_requests`, { 
+            method: 'POST', 
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body) 
+        }, 201)
+    }
+
+    // update current user agreement on transaction/booking request
+    const updateTransactionRequest = async (transactionRequestId, currentUserIsResponder, currentUserAgreed) => {
+        const currentUserAgreedKey = currentUserIsResponder ? "responder_agreed" : "initiator_agreed"
+
+        let body = { transaction_request: {[currentUserAgreedKey]: currentUserAgreed} } 
+
+        return await fetchData(`${TRANSACTION_REQUEST_URL}/${transactionRequestId}`, {
+            method: 'PATCH',
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json' },
+            body: JSON.stringify(body), 
+        }, 200)
+    }
+
+    const getUserTransactionRequests = async () => {
+        return await fetchData(TRANSACTION_REQUEST_URL, { 
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json'
+            }
+        }, 200)
+    }
+
+    //* messages *//
+    const getUserMessages = async () => {
+        const url = "api/v1/messages"
+
+        return await fetchData(url, { 
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`
+            },
+        }, 200)
+    }
+    
+    const createMessage = async (content, messageRecipientId, messageRecipientFlatId, messageTransactionRequestId) => {
+        const url = `/api/v1/messages`
+        const body = { message: { 
+            content,
+            recipient_id: messageRecipientId,
+            flat_id: messageRecipientFlatId,
+            transaction_request_id: messageTransactionRequestId
+         } } 
+
+
+        console.log("====useFetch createMessage url, body", url, body)
+
+        return await fetchData(url, { 
+            method: 'POST', 
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body) 
+        }, 201)
+    }
+
     return { 
         authenticate,
+        updateUser,
         getAllFlats,
-        getFlat,
-        createFlat
+        getFlatDetails,
+        createFlat,
+        updateFlat,
+        deleteFlat,
+        createTransactionRequest,
+        updateTransactionRequest,
+        getUserTransactionRequests,
+        getUserMessages,
+        createMessage
      }
 }
