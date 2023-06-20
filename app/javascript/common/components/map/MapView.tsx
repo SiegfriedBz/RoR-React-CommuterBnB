@@ -170,7 +170,7 @@ const MapView: React.FC<IProps> = ({ mapSelectedFlatId, mapHeight=600 }) => {
                         closeButton={true}
                         closeOnClick={false}
                 >
-                    <FlatCard flat={selectedFlat} />
+                    <FlatCard flat={selectedFlat} flatCardOnMap/>
                 </Popup>
                 }
             </>

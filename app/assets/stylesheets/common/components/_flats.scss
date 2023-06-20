@@ -1,5 +1,6 @@
 .home-page--wrapper {
-    .flat-card--wrapper {
+    .flat-card--wrapper:not(.flat-card-on-map) {
+
         position: relative;
         transition: all 0.5s ease-in-out;
 
