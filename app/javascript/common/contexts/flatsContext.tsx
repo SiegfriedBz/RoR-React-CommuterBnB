@@ -45,10 +45,16 @@ export const FlatsContextProvider = ({ children }: any ) => {
     }
 
     const updateFlatInContext: IFlatsContext["updateFlatInContext"] = (flat) => {
-        console.log("updateFlatInContext flat", flat)
         dispatch({
             type: flatsActions.UPDATE_FLAT,
             payload: flat
+        })
+    }
+
+    const deleteFlatInContext: IFlatsContext["deleteFlatInContext"] = (flatId) => {
+        dispatch({
+            type: flatsActions.DELETE_FLAT,
+            payload: flatId
         })
     }
     
@@ -57,7 +63,9 @@ export const FlatsContextProvider = ({ children }: any ) => {
             { ...state,
             setFlatsInContext,
             addFlatInContext,
-            updateFlatInContext }}
+            updateFlatInContext,
+            deleteFlatInContext
+         }}
         >
             { children }
         </FlatsContext.Provider>
