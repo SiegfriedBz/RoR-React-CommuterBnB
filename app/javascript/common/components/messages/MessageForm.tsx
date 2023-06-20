@@ -4,7 +4,19 @@ import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
 import { useFetch } from '../../hooks'
 import { FlashMessage } from '../../components'
 
-const MessageForm = (props) => {
+interface IProps {
+    messageRecipientId?: number,
+    messageFlatId?: number,
+    messageTransactionRequestId?: number,
+    toggleModal: () => void
+}
+
+// handle 3 sources of messages
+/// /properties/:id/requests/message --- params
+/// /my-booking-requests --- props
+/// /my-messages --- props
+
+const MessageForm: React.FC<IProps> = ({ toggleModal, ...props }) => {
     //* hooks
     const params = useParams()
     const navigate = useNavigate()
@@ -18,34 +30,38 @@ const MessageForm = (props) => {
     //* state
     const [content, setContent] = useState("")
     const [messageRecipientId, setMessageRecipientId] = useState(null)
-    const [messageRecipientFlatId, setMessageRecipientFlatId] = useState(null)
+    // messageFlatId is set by the 1st author in a conversation, and will remain CONSTANT in 1 conversation
+    const [messageFlatId, setMessageFlatId] = useState(null)
     const [messageTransactionRequestId, setMessageTransactionRequestId] = useState(null)
 
     //* effects
     useEffect(() => {
         if(!flats) return
 
-        //**** TODO: on /my-messages */  
-        
         if (params?.id) {
             // on /properties/:id/requests/message
-            const messageRecipientFlatId = parseInt(params.id)
+            // id === ALWAYS "secondUser".flatId (not the flat of the currentUser if has any)
+            const messageFlatId = parseInt(params.id)
             
-            const messageRecipientFlat = flats.find(flat => flat.flatId === messageRecipientFlatId)
-            if (!messageRecipientFlat) return
+            const messageFlat = flats.find(flat => flat.flatId === messageFlatId)
+            if (!messageFlat) return
 
-            const messageRecipientId = messageRecipientFlat?.owner?.userId
+            const messageRecipientId = messageFlat?.owner?.userId
             if(!messageRecipientId) return
 
             setMessageRecipientId(messageRecipientId)
-            setMessageRecipientFlatId(messageRecipientFlat.flatId)
+            setMessageFlatId(messageFlatId)
         } else if(props){
-            // on /my-booking-requests
-            const { messageRecipientId, messageRecipientFlatId, messageTransactionRequestId } = props
-            if(!messageRecipientId || !messageRecipientFlatId) return
+            // on /my-booking-requests || /my-messages
+            // /my-booking-requests
+            /// ALWAYS set the "responderFlatId" as the "messageFlatId"
+            // /my-messages
+            /// 
+            const { messageRecipientId, messageFlatId, messageTransactionRequestId } = props
+            if(!messageRecipientId || !messageFlatId) return
             
             setMessageRecipientId(messageRecipientId)
-            setMessageRecipientFlatId(messageRecipientFlatId)
+            setMessageFlatId(messageFlatId)
             setMessageTransactionRequestId(messageTransactionRequestId)
         }
 
@@ -66,7 +82,7 @@ const MessageForm = (props) => {
                 )
         }
 
-        const fetchedData = await createMessage(content, messageRecipientId, messageRecipientFlatId, messageTransactionRequestId)
+        const fetchedData = await createMessage(content, messageRecipientId, messageFlatId, messageTransactionRequestId)
 
         if(!fetchedData) return
 
@@ -74,6 +90,7 @@ const MessageForm = (props) => {
 
         if (response.status === 201) {
             setFlashMessage({ message: data.message, type: "success" })
+            toggleModal()
             setContent("")
             setTimeout(() => {
                 setFlashMessage({ message: null, type: "success" })
