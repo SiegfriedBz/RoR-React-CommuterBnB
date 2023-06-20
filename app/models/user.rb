@@ -8,6 +8,7 @@ class User < ApplicationRecord
     super.merge(user_id: self.id, email: self.email, role: self.role)
   end
 
+  has_one_attached :image
   has_many :flats, dependent: :destroy
 
   enum role: { user: 0, admin: 1 }
