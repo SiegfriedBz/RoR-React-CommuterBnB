@@ -93,9 +93,7 @@ class Api::V1::FlatsController < ApplicationController
         return render json: { message: 'You must be the owner of this flat to delete it.'}, status: :unauthorized unless current_user_is_owner(flat)
 
         if flat.destroy
-            render json: {
-                message: "Flat ##{params[:id]} was deleted sucessfully"
-                }, status: :ok
+            render json: { message: "Flat ##{params[:id]} was deleted sucessfully" }, status: :ok
         else
             render json: { message: 'Flat deletion went wrong, please try again.'},
             status: :unprocessable_entity
@@ -109,6 +107,6 @@ class Api::V1::FlatsController < ApplicationController
     end
 
     def flat_params
-        params.require(:flat).permit(:title, :description, :address, :price_per_night_in_cents, :available, :category, images: [])
+        params.require(:flat).permit(:title, :description, :street, :city, :country, :price_per_night_in_cents, :available, :category, images: [])
     end
 end
