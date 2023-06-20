@@ -2,9 +2,7 @@ import React from 'react'
 import { v4 as uuid } from 'uuid'
 import { IFlat } from '../../utils/interfaces'
 
-const FlatCardCarousel: React.FC<IFlat> = ({ flat }) => {
-    const { images } = flat
-    
+const FlatCardCarousel: React.FC<IFlat> = ({ images }) => {
     if(!images) return null
 
     const carouselId = `carousel-${uuid()}`
