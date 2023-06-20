@@ -19,7 +19,7 @@ const RequestFormsPage = () => {
     return (
         <div className="mb-3">
             <FlatDescription flat={flat} />
-        <div className="mb-3">
+        <div className="mt-2 mb-3">
             <HostedBy />
         </div>
         <div className="d-flex mb-3">

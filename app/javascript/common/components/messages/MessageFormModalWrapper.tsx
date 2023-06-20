@@ -12,19 +12,28 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
     width: '33%',
   },
-};
+}
 
-const MessageFormModalWrapper = ({ 
+interface IProps {
+    modalIsOpen: boolean,
+    toggleModal: () => void,
+    messageRecipientId?: number,
+    messageFlatId?: number,
+    messageTransactionRequestId?: number
+}
+
+const MessageFormModalWrapper: React.FC<IProps> = ({ 
         modalIsOpen,
         toggleModal,
         messageRecipientId,
-        messageRecipientFlatId,
+        messageFlatId,
         messageTransactionRequestId
      }) => {
+
     Modal.setAppElement('#root')
     
     return (
-            <Modal
+        <Modal
             isOpen={modalIsOpen}
             // onAfterOpen={afterOpenModal}
             onRequestClose={toggleModal}
@@ -34,8 +43,9 @@ const MessageFormModalWrapper = ({
                 <div className="col-11">
                     <MessageForm 
                         messageRecipientId={messageRecipientId}
-                        messageRecipientFlatId={messageRecipientFlatId}
+                        messageFlatId={messageFlatId}
                         messageTransactionRequestId={messageTransactionRequestId}
+                        toggleModal={toggleModal}
                     />
                 </div>
                 <div className="col-1">
@@ -45,7 +55,7 @@ const MessageFormModalWrapper = ({
                     />
                 </div>
             </div>
-    </Modal>
+        </Modal>
     )
 }
 

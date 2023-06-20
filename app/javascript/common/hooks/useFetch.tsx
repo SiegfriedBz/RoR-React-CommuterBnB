@@ -154,15 +154,15 @@ export const useFetch = () => {
         }, 200)
     }
     
-    const createMessage = async (content, messageRecipientId, messageRecipientFlatId, messageTransactionRequestId) => {
+    // messageFlatId must be constant in a "conversation"
+    const createMessage = async (content, messageRecipientId, messageFlatId, messageTransactionRequestId) => {
         const url = `/api/v1/messages`
         const body = { message: { 
             content,
             recipient_id: messageRecipientId,
-            flat_id: messageRecipientFlatId,
+            flat_id: messageFlatId,
             transaction_request_id: messageTransactionRequestId
          } } 
-
 
         console.log("====useFetch createMessage url, body", url, body)
 

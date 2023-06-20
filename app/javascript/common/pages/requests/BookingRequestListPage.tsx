@@ -6,7 +6,7 @@ import { BookingRequestCard } from '../../components/requests'
 import { MessageFormModalWrapper } from '../../components/messages'
 import MapView from '../../components/map/MapView'
 
-const BookingRequestListPage = () => {
+const BookingRequestListPage: React.FC = () => {
     //* hooks
     const topRef = useRef(null)
     const { getUserTransactionRequests } = useFetch()
@@ -21,7 +21,7 @@ const BookingRequestListPage = () => {
     // handle modal send message form
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [messageRecipientId, setMessageRecipientId] = useState<number | undefined>(undefined)
-    const [messageRecipientFlatId, setMessageRecipientFlatId] = useState<number | undefined>(undefined)
+    const [messageFlatId, setMessageFlatId] = useState<number | undefined>(undefined)
     const [messageTransactionRequestId, setMessageTransactionRequestId] = useState<number | undefined>(undefined)
 
     //* effects
@@ -42,10 +42,10 @@ const BookingRequestListPage = () => {
     }
 
     //* methods
-    const handleSendMessage = (recipientId: number, recipientFlatId: number, transactionRequestId: number) => {
-      setMessageRecipientId(recipientId)
-      setMessageRecipientFlatId(recipientFlatId)
-      setMessageTransactionRequestId(transactionRequestId)
+    const handleSendMessage = (messageRecipientId: number, messageFlatId: number, messageTransactionRequestId: number) => {
+      setMessageRecipientId(messageRecipientId)
+      setMessageFlatId(messageFlatId)
+      setMessageTransactionRequestId(messageTransactionRequestId)
       toggleModal()
     }
 
@@ -63,7 +63,7 @@ const BookingRequestListPage = () => {
             modalIsOpen={modalIsOpen}
             toggleModal={toggleModal}
             messageRecipientId={messageRecipientId}
-            messageRecipientFlatId={messageRecipientFlatId}
+            messageFlatId={messageFlatId}
             messageTransactionRequestId={messageTransactionRequestId}
           />
           <h3 ref={topRef}>Booking requests</h3>

@@ -285,14 +285,17 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
                  <div className="d-none d-md-block ms-2">
                     <button 
                         className="btn btn-sm btn-outline-primary mx-auto mt-1 w-50"
-                        onClick={() => handleSendMessage(secondUserId, secondUserProperty?.flatId || currentUserProperty?.flatId, transactionRequestId)}
+                        onClick={() => {
+                            // ALWAYS set the "responderFlatId" as the "messageFlatId"
+                            handleSendMessage(secondUserId, responderFlatId, transactionRequestId)
+                        }}
                     >Send message
                     </button>
                  </div>
 
                 {/* delete booking request */}
                 <div className="d-none d-md-block ms-2">
-                    <button className="btn btn-sm btn-outline-warning mx-auto my-1 w-50">Deelete request</button>
+                    <button className="btn btn-sm btn-outline-warning mx-auto my-1 w-50">Delete request</button>
                 </div>
             </div>
         )
@@ -416,10 +419,10 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
                             {/* send message */}
                             <div className="d-block d-md-none">
                                 <button 
-                                    className="btn btn-sm btn-outline-primary mx-auto mt-1 w-100"
                                     onClick={() => {
-                                        return handleSendMessage(secondUserId, secondUserProperty?.flatId || currentUserProperty?.flatId, transactionRequestId)}
-                                    }
+                                        // ALWAYS set the "responderFlatId" as the "messageFlatId"
+                                        handleSendMessage(secondUserId, responderFlatId, transactionRequestId)
+                                    }}
                                     >Send message
                                 </button> 
                             </div>
