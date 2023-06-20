@@ -5,6 +5,7 @@ import { useAppContext, useUserContext, useFlatsContext, useBookingRequestsConte
 import { HostedBy } from '../../components'
 import { FlatDescription, FlatCardCarousel, FlatImageGrid } from '../../components/flats'
 import MapView from '../../components/map/MapView'
+import { IFlat } from '../../utils/interfaces'
 
 const FlatDetailsPage: React.FC = () => {
     // hooks
@@ -35,17 +36,16 @@ const FlatDetailsPage: React.FC = () => {
         window.confirm("Are you sure you want to delete this flat?")
 
         const fetchedData = await deleteFlat(selectedFlatId)
-
-        if(!fetchedData) {
+        
+        if(fetchedData) {
+            navigate('/')
+            deleteFlatInContext(flatId)
+        } else {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
             setTimeout(() => {
                 setFlashMessage({ message: null, type: "success" })
             }, 1500)
-            return
         }
-
-        deleteFlatInContext(flatId)
-        navigate(`/`)
     }
 
     return (
@@ -79,7 +79,7 @@ const FlatDetailsPage: React.FC = () => {
 
             <div className="row row-gap-1 row-cols-1 row-cols-md-2 mb-3">
                 <div className="col">
-                    <FlatCardCarousel flat={flat} />
+                <FlatCardCarousel images={flat?.images} />
                 </div>
                 <div className="col">
                     <FlatImageGrid flat={flat} />

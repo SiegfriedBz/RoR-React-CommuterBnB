@@ -4,28 +4,32 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useFlatsContext } from '../../contexts'
 import { FlashMessage } from '../../components'
 import FlatCardCarousel from './FlatCardCarousel'
-import { FlatCategoryType } from '../../utils/interfaces'
+import { IFlat, FlatCategoryType } from '../../utils/interfaces'
 import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 
 interface IFormValues {
     title: string,
     description: string,
-    address: string,
+    street: string,
+    city: string,
+    country: string,
     price_per_night: number,
     available: boolean,
     category: FlatCategoryType
 }
 
 const initFormValues = {
-    title: "Enter a title...",
-    description: "Enter a description...",
-    address: "Enter an address...",
+    title: "",
+    description: "",
+    street: "",
+    city: "",
+    country: "",
     price_per_night: 85,
     available: true,
     category: FlatCategoryEnum.ENTIRE_PLACE,
 }
 
-const FlatForm = () => {
+const FlatForm: React.FC = () => {
     // hooks
     const { id: editFlatId } = useParams()
     const navigate = useNavigate()
@@ -37,13 +41,10 @@ const FlatForm = () => {
 
     // component state
     const [formValues, setFormValues] = useState<IFormValues>(initFormValues)
-    const [flatToEdit, setFlatToEdit] = useState(undefined)
+    const [flatToEdit, setFlatToEdit] = useState<IFlat | undefined>(undefined)
     const imagesRef = useRef();
 
     // set form values if editing
-    console.log("editFlatId", editFlatId);
-    console.log("flatToEdit", flatToEdit);
-
     useEffect(() => {
         if(!flats || !editFlatId) return  
 
@@ -57,7 +58,9 @@ const FlatForm = () => {
         setFormValues({
             title: flatToEdit.title,
             description: flatToEdit.description,
-            address: flatToEdit.address,
+            street: flatToEdit.street,
+            city: flatToEdit.city,
+            country: flatToEdit.country,
             price_per_night: flatToEdit.pricePerNightInCents / 100,
             available: flatToEdit.available,
             category: flatCategory
@@ -70,7 +73,7 @@ const FlatForm = () => {
     }, [flats, editFlatId])
 
     // handlers
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { type, name, value } = e.target
         if(type === "checkbox") {
             setFormValues(prevState => ({ ...prevState, [name]: !prevState[name] }))
@@ -79,13 +82,15 @@ const FlatForm = () => {
         setFormValues(prevState => ({ ...prevState, [name]: value }))
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.SyntheticEvent<EventTarget>) => {
         e.preventDefault()
 
         let formData = new FormData();
         formData.append('flat[title]', formValues.title);
         formData.append('flat[description]', formValues.description);
-        formData.append('flat[address]', formValues.address);
+        formData.append('flat[street]', formValues.street)
+        formData.append('flat[city]', formValues.city)
+        formData.append('flat[country]', formValues.country)
 
         const pricePerNightInCents = formValues.price_per_night * 100
         formData.append('flat[price_per_night_in_cents]', String(pricePerNightInCents))
@@ -153,7 +158,7 @@ const FlatForm = () => {
         return (
             <div className='mt-3'>  
                 <h4>Current flat images</h4>
-                <FlatCardCarousel flat={flatToEdit} />
+                <FlatCardCarousel images={flatToEdit?.images} />
             </div>
         )
     }
@@ -188,13 +193,32 @@ const FlatForm = () => {
                     onChange={handleChange}
                     required
                 />
-                <label htmlFor="address" className='mt-2'>Address</label>
+                <label htmlFor="street" className='mt-2'>Street</label>
                 <input
                     type="text"
                     className="form-control"
-                    id="address"
-                    name="address"
-                    value={formValues.address}
+                    id="street"
+                    name="street"
+                    value={formValues.street}
+                    onChange={handleChange}
+                />
+                <label htmlFor="city" className='mt-2'>City</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="city"
+                    name="city"
+                    value={formValues.city}
+                    onChange={handleChange}
+                    required
+                />
+                <label htmlFor="country" className='mt-2'>Country</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="country"
+                    name="country"
+                    value={formValues.country}
                     onChange={handleChange}
                     required
                 />
