@@ -1,0 +1,16 @@
+.booking-request-card--wrapper {
+    max-width: 680px;
+
+    &:hover {
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .booking-request-card---switch-wrapper {
+        .form-check {
+            padding-left: 0;
+        }
+        .form-switch {
+            padding-left: 0;
+        }
+    }   
+}
