@@ -1,8 +1,7 @@
 .home-page--wrapper {
-
     .flat-card--wrapper {
         position: relative;
-        transition: all 1s ease;
+        transition: all 0.5s ease-in-out;
 
         &:hover {
             transform: translateY(20px);
@@ -25,7 +24,7 @@
             width: 100%;
             height: 100%;
             display: block;
-            transition: all 1s ease;
+            transition: all 0.5s ease-in-out;
             opacity: 0;
         }
 
@@ -33,7 +32,7 @@
             position: relative;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 1s ease;
+            transition: all 0.5s ease-in-out;
         }
 
         .flat-card--link {
