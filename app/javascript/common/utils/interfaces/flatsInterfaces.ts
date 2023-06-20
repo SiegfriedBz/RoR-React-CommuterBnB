@@ -8,7 +8,9 @@ export interface IFlat {
     pricePerNightInCents: number,
     title: string
     description: string,
-    address: string,
+    street: string,
+    city: string,
+    country: string,
     longitude: number,
     latitude: number,
     available: boolean,

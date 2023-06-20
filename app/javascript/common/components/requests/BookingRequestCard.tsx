@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useFetch } from '../../hooks'
-import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
-import { IFlat } from '../../utils/interfaces'
-import { LoadingSpinners, TotalPriceAndDays } from '../../components'
 import { v4 as uuid } from 'uuid'
 import { format, formatDistanceToNow } from 'date-fns'
+import { useFetch } from '../../hooks'
+import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
+import { FlatCardCarousel } from '../../components/flats'
+import { LoadingSpinners, TotalPriceAndDays } from '../../components'
+import { IFlat } from '../../utils/interfaces'
 
 const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId, handleSendMessage }) => {
     //* props
@@ -152,7 +153,6 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
 
     if(isLoading || typeof currentUserIsResponder === "undefined") return <LoadingSpinners />
 
-
     //* render
     // requested by
     const renderRequestedBy = () => {
@@ -214,7 +214,7 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
                             <div className='ms-2'>
                                 <span className='d-block text-info fw-bolder'>My flat</span>
                                 <ul>
-                                    <li><span className='d-block'>{responderFlat?.address}</span></li>
+                                    <li><span className='d-block'>{`${responderFlat?.city}, ${responderFlat?.country}`}</span></li>
                                     <li><span className='d-block'> ${responderFlat?.pricePerNightInCents/100} per night</span></li>
                                 </ul>
                             </div>
@@ -230,7 +230,7 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
                             <div className='ms-2'>
                                 <span className='d-block text-info fw-bolder'>User #{initiatorId}</span>
                                 <ul>
-                                    <li><span className='d-block'>{initiatorFlat?.address}</span></li>
+                                    <li><span className='d-block'>{`${initiatorFlat?.city}, ${initiatorFlat?.country}`}</span></li>
                                     <li><span className='d-block'> ${initiatorFlat?.pricePerNightInCents/100} per night</span></li>
                                 </ul>
                             </div>
@@ -250,7 +250,7 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
                             <div className='ms-2'>
                                 <span className='d-block text-info fw-bolder'>My flat</span>
                                 <ul>
-                                    <li><span className='d-block'>{initiatorFlat?.address}</span></li>
+                                    <li><span className='d-block'>{`${initiatorFlat?.city}, ${initiatorFlat?.country}`}</span></li>
                                     <li><span className='d-block'> ${initiatorFlat?.pricePerNightInCents/100} per night</span></li>
                                 </ul>
                             </div>
@@ -266,7 +266,7 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
                             <div className='ms-2'>
                                 <span className='d-block text-info fw-bolder'>User #{responderId} flat</span>
                                 <ul>
-                                    <li><span className='d-block'>{responderFlat?.address}</span></li>
+                                    <li><span className='d-block'>{`${responderFlat?.city}, ${responderFlat?.country}`}</span></li>
                                     <li> <span className='d-block'>${responderFlat?.pricePerNightInCents/100} per night</span></li>
                                 </ul>
                             </div>
@@ -367,7 +367,8 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
             <div className="card mb-3" >
                 <div className="row g-0">
                     <div className="col-md-6">
-                        <img src={responderFlat?.images[0]} className="img-fluid rounded-start mb-1" alt="..."/>
+                        {/* images */}
+                        <FlatCardCarousel images={responderFlat?.images} />
                         {/* properties info & show on map buttons */}
                         {renderLeftPanel()}
                     </div>

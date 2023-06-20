@@ -3,7 +3,8 @@ import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 import { IFlat } from '../../utils/interfaces'
 
 const FlatDescription: React.FC<IFlat> = ({ flat }) => {
-    const { title, description, address, category, pricePerNightInCents } = flat
+    const { title, description, city, country, pricePerNightInCents, category } = flat
+    const address = `${city}, ${country}`
 
     const flatCategory = category === FlatCategoryEnum.ENTIRE_PLACE_SERVER ?
     FlatCategoryEnum.ENTIRE_PLACE

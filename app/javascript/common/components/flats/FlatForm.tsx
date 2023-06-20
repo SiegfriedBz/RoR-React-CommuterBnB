@@ -10,16 +10,20 @@ import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 interface IFormValues {
     title: string,
     description: string,
-    address: string,
+    street: string,
+    city: string,
+    country: string,
     price_per_night: number,
     available: boolean,
     category: FlatCategoryType
 }
 
 const initFormValues = {
-    title: "Enter a title...",
-    description: "Enter a description...",
-    address: "Enter an address...",
+    title: "",
+    description: "",
+    street: "",
+    city: "",
+    country: "",
     price_per_night: 85,
     available: true,
     category: FlatCategoryEnum.ENTIRE_PLACE,
@@ -54,7 +58,9 @@ const FlatForm: React.FC = () => {
         setFormValues({
             title: flatToEdit.title,
             description: flatToEdit.description,
-            address: flatToEdit.address,
+            street: flatToEdit.street,
+            city: flatToEdit.city,
+            country: flatToEdit.country,
             price_per_night: flatToEdit.pricePerNightInCents / 100,
             available: flatToEdit.available,
             category: flatCategory
@@ -82,7 +88,9 @@ const FlatForm: React.FC = () => {
         let formData = new FormData();
         formData.append('flat[title]', formValues.title);
         formData.append('flat[description]', formValues.description);
-        formData.append('flat[address]', formValues.address);
+        formData.append('flat[street]', formValues.street)
+        formData.append('flat[city]', formValues.city)
+        formData.append('flat[country]', formValues.country)
 
         const pricePerNightInCents = formValues.price_per_night * 100
         formData.append('flat[price_per_night_in_cents]', String(pricePerNightInCents))
@@ -150,7 +158,7 @@ const FlatForm: React.FC = () => {
         return (
             <div className='mt-3'>  
                 <h4>Current flat images</h4>
-                <FlatCardCarousel flat={flatToEdit} />
+                <FlatCardCarousel images={flatToEdit?.images} />
             </div>
         )
     }
@@ -185,13 +193,32 @@ const FlatForm: React.FC = () => {
                     onChange={handleChange}
                     required
                 />
-                <label htmlFor="address" className='mt-2'>Address</label>
+                <label htmlFor="street" className='mt-2'>Street</label>
                 <input
                     type="text"
                     className="form-control"
-                    id="address"
-                    name="address"
-                    value={formValues.address}
+                    id="street"
+                    name="street"
+                    value={formValues.street}
+                    onChange={handleChange}
+                />
+                <label htmlFor="city" className='mt-2'>City</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="city"
+                    name="city"
+                    value={formValues.city}
+                    onChange={handleChange}
+                    required
+                />
+                <label htmlFor="country" className='mt-2'>Country</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="country"
+                    name="country"
+                    value={formValues.country}
                     onChange={handleChange}
                     required
                 />

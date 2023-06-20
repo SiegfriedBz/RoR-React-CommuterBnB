@@ -142,7 +142,7 @@ const MessagesPage = () => {
                     authorEmail.split("@")[0]
                   }
                 </span>
-                <span className="d-block w-100">{recipientFlat?.address.slice(0, 24)}</span>
+                <span className='d-block'>{(`${recipientFlat?.city}, ${recipientFlat?.country}`.slice(0, 24))}</span>
               </button>
             </div>
           )
@@ -168,7 +168,7 @@ const MessagesPage = () => {
             <FlatDescription flat={selectedRecipientFlat}/>
 
             <div className="my-2">
-              <FlatCardCarousel flat={selectedRecipientFlat}/>
+              <FlatCardCarousel images={selectedRecipientFlat?.images} />
             </div>
 
             <div>
