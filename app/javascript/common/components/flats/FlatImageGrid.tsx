@@ -7,11 +7,11 @@ const FlatImageGrid = ({ flat }) => {
     const selectedImages = images.filter((image, index) => index < 4)
 
     return (
-          <div class="row row-cols-2 row-gap-1 gx-1 h-100">
+          <div className="row row-cols-2 row-gap-1 gx-1 h-100">
             {selectedImages?.map((url) => {
                 return (
                     <div 
-                        class="col"
+                    className="col"
                         key={url}
                         onClick={() => console.log('FlatImageGrid clicked')}
                     >
