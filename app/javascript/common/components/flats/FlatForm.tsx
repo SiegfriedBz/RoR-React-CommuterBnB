@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useRef, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useFetch } from '../../hooks'
 import { useAppContext, useFlatsContext } from '../../contexts'
 import { FlashMessage } from '../../components'
+import FlatCardCarousel from './FlatCardCarousel'
+import { FlatCategoryType } from '../../utils/interfaces'
+import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 
 interface IFormValues {
     title: string,
@@ -10,31 +13,63 @@ interface IFormValues {
     address: string,
     price_per_night: number,
     available: boolean,
-    category: "entire place" | "private room",
+    category: FlatCategoryType
 }
 
 const initFormValues = {
-    title: "",
-    description: "",
-    address: "",
-    price_per_night: 75,
+    title: "Enter a title...",
+    description: "Enter a description...",
+    address: "Enter an address...",
+    price_per_night: 85,
     available: true,
-    category: "entire place",
+    category: FlatCategoryEnum.ENTIRE_PLACE,
 }
 
 const FlatForm = () => {
     // hooks
+    const { id: editFlatId } = useParams()
     const navigate = useNavigate()
-    const { createFlat } = useFetch()
+    const { createFlat, updateFlat } = useFetch()
 
     // context
-    const { flashMessage, setFlashMessage } = useAppContext()
-    const { addFlatInContext } = useFlatsContext()
+    const { isLoading, flashMessage, setFlashMessage } = useAppContext()
+    const { flats, addFlatInContext, updateFlatInContext } = useFlatsContext()
 
     // component state
     const [formValues, setFormValues] = useState<IFormValues>(initFormValues)
+    const [flatToEdit, setFlatToEdit] = useState(undefined)
     const imagesRef = useRef();
 
+    // set form values if editing
+    console.log("editFlatId", editFlatId);
+    console.log("flatToEdit", flatToEdit);
+
+    useEffect(() => {
+        if(!flats || !editFlatId) return  
+
+        const flatToEdit = flats?.find((flat) => flat.flatId === parseInt(editFlatId))
+        if(!flatToEdit) return
+
+        setFlatToEdit(flatToEdit)
+
+        const flatCategory = flatToEdit.category === FlatCategoryEnum.ENTIRE_PLACE_SERVER ? FlatCategoryEnum.ENTIRE_PLACE : FlatCategoryEnum.PRIVATE_ROOM
+
+        setFormValues({
+            title: flatToEdit.title,
+            description: flatToEdit.description,
+            address: flatToEdit.address,
+            price_per_night: flatToEdit.pricePerNightInCents / 100,
+            available: flatToEdit.available,
+            category: flatCategory
+        })
+
+        return () => {
+            setFlatToEdit(undefined)
+            setFormValues(initFormValues)
+        }
+    }, [flats, editFlatId])
+
+    // handlers
     const handleChange = (e) => {
         const { type, name, value } = e.target
         if(type === "checkbox") {
@@ -55,8 +90,11 @@ const FlatForm = () => {
         const pricePerNightInCents = formValues.price_per_night * 100
         formData.append('flat[price_per_night_in_cents]', String(pricePerNightInCents))
 
-        const category = formValues.category === "entire place" ? "entire_place" : "private_room"
-        formData.append('flat[category]', category)
+        const flatCategory = formValues.category === FlatCategoryEnum.ENTIRE_PLACE ? 
+            FlatCategoryEnum.ENTIRE_PLACE_SERVER
+             : FlatCategoryEnum.PRIVATE_ROOM_SERVER
+        
+        formData.append('flat[category]', flatCategory)
 
         formData.append('flat[available]', formValues.available);
 
@@ -66,7 +104,12 @@ const FlatForm = () => {
             }
         }
         
-        const fetchedFlat = await createFlat(formData)
+        let fetchedFlat
+        if(editFlatId) {
+            fetchedFlat = await updateFlat(editFlatId, formData)
+        } else {
+            fetchedFlat = await createFlat(formData)
+        }
 
         if(!fetchedFlat) {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
@@ -89,44 +132,117 @@ const FlatForm = () => {
             return
         }
         
-        addFlatInContext(flat)
+        if(editFlatId) {
+            updateFlatInContext(flat)
+        } else {
+            addFlatInContext(flat)
+        }
+       
         setFlashMessage({ message, type: "success" })
 
         setTimeout(() => {
             setFlashMessage({ message: null, type: "success" })
-            navigate(`/properties/${flat.flatId}`)
+            navigate(`/`)
         }, 1500)
     }
 
+    const formTitle = editFlatId ? "Edit property" : "Create new property"
+    const FlatToEditImages = () => {
+        if(!flatToEdit) return null
+
+        return (
+            <div className='mt-3'>  
+                <h4>Current flat images</h4>
+                <FlatCardCarousel flat={flatToEdit} />
+            </div>
+        )
+    }
+
+    if(editFlatId && !flatToEdit) return <div>Loading...</div>
+    if(isLoading) return <div>Loading...</div>
+
     return (
+        <>
+        <h2>{formTitle}</h2>
         <form onSubmit={handleSubmit}>
             <>
             {flashMessage.message && <FlashMessage {...flashMessage} />}
             <div className="form-group w-50">
                 <label htmlFor="title" className='mt-2'>Title</label>
-                <input type="text" className="form-control" id="title" name="title" onChange={handleChange} required/>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="title"
+                    name="title"
+                    value={formValues.title}
+                    onChange={handleChange}
+                    required
+                />
                 <label htmlFor="description" className='mt-2'>Description</label>
-                <input type="text" className="form-control" id="description" name="description" onChange={handleChange} required/>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="description"
+                    name="description"
+                    value={formValues.description}
+                    onChange={handleChange}
+                    required
+                />
                 <label htmlFor="address" className='mt-2'>Address</label>
-                <input type="text" className="form-control" id="address" name="address" onChange={handleChange} required/>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="address"
+                    name="address"
+                    value={formValues.address}
+                    onChange={handleChange}
+                    required
+                />
                 <label htmlFor="price_per_night" className='mt-2'>Price per night</label>
-                <input type="text" className="form-control" id="price_per_night" name="price_per_night" onChange={handleChange} required/>
-                
+                <input
+                    type="text"
+                    className="form-control"
+                    id="price_per_night"
+                    name="price_per_night"
+                    value={formValues.price_per_night}
+                    onChange={handleChange}
+                    required
+                />
                 <div className="d-flex mt-2">
-                <input type="checkbox" checked={formValues.available} className="form-check me-2" id="available" name="available" onChange={handleChange} />
+                <input
+                    type="checkbox"
+                    checked={formValues.available}
+                    className="form-check me-2"
+                    id="available"
+                    name="available"
+                    onChange={handleChange}
+                />
                 <label htmlFor="available">Available now</label>
                 </div>
 
                 <label htmlFor="category" className='mt-2'>Category</label>
                 <div className="d-flex">
-                    <select className="form-select" aria-label="Default select example" name="category" onChange={handleChange}>
+                    <select 
+                        className="form-select" 
+                        aria-label="Default select example" 
+                        name="category" 
+                        value={formValues.category}
+                        onChange={handleChange}
+                    >
                         <option value="entire place">Entire place</option>
                         <option value="private room">Private room</option>
                     </select>
                 </div>
 
                 <label htmlFor="images" className='mt-2'>Images</label>
-                <input type="file" multiple ref={imagesRef} className="form-control" id="images" name="images"/>
+                <input
+                    type="file"
+                    multiple ref={imagesRef}
+                    required={!editFlatId}
+                    className="form-control"
+                    id="images"
+                    name="images"
+                />
 
                 {/* <Dropzone onDrop={onDrop} multiple>
                     {({ getRootProps, getInputProps, isDragActive }) => (
@@ -152,6 +268,8 @@ const FlatForm = () => {
             </div>
             </>
         </form>
+        <FlatToEditImages />
+        </>
     )
 }
 

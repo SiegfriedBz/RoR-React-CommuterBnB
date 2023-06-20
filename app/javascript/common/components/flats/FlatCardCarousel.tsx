@@ -13,12 +13,25 @@ const FlatCardCarousel: React.FC<IFlat> = ({ flat }) => {
     const carouselIndicators = () => {
         return (
             <>
-            <button type="button" data-bs-target={`#${carouselId}`} data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+            <button 
+                type="button" 
+                data-bs-target={`#${carouselId}`} 
+                data-bs-slide-to="0" 
+                className="active" 
+                aria-current="true" 
+                aria-label="Slide 1"
+            />
             {images
                 .filter((image: string, index: number) => index > 0)
                 .map((image: string, index: number) => {
                     return (
-                        <button key={index} type="button" data-bs-target={`#${carouselId}`} data-bs-slide-to={index} aria-label={`Slide ${index + 1}`}></button>
+                        <button 
+                            key={index} 
+                            type="button" 
+                            data-bs-target={`#${carouselId}`} 
+                            data-bs-slide-to={index} 
+                            aria-label={`Slide ${index + 1}`}
+                        />
                     )
                 })
             }
@@ -37,7 +50,7 @@ const FlatCardCarousel: React.FC<IFlat> = ({ flat }) => {
                     .map((image: string, index: number) => {
                         return (
                             <div key={index} className="carousel-item">
-                                <img src={image} className="d-block w-100" alt="..."/>
+                                <img src={image} className="d-block w-100" alt="flat view"/>
                             </div>
                         )
                     })
@@ -54,11 +67,21 @@ const FlatCardCarousel: React.FC<IFlat> = ({ flat }) => {
             <div className="carousel-inner rounded-2">
                 {carouselItems()}
             </div>
-            <button className="carousel-control-prev" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="prev">
+            <button 
+                className="carousel-control-prev" 
+                type="button" 
+                data-bs-target={`#${carouselId}`} 
+                data-bs-slide="prev"
+            >
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span className="visually-hidden">Previous</span>
             </button>
-            <button className="carousel-control-next" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="next">
+            <button 
+                className="carousel-control-next" 
+                type="button" 
+                data-bs-target={`#${carouselId}`} 
+                data-bs-slide="next"
+            >
                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
                 <span className="visually-hidden">Next</span>
             </button>
