@@ -1,57 +1,68 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { AppContextProvider, UserContextProvider, FlatsContextProvider } from './contexts'
-import Layout from './layout/Layout'
-import { HomePage, AuthPage, CreateFlatPage, FlatDetailsPage, AboutPage, MessagesPage, NotFoundPage } from './pages'
-import { ProtectedRoute } from './components'
+import React from 'react'
+import { 
+    createBrowserRouter,
+    createRoutesFromElements,
+    RouterProvider,
+    Route, 
+} from 'react-router-dom'
+import { 
+    AppUserContextLayout,
+    FlatsContextLayout,
+    ProtectedRouteLayout,
+    BookingRequestsLayout
+ } from './layout'
+import { 
+    HomePage,
+    FlatDetailsPage,
+    AuthPage,
+    AboutPage,
+    UserPage,
+    CreateFlatPage,
+    RequestFormsPage,
+    BookingRequestListPage,
+    MessagesPage,
+    PaymentsPage,
+    NotFoundPage
+   } from './pages'
+import { BookingForm } from './components/requests'
+import { MessageForm } from './components/messages'
 
 const App: React.FC = () => {
 
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route path="/" element={<AppUserContextLayout />}>
+                <Route path="" element={<FlatsContextLayout />}>
+                    <Route path="" element={<HomePage />} />
+                    <Route path="properties/:id" element={<FlatDetailsPage />} />
+                    <Route path="auth" element={<AuthPage />} />
+                    <Route path="about" element={<AboutPage />} />
+                    <Route path="" element={<ProtectedRouteLayout />} >
+                        <Route path="my-profile" element={ <UserPage /> } />
+                        <Route path="add-property" element={ <CreateFlatPage /> } />
+                        {/* TO FIX */}
+                        <Route path="edit-property/:id" element={ <CreateFlatPage /> } />
+                        {/*  */}
+                        {/* TO FIX */}
+                        <Route path="" element={ <BookingRequestsLayout /> }>
+                        {/*  */}
+                            <Route path="properties/:id/requests" element={ <RequestFormsPage /> }>
+                                <Route path="booking" element={ <BookingForm /> } />
+                                <Route path="message" element={ <MessageForm /> } />
+                            </Route>
+                            <Route path="my-booking-requests" element={ <BookingRequestListPage /> } />
+                        </Route>
+                        <Route path="my-messages" element={ <MessagesPage /> } />
+                        <Route path="my-payments" element={ <PaymentsPage /> } />
+                    </Route>
+                </Route>
+                <Route path="*" element={<NotFoundPage />} />
+            </Route>
+        )
+    )
+
     return (
-        <Router>
-            <AppContextProvider>
-                <UserContextProvider>
-                    <Layout>
-                    <div className="container my-2">
-                        <Routes>
-                            <Route path="about" element={<AboutPage />} />
-                            <Route path="auth" element={<AuthPage />} />
-                            
-                            <Route path="" element={
-                                <FlatsContextProvider>
-                                    <HomePage />
-                                </FlatsContextProvider>
-                                } 
-                            />
-                            <Route path="properties/:id" element={
-                                <FlatsContextProvider>
-                                    <FlatDetailsPage />
-                                </FlatsContextProvider>
-                                } 
-                            />
-                            <Route path="create-property" element={
-                                <FlatsContextProvider>
-                                    <ProtectedRoute>
-                                        <CreateFlatPage />
-                                    </ProtectedRoute>
-                                </FlatsContextProvider>
-                                } 
-                            />
-
-                            <Route path="messages" element={
-                                <ProtectedRoute>
-                                    <MessagesPage />
-                                </ProtectedRoute>
-                            } 
-                            />
-
-                            <Route path="*" element={<NotFoundPage />} />
-                        </Routes>
-                    </div>
-                    </Layout>
-                </UserContextProvider>
-            </AppContextProvider>
-        </Router>
+        <RouterProvider router={router} /> 
     )
 }
 
