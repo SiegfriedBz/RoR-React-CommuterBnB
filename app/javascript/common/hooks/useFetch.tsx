@@ -102,7 +102,7 @@ export const useFetch = () => {
     const deleteFlat = async (id) => {
         return await fetchData(`${FLATS_URL}/${id}`, {
             method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 204)
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
     }
         
     //* transaction/booking requests *//
