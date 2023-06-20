@@ -2,7 +2,7 @@ class FlatSerializer
   include JSONAPI::Serializer
   set_key_transform :camel_lower
 
-  attributes :title, :description, :address, :longitude, :latitude, :price_per_night_in_cents, :available, :category
+  attributes :title, :description, :street, :city, :country, :longitude, :latitude, :price_per_night_in_cents, :available, :category
 
   attribute :flat_id, &:id
 
