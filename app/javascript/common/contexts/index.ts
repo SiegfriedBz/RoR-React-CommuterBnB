@@ -1,6 +1,7 @@
 import { useAppContext, AppContextProvider } from './appContext'
 import { useUserContext, UserContextProvider } from './userContext'
 import { useFlatsContext, FlatsContextProvider } from './flatsContext'
+import { useBookingRequestsContext, BookingRequestsProvider } from './bookingRequestsContext'
 
 export { 
     useAppContext,
@@ -8,5 +9,7 @@ export {
     useUserContext,
     UserContextProvider,
     useFlatsContext,
-    FlatsContextProvider
+    FlatsContextProvider,
+    useBookingRequestsContext,
+    BookingRequestsProvider
 }
