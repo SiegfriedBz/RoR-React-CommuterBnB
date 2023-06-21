@@ -65,11 +65,10 @@ const AuthPage: React.FC = () => {
     }
 
     return (
-        <>
-            <h2>{isLoginForm ? 'Login' : 'Signup'}</h2>
+        <div className="auth-page--wrapper ">
             <form onSubmit={handleSubmit} className="mb-5">
-                {flashMessage.message && <FlashMessage {...flashMessage} />}
-                <div className="d-flex flex-column w-25">
+                <div className="d-flex flex-column mx-auto w-25">
+                    {flashMessage.message && <FlashMessage {...flashMessage} />}
                     <label htmlFor="email">Email</label>
                     <input 
                         type="email" 
@@ -115,7 +114,7 @@ const AuthPage: React.FC = () => {
                     </button>
                 </div>
             </form>
-        </>
+        </div>
     )
 }
 
