@@ -18,6 +18,7 @@ class Api::V1::FlatsController < ApplicationController
     end
 
     # get flat with owner details
+    # TODO: add flat reviews
     def show
         flat = Flat.find(params[:id])
         owner = flat.user

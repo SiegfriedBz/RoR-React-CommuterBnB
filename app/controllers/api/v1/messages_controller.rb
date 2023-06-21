@@ -16,17 +16,11 @@ class Api::V1::MessagesController < ApplicationController
         render json: { messages: serialized_messages }, status: :ok
     end
 
-    # conversation starts fromn a user with a flat or not
-    # flat_id : flat belonging to 
-        # the recipient if message sent from 
-        # OR the author IF message sent from
     def create
-
         message = Message.new(message_params)
         message.author_id = current_user.id
 
         if message.save
-
             render json: {
                 message: 'Message sent sucessfully'
               }, status: :created

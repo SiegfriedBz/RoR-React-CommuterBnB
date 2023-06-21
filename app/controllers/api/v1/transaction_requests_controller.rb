@@ -31,10 +31,9 @@ class Api::V1::TransactionRequestsController < ApplicationController
         end
     end
 
+    # TODO: add check if transaction exists and if user is authorized to update it
     def update
         transaction_request = TransactionRequest.find_by(id: params[:id])
-
-        # TODO: add logic to check if transaction exists and if user is authorized to update it
 
         if transaction_request.update(transaction_request_params)
             render json: {
