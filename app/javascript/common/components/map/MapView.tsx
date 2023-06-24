@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
 import Map, { Marker, Popup } from 'react-map-gl'
+import clsx from "clsx"
 import { useFlatsContext } from "../../contexts"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDollarSign, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import FlatCard from '../flats/FlatCard'
 import LoadingSpinners from '../LoadingSpinners'
 import { IFlat } from '../../utils/interfaces'
 
 //************************************************ */
-//===> TODO: move to secrets
 import mapbox_api_token from "./mapbox_api_token"
 const MAPBOX_TOKEN = mapbox_api_token
 //************************************************ */
@@ -36,23 +37,39 @@ interface IProps {
     mapHeight?: number
 }
 
-const MapView: React.FC<IProps> = ({ mapSelectedFlatId, mapHeight=600 }) => {
-    //* hooks
-    const { id: currentFlatIdParam } = useParams()
-
+const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     //* context
     // const { user } = useUserContext()
     const { flats } = useFlatsContext()
 
     if(!flats) return <LoadingSpinners />
-
+    
     //* state
     const mapRef = useRef(null)
-    const [selectedFlat, setSelectedFlat] = useState<IFlat | undefined>(undefined)
+    const [mapSelectedFlat, setMapSelectedFlat] = useState<IFlat | undefined>(undefined)
     const [userMarker, setUserMarker] = useState<IUserMarker>({longitude: 14.44, latitude: 35.89 })
     // const [userFlats, setUserFlats] = useState([])
     const [flatsMarkers, setFlatsMarkers] = useState<IFlatMarker[] | []>([])
     const [showPopup, setShowPopup] = useState(false)
+
+    // set mapSelectedFlat
+    useEffect(() => {
+        if(!selectedFlatId) return
+
+        const selectedFlat = flats.find(flat => flat.flatId === parseInt(selectedFlatId))
+        setMapSelectedFlat(selectedFlat)
+    }, [flats, selectedFlatId ])
+
+    // center map on selected flat
+    useEffect(() => {
+        if(!mapSelectedFlat) return
+
+        const { longitude, latitude } = mapSelectedFlat
+        
+        if(!longitude || !latitude) return
+
+        mapRef.current?.flyTo({ center: [ longitude, latitude ] })
+    }, [mapSelectedFlat])
 
     // set flats markers
     const getflatsMarkers = useCallback(() => {
@@ -73,63 +90,42 @@ const MapView: React.FC<IProps> = ({ mapSelectedFlatId, mapHeight=600 }) => {
         })()
     }, [flats, getflatsMarkers])
 
-
-    // set selectedFlat from params (FlatDetailsPage)
+    // 
     useEffect(() => {
-        if(!currentFlatIdParam) return
+        flatsMarkers?.forEach(marker => flatMarkerPriceClass(marker.flatIds))
+    }, [mapSelectedFlat])
 
-        setSelectedFlat(flats.find(flat => flat.flatId === parseInt(currentFlatIdParam)))
-    }, [flats, currentFlatIdParam])
-
-
-    // set selectedFlat from props
-    useEffect(() => {
-    const flat = flats.find(flat => flat.flatId === mapSelectedFlatId)
-    
-    if(!flat) return
-
-    setSelectedFlat(flat)
-}, [flats, mapSelectedFlatId])
-
-    // center map on selected flat
-    useEffect(() => {
-        if(!selectedFlat) return
-
-        const { longitude, latitude } = selectedFlat
-        if(!longitude || !latitude) return
-
-        mapRef.current?.flyTo({ center: [ longitude, latitude ] })
-    }, [selectedFlat])
-
-    useEffect(() => {
-        flatsMarkers?.forEach(marker => flatMarkerBadgeClass(marker.flatIds))
-    }, [selectedFlat])
-
-    //* handlers
-    // set selectedFlat on marker click & open flat popup & center map on selected flat
-    const handleFlatMarkerClick = (flatId) => {
-        const flat = flats.find(flat => flat.flatId === flatId)
+    //* helpers
+    // set mapSelectedFlat on marker click & open flat popup & center map on selected flat
+    const handleFlatMarkerClick = (id) => {
+        const flat = flats.find(flat => flat.flatId === id)
         
         if(!flat) return
         
-        setSelectedFlat(flat)
+        setMapSelectedFlat(flat)
         setShowPopup(true)
     }
 
     const handlePopUpClose = () => {
-        setSelectedFlat(undefined)
+        setMapSelectedFlat(undefined)
         setShowPopup(false)
     }
 
-    //* helpers
-    // flat marker badge classes
-    const flatMarkerBadgeClass = (flatId) => {
-        // console.log('MapView flatMarkerBadgeClass flatId', flatId);
-        return (
-            parseInt(flatId) === parseInt(selectedFlat?.flatId) ? 
-                "badge rounded-pill text-bg-success text-white fw-bold py-2 px-3"
-                : "badge rounded-pill text-bg-info text-white fw-bold py-2 px-3"
-        )
+    //* clsx
+    const flatMarkerPointerClass = (flatId) => {
+        const isSelectedFlat = parseInt(flatId) === parseInt(mapSelectedFlat?.flatId)
+        return clsx("marker-location", {
+            "text-success": isSelectedFlat,
+            "text-primary": !isSelectedFlat
+        })
+    }
+
+    const flatMarkerPriceClass = (flatId) => {
+        const isSelectedFlat = parseInt(flatId) === parseInt(mapSelectedFlat?.flatId)
+        return clsx("marker-price badge rounded-pill", {
+            "text-bg-success": isSelectedFlat,
+            "text-bg-primary": !isSelectedFlat
+        })
     }
     
     return (
@@ -150,27 +146,37 @@ const MapView: React.FC<IProps> = ({ mapSelectedFlatId, mapHeight=600 }) => {
                 const { flatId, longitude, latitude, pricePerNightInCents } = marker
                     return (
                         <Marker key={flatId} longitude={longitude} latitude={latitude} >
-                            <div onClick={() => handleFlatMarkerClick(flatId)}>
-                                <span className={flatMarkerBadgeClass(flatId)}>
-                                    ${pricePerNightInCents/100}
-                                </span>
+                            <div
+                                onMouseEnter={() => { console.log("enter",flatId )}}
+                                onMouseLeave={() => { console.log("leave",flatId )}}
+                                onClick={() => handleFlatMarkerClick(flatId)}
+                            >
+                                <div className="map-markers">
+                                    <span className={flatMarkerPointerClass(flatId)}>
+                                        <FontAwesomeIcon icon={faLocationDot} />
+                                    </span>
+                                    <span className={flatMarkerPriceClass(flatId)}>
+                                        <FontAwesomeIcon icon={faDollarSign} />
+                                        {pricePerNightInCents/100}
+                                    </span>
+                                </div>
                             </div>
                         </Marker>
                     )
             })}
 
             {/* flat popUp */}
-            {showPopup && selectedFlat && selectedFlat?.longitude && selectedFlat?.latitude &&
+            {showPopup && mapSelectedFlat?.longitude && mapSelectedFlat?.latitude &&
                 <Popup
                         anchor='bottom'
-                        longitude={selectedFlat?.longitude}
-                        latitude={selectedFlat?.latitude}
+                        longitude={mapSelectedFlat?.longitude}
+                        latitude={mapSelectedFlat?.latitude}
                         offset={[0, -15]}
                         onClose={handlePopUpClose}
                         closeButton={true}
                         closeOnClick={false}
                 >
-                    <FlatCard flat={selectedFlat} flatCardOnMap/>
+                    <FlatCard flat={mapSelectedFlat} flatCardOnMap/>
                 </Popup>
                 }
             </>
