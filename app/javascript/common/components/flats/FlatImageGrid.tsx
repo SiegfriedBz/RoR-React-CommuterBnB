@@ -1,9 +1,7 @@
 import React from 'react'
 import { IFlat } from '../../utils/interfaces'
 
-const FlatImageGrid: React.FC<IFlat> = ({ flat }) => {
-    const { images } = flat
-
+const FlatImageGrid: React.FC<IFlat> = ({ images }) => {
     const selectedImages = images.filter((image: string, index: number) => index < 4)
 
     return (
