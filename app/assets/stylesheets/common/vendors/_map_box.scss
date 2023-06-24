@@ -1,33 +1,60 @@
 // @import 'mapbox-gl/dist/mapbox-gl.css';
 
-.marker {
-  background-size: cover;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  cursor: pointer;
+.map-markers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  &.green-marker {
-    background-image: url('mapbox-marker-icon-20px-green.png')
+  &:hover {
+      span.marker-price {
+          opacity: 1;
+      }
   }
 
-  &.gray-marker {
-    background-image: url('mapbox-marker-icon-20px-gray.png')
+  span.marker-location {
+      font-size: 3rem;
+      font-weight: bolder;
+      margin-bottom: 0.5rem;
   }
 
-  &.blue-marker {
-    background-image: url('mapbox-marker-icon-20px-blue.png')
-  }
-
-  &.yellow-marker {
-        background-image: url('mapbox-marker-icon-20px-yellow.png')
-  }
-
-  &.orange-marker {
-        background-image: url('mapbox-marker-icon-20px-orange.png')
-  }
-
-  &.pink-marker {
-        background-image: url('mapbox-marker-icon-20px-pink.png')
+  span.marker-price {
+      color: white;
+      font-size: 0.8rem;
+      font-weight: bolder;
+      padding: 0.5rem 1rem;
+      opacity: 0;
   }
 }
+
+
+// .marker {
+//   background-size: cover;
+//   width: 35px;
+//   height: 35px;
+//   border-radius: 50%;
+//   cursor: pointer;
+
+//   &.green-marker {
+//     background-image: url('mapbox-marker-icon-20px-green.png')
+//   }
+
+//   &.gray-marker {
+//     background-image: url('mapbox-marker-icon-20px-gray.png')
+//   }
+
+//   &.blue-marker {
+//     background-image: url('mapbox-marker-icon-20px-blue.png')
+//   }
+
+//   &.yellow-marker {
+//         background-image: url('mapbox-marker-icon-20px-yellow.png')
+//   }
+
+//   &.orange-marker {
+//         background-image: url('mapbox-marker-icon-20px-orange.png')
+//   }
+
+//   &.pink-marker {
+//         background-image: url('mapbox-marker-icon-20px-pink.png')
+//   }
+// }

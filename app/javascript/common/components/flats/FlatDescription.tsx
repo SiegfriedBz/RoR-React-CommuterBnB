@@ -1,4 +1,6 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFontAwesome, faHouse, faArrowUpShortWide, faMoneyBill, faDollarSign } from '@fortawesome/free-solid-svg-icons'
 import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 import { IFlat } from '../../utils/interfaces'
 
@@ -12,11 +14,24 @@ const FlatDescription: React.FC<IFlat> = ({ flat }) => {
 
     return (
         <>
-            <h2 className="text-info">{title}</h2>
-            <p className="fw-bold">{description}</p>
-            <span className="d-block">{address}</span>
-            <span className="d-block">Category: {flatCategory}</span>
-            <span className="d-block">Price per night: ${pricePerNightInCents/100}</span>
+            <h3 className="text-dark">{title}</h3>
+            <p className="fw-bold">
+                <FontAwesomeIcon icon={faFontAwesome} />
+                {" "}{description}
+            </p>
+            <span className="d-block">
+                <FontAwesomeIcon icon={faHouse} />
+                {" "}{address}
+            </span>
+            <span className="d-block">
+                <FontAwesomeIcon icon={faArrowUpShortWide} />
+                {" "}{flatCategory}
+            </span>
+            <span className="d-block">
+                <FontAwesomeIcon icon={faMoneyBill} />
+                {" "}<FontAwesomeIcon icon={faDollarSign} />
+                {pricePerNightInCents/100} per night
+            </span>
         </>
     )
 }

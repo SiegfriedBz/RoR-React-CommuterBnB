@@ -17,7 +17,7 @@ const FlatCardCarousel: React.FC<IFlat> = ({ images }) => {
                 aria-current="true" 
                 aria-label="Slide 1"
             />
-            {images
+            {images && images
                 .filter((image: string, index: number) => index > 0)
                 .map((image: string, index: number) => {
                     return (
@@ -41,7 +41,7 @@ const FlatCardCarousel: React.FC<IFlat> = ({ images }) => {
                 <div className="carousel-item active">
                     <img src={images[0]} className="d-block w-100" alt="..."/>
                 </div>
-                {images
+                {images && images
                     .filter((image: string, index: number) => index > 0)
                     .map((image: string, index: number) => {
                         return (

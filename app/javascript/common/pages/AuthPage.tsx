@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate} from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAt, faUnlock, faRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../hooks'
 import { useAppContext, useUserContext } from '../contexts'
 import { FlashMessage } from '../components'
@@ -17,19 +19,19 @@ const initFormValues = {
 }
 
 const AuthPage: React.FC = () => {
-    // hooks
+    //# hooks
     const { authenticate } = useFetch()
     const navigate = useNavigate()
 
-    // context
+    //# context
     const { flashMessage, setFlashMessage, isLoading } = useAppContext()
     const { setTokenInStorage } = useUserContext()
 
-    // state
+    //# state
     const [formValues, setFormValues] = useState<IFormData>(initFormValues)
     const [isLoginForm, setIsLoginForm] = useState<boolean>(true)
 
-    // functions
+    //# helpers
     const toggleLoginRegister = () => {
         setIsLoginForm(prev => !prev)
     }
@@ -66,10 +68,13 @@ const AuthPage: React.FC = () => {
 
     return (
         <div className="auth-page--wrapper ">
-            <form onSubmit={handleSubmit} className="mb-5">
-                <div className="d-flex flex-column mx-auto w-25">
-                    {flashMessage.message && <FlashMessage {...flashMessage} />}
-                    <label htmlFor="email">Email</label>
+            <form onSubmit={handleSubmit} className="mb-5 w-50">
+                <div className="auth-page--form-input-group">
+                    { flashMessage.message && <FlashMessage {...flashMessage} /> }
+
+                    <label htmlFor="email">
+                        <FontAwesomeIcon icon={faAt} />{" "}email
+                    </label>
                     <input 
                         type="email" 
                         name="email"
@@ -77,7 +82,9 @@ const AuthPage: React.FC = () => {
                         onChange={handleChange}
                         autoComplete="email"
                     />
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">
+                        <FontAwesomeIcon icon={faUnlock} />{" "}password
+                    </label>
                     <input 
                         type="password" 
                         name="password"
@@ -85,23 +92,29 @@ const AuthPage: React.FC = () => {
                         onChange={handleChange}
                         autoComplete="new-password"
                     />
-                    {!formValues.isLoginForm &&
-                    <>
-                        <label htmlFor="password_confirmation">Confirm Password</label>
-                        <input 
-                            type="password" 
-                            name="password_confirmation"
-                            value={formValues.password_confirmation}
-                            onChange={handleChange} 
-                            autoComplete="new-password"
-                        />
-                    </>
+                    { !formValues?.isLoginForm ?
+                        <>
+                            <label htmlFor="password_confirmation">
+                                <FontAwesomeIcon icon={faUnlock} />{" "}confirm password
+                            </label>
+                            <input 
+                                type="password" 
+                                name="password_confirmation"
+                                value={formValues.password_confirmation}
+                                onChange={handleChange} 
+                                autoComplete="new-password"
+                            />
+                        </>
+                        : null
                     }
                     <button 
                         type="submit"
                         disabled={isLoading}
-                        className={isLoading? `btn btn-secondary my-2` : `btn btn-outline-primary my-2`}>
-                        {isLoginForm ? 'Login' : 'Signup'}
+                        className={isLoading? `btn btn-secondary my-2` : `btn btn-outline-dark my-2`}>
+                        { isLoginForm ? 
+                            <><FontAwesomeIcon icon={faRightToBracket} />{" "}login</>
+                            : <><FontAwesomeIcon icon={faRightToBracket} />{" "}sign up</>
+                        }
                     </button>
                     <button
                         type="button"

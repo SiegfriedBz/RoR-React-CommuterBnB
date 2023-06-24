@@ -41,11 +41,12 @@ const MessageFormModalWrapper: React.FC<IProps> = ({
         >
             <div className="row">
                 <div className="col-11">
+                    <h3 className="text-dark">Send Message</h3>
                     <MessageForm 
+                        toggleModal={toggleModal}
                         messageRecipientId={messageRecipientId}
                         messageFlatId={messageFlatId}
                         messageTransactionRequestId={messageTransactionRequestId}
-                        toggleModal={toggleModal}
                     />
                 </div>
                 <div className="col-1">

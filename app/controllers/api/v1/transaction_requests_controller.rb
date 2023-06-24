@@ -45,10 +45,32 @@ class Api::V1::TransactionRequestsController < ApplicationController
         end
     end
 
+    # TODO: transaction request can not be deleted if has an associated payment
+    def destroy
+        transaction_request = TransactionRequest.find_by(id: params[:id])
+
+        return render json: { message: 'Booking request not found.'}, status: :not_found if transaction_request.nil?
+        return render json: { message: 'You are not authorized to delete this booking request.'}, status: :unauthorized unless current_user_is_involved(transaction_request)
+
+        if transaction_request.destroy
+            render json: {
+                message: "Booking request ##{params[:id]} deleted sucessfully"
+                }, status: :ok
+        else
+            render json: { message: 'Booking request deletion went wrong, please try again.'},
+            status: :unprocessable_entity
+        end
+    end
+
     private
 
     def current_user_owns(flat)
         flat.user_id == current_user.id
+    end
+
+    def current_user_is_involved(transaction_request)
+        debugger
+        transaction_request.initiator_id == current_user.id || transaction_request.responder_id == current_user.id
     end
 
     def transaction_request_params

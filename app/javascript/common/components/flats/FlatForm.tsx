@@ -30,20 +30,21 @@ const initFormValues = {
 }
 
 const FlatForm: React.FC = () => {
-    // hooks
+    //# hooks
     const { id: editFlatId } = useParams()
     const navigate = useNavigate()
     const { createFlat, updateFlat } = useFetch()
 
-    // context
+    //# context
     const { isLoading, flashMessage, setFlashMessage } = useAppContext()
     const { flats, addFlatInContext, updateFlatInContext } = useFlatsContext()
 
-    // component state
+    //# state
     const [formValues, setFormValues] = useState<IFormValues>(initFormValues)
     const [flatToEdit, setFlatToEdit] = useState<IFlat | undefined>(undefined)
     const imagesRef = useRef();
 
+    //# effects
     // set form values if editing
     useEffect(() => {
         if(!flats || !editFlatId) return  
@@ -72,7 +73,7 @@ const FlatForm: React.FC = () => {
         }
     }, [flats, editFlatId])
 
-    // handlers
+    //# helpers
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { type, name, value } = e.target
         if(type === "checkbox") {
@@ -171,7 +172,8 @@ const FlatForm: React.FC = () => {
         <h2>{formTitle}</h2>
         <form onSubmit={handleSubmit}>
             <>
-            {flashMessage.message && <FlashMessage {...flashMessage} />}
+            { flashMessage.message && <FlashMessage {...flashMessage} /> }
+
             <div className="form-group w-50">
                 <label htmlFor="title" className='mt-2'>Title</label>
                 <input
@@ -288,7 +290,7 @@ const FlatForm: React.FC = () => {
                     </div>
                 )} */}
 
-                <button type="submit" className="btn btn-primary mt-2">Submit</button>
+                <button type="submit" className="btn btn-dark mt-2">Submit</button>
             </div>
             </>
         </form>

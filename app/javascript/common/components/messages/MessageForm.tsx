@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
 import { useFetch } from '../../hooks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FlashMessage } from '../../components'
 
 interface IProps {
@@ -12,13 +14,15 @@ interface IProps {
 }
 
 // handle 3 sources of messages
-/// /properties/:id/requests/message --- params
+/// /properties/:id/requests/message --- params => selectedFlatId passed through NavLink state - useLocation()
 /// /my-booking-requests --- props
 /// /my-messages --- props
 
-const MessageForm: React.FC<IProps> = ({ toggleModal, ...props }) => {
+const MessageForm: React.FC<IProps> = ({ messageRecipientId, messageFlatId, messageTransactionRequestId, toggleModal }) => {
+
     //* hooks
-    const params = useParams()
+    const inputRef = useRef()
+    const location = useLocation()
     const navigate = useNavigate()
     const { createMessage } = useFetch()
 
@@ -29,43 +33,43 @@ const MessageForm: React.FC<IProps> = ({ toggleModal, ...props }) => {
 
     //* state
     const [content, setContent] = useState("")
-    const [messageRecipientId, setMessageRecipientId] = useState(null)
+    const [messageRecipientIdValue, setMessageRecipientIdValue] = useState(null)
     // messageFlatId is set by the 1st author in a conversation, and will remain CONSTANT in 1 conversation
-    const [messageFlatId, setMessageFlatId] = useState(null)
-    const [messageTransactionRequestId, setMessageTransactionRequestId] = useState(null)
+    const [messageFlatIdValue, setMessageFlatIdValue] = useState(null)
+    const [messageTransactionRequestIdValue, setMessageTransactionRequestIdValue] = useState(null)
 
     //* effects
+    /// set messageRecipientIdValue & messageFlatIdValue & messageTransactionRequestIdValue 
     useEffect(() => {
         if(!flats) return
 
-        if (params?.id) {
-            // on /properties/:id/requests/message
-            // id === ALWAYS "secondUser".flatId (not the flat of the currentUser if has any)
-            const messageFlatId = parseInt(params.id)
-            
-            const messageFlat = flats.find(flat => flat.flatId === messageFlatId)
-            if (!messageFlat) return
+        if(location.pathname.includes("/requests/message")) {
+            //* get selectedFlatId, passed from RequestFormsPage NavLink state
+            const { state: { selectedFlatId }} = location
+            const selectedFlat = flats.find(flat => flat.flatId === parseInt(selectedFlatId))
+            if(!selectedFlat) return
 
-            const messageRecipientId = messageFlat?.owner?.userId
-            if(!messageRecipientId) return
+            const selectedFlatOwnerId = selectedFlat?.owner?.userId
+            if(!selectedFlatOwnerId) return
 
-            setMessageRecipientId(messageRecipientId)
-            setMessageFlatId(messageFlatId)
-        } else if(props){
-            // on /my-booking-requests || /my-messages
-            // /my-booking-requests
-            /// ALWAYS set the "responderFlatId" as the "messageFlatId"
-            // /my-messages
-            /// 
-            const { messageRecipientId, messageFlatId, messageTransactionRequestId } = props
-            if(!messageRecipientId || !messageFlatId) return
-            
-            setMessageRecipientId(messageRecipientId)
-            setMessageFlatId(messageFlatId)
-            setMessageTransactionRequestId(messageTransactionRequestId)
-        }
+            setMessageRecipientIdValue(selectedFlatOwnerId)
+            setMessageFlatIdValue(selectedFlatId)
 
-    }, [flats, params])
+        } else if(location.pathname.includes("/my-booking-requests") || location.pathname.includes("/my-messages")) {
+            //* get recipientId, flatId, transactionRequestId from props, passed from BookingRequestCard
+            setMessageRecipientIdValue(messageRecipientId)
+            setMessageFlatIdValue(messageFlatId)
+            setMessageTransactionRequestIdValue(messageTransactionRequestId)
+        } 
+    }, [flats, location?.pathname, messageRecipientId, messageFlatId, messageTransactionRequestId])
+
+    // focus on message input
+    useEffect(() => {
+        if(!messageFlatIdValue) return
+
+        inputRef?.current?.focus()
+
+    }, [messageFlatIdValue])
 
     //* handlers
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,43 +86,61 @@ const MessageForm: React.FC<IProps> = ({ toggleModal, ...props }) => {
                 )
         }
 
-        const fetchedData = await createMessage(content, messageRecipientId, messageFlatId, messageTransactionRequestId)
+        const fetchedData = await createMessage(content, messageRecipientIdValue, messageFlatIdValue, messageTransactionRequestIdValue)
 
         if(!fetchedData) return
 
         const [response, data] = fetchedData
 
+        if (!fetchedData) {
+            setFlashMessage({ message: "Something went wrong, please try again", type: "warning" })
+        }
+
         if (response.status === 201) {
             setFlashMessage({ message: data.message, type: "success" })
-            toggleModal()
             setContent("")
             setTimeout(() => {
                 setFlashMessage({ message: null, type: "success" })
                 navigate(`/my-messages`)
             }, 1500)
-        } else {
+        } 
+
+        setTimeout(() => {
+            setFlashMessage({ message: null, type: "success" })
+            navigate(`/my-messages`)
+        }, 1500)
+
+        if (location.pathname.includes("/my-booking-requests")) {
+            // close modal
+            toggleModal()
+        }
+        
+        else {
             setFlashMessage({ message: data.error, type: "danger" })
         }
     }
 
     return (
-        <>
-        <h3 className="text-info">Send Message</h3>
         <form onSubmit={handleSubmit}>
-        {flashMessage.message && <FlashMessage {...flashMessage} />}
+        { flashMessage.message && <FlashMessage {...flashMessage} /> }
+
             <div className="form-group">
                 <textarea 
                     className="form-control"
                     id="content"
+                    ref={inputRef}
                     name="content"
                     value={content}
                     onChange={handleChange}
                     placeholder="Type your message here..."
                 />
             </div>
-            <button type="submit" className="btn btn-sm btn-outline-primary my-2">Submit</button>
+            <button 
+                type="submit"
+                className="btn btn-sm btn-outline-dark my-2">
+                    <FontAwesomeIcon icon={faPaperPlane} />{" "}Send
+                </button>
         </form>
-        </>
     )
 }
 

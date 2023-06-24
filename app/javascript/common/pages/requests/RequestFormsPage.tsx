@@ -1,13 +1,17 @@
 import React from 'react'
 import { NavLink, useParams, Outlet, Navigate } from 'react-router-dom'
 import { useFlatsContext } from '../../contexts'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane, faReceipt } from '@fortawesome/free-solid-svg-icons'
 import { FlatDescription } from '../../components/flats'
 import { HostedBy } from '../../components'
 import { LoadingSpinners } from '../../components'
 
 const RequestFormsPage = () => {
+    //* hooks
     const { id: selectedFlatId } = useParams()
-    // contexts
+    
+    //* context
     const { flats } = useFlatsContext()
 
     if(!selectedFlatId) return <LoadingSpinners />
@@ -20,18 +24,22 @@ const RequestFormsPage = () => {
         <div className="mb-3">
             <FlatDescription flat={flat} />
         <div className="mt-2 mb-3">
-            <HostedBy />
+            <HostedBy selectedFlatId={selectedFlatId}/>
         </div>
         <div className="d-flex mb-3">
             <NavLink 
                 to="booking"
-                className="btn btn-outline-primary me-2">
-                Send a booking request
+                className="btn btn-outline-dark me-2"
+                state={{ selectedFlatId }}
+                >
+                    <FontAwesomeIcon icon={faReceipt} />{" "}Send a booking request
             </NavLink>
             <NavLink
                 to="message"
-                className="btn btn-outline-primary">
-                Send a message 
+                className="btn btn-outline-dark"
+                state={{ selectedFlatId }}
+                >
+                    <FontAwesomeIcon icon={faPaperPlane} />{" "}Send a message
             </NavLink>
         </div>
         <Outlet />

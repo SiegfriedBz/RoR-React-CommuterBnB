@@ -1,6 +1,6 @@
 export interface IFlashMessage {
     message: string | null,
-    type: "success" | "warning" | "danger"
+    type: "success" | "info" | "warning" | "danger"
 }
 
 export interface IAppContext {
