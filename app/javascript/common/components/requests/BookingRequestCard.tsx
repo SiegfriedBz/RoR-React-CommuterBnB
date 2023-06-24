@@ -1,14 +1,47 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { v4 as uuid } from 'uuid'
+import React, {
+    useState,
+    useEffect,
+    useRef, 
+    forwardRef,
+    useImperativeHandle
+} from 'react'
 import { format, formatDistanceToNow } from 'date-fns'
 import { useFetch } from '../../hooks'
-import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
+import {
+    useAppContext,
+    useUserContext,
+    useFlatsContext,
+    useBookingRequestsContext
+} from '../../contexts'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FlatCardCarousel } from '../../components/flats'
-import { LoadingSpinners, TotalPriceAndDays } from '../../components'
-import { IFlat } from '../../utils/interfaces'
+import { TotalPriceAndDays } from '../../components'
+import BookingBy from './BookingBy'
+import BookingAgreementSwitches from './BookingAgreementSwitches'
+import BookingFlatsDetails from './BookingFlatsDetails'
+import BookingGoToPaymentButton from './BookingGoToPaymentButton'
+import { IFlat, IBookingRequest } from '../../utils/interfaces'
 
-const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId, handleSendMessage }) => {
+export interface ITransactionUser {
+    userId: number,
+    agreedTransaction: boolean,
+    isTransactionInitiator: boolean,
+    flatId?: number,
+    propertyPrice?: number,
+    isPayer: boolean
+}
+
+interface IProps {
+    transactionRequest: IBookingRequest,
+    setMapSelectedFlatId: React.Dispatch<React.SetStateAction<number | undefined>>,
+    handleSendMessage: (recipientId: number) => void
+}
+
+const BookingRequestCard = ({
+    transactionRequest,
+    setMapSelectedFlatId,
+    handleSendMessage }, forwardedRef) => {
     //* props
     const {
         transactionRequestId,
@@ -24,126 +57,95 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
         initiatorFlatId
     } = transactionRequest
     
-    //* hooks
-    const navigate = useNavigate()
-    const { updateTransactionRequest } = useFetch()
+    // //* hooks
+    const cardRef = useRef()
+    const { deleteTransactionRequest } = useFetch()
 
     //* contexts
     const { isLoading, setFlashMessage } = useAppContext()
     const { user } = useUserContext()
     const { flats } = useFlatsContext()
+    const { setBookingRequests } = useBookingRequestsContext()
 
     //* state
-    const [initiatorFlat, setInitiatorFlat] = useState<IFlat | undefined>(undefined)
+    const [currentUser, setCurrentUser] = useState<ITransactionUser | undefined>(undefined)
+    const [secondUser, setSecondUser] = useState<ITransactionUser | undefined>(undefined)
+
     const [isExchange, setIsExchange] = useState<boolean>(false)
-    const [responderFlat, setResponderFlat] = useState<IFlat | undefined>(undefined)
-
-    const [currentUserIsResponder, setCurrentUserIsResponder] = useState<boolean | undefined>(undefined)
-    const [requestedBy, setRequestedBy] = useState<string | undefined>(undefined)
-    const [secondUserId, setSecondUserId] = useState<number | undefined>(undefined)
-
-    const [currentUserAgreed, setCurrentUserAgreed] = useState<boolean>(false)
-    const [secondUserAgreed, setSecondUserAgreed] = useState<boolean>(false)
-
-    const [currentUserProperty, setCurrentUserProperty] = useState<IFlat | undefined>(undefined)
-    const [secondUserProperty, setSecondUserProperty] = useState<IFlat | undefined>(undefined)
-    
-    // TODO CLEANUP AND REMOVE DUPLICATE DATA
-    const [currentUserPropertyPrice, setCurrentUserPropertyPrice] = useState<number | undefined>(undefined)
-    const [secondUserPropertyPrice, setSecondUserPropertyPrice] = useState<number | undefined>(undefined)
-    
-    const [currentUserIsPayer, setCurrentUserIsPayer] = useState<boolean>(false)
     const [isPureExchange, setIsPureExchange] = useState<boolean>(false)
 
+    // scrollIntoView forwarded from BookingRequestListPage
+    useImperativeHandle(forwardedRef, () => (
+        { goIntoView: () => cardRef.current?.scrollIntoView({ behavior: 'smooth' }) }
+        )
+    )
+    
     //* effects
+    // set currentUser & secondUser from transactionRequest
     useEffect(() => {
-        if(!user || !flats) return
+        if(!user || !flats || !transactionRequest) return
 
-        // initiatorFlat
-        const initiatorFlat: IFlat | undefined = flats?.find((flat) => flat.flatId === initiatorFlatId)
-        setInitiatorFlat(initiatorFlat)
+        const initiatorFlat: IFlat | undefined = flats.find(flat => flat.flatId === initiatorFlatId)
+        const responderFlat: IFlat| undefined = flats.find(flat => flat.flatId === responderFlatId)
+        if(!responderFlat) return
 
-        // isExchange
+        const initiatorFlatPrice: number | undefined = initiatorFlat?.pricePerNightInCents
+        const responderFlatPrice: number | undefined  = responderFlat?.pricePerNightInCents
+
         const isExchange: boolean = typeof initiatorFlat !== "undefined"
         setIsExchange(isExchange)
 
-        // responderFlat
-        const responderFlat: IFlat | undefined = flats?.find((flat) => flat.flatId === responderFlatId)
-        setResponderFlat(responderFlat)
-
-        // currentUserIsResponder
-        const currentUserIsResponder: boolean = user.userId === responderId 
-        setCurrentUserIsResponder(currentUserIsResponder)
-
-        // requested by & secondUserId
-        setRequestedBy(currentUserIsResponder ? `User #${initiatorId}` : "Me")
-        setSecondUserId(currentUserIsResponder ? initiatorId : responderId)
-
-        // agreements
-        setCurrentUserAgreed(currentUserIsResponder ? responderAgreed : initiatorAgreed)
-        setSecondUserAgreed(currentUserIsResponder ? initiatorAgreed : responderAgreed)
-
-        // properties
-        setCurrentUserProperty(currentUserIsResponder ? responderFlat : initiatorFlat)
-        setSecondUserProperty(currentUserIsResponder ? initiatorFlat : responderFlat)
-
-        // property Prices
-        const currentUserPropertyPrice = currentUserIsResponder ?
-            responderFlat?.pricePerNightInCents
-            : initiatorFlat?.pricePerNightInCents
-        setCurrentUserPropertyPrice(currentUserPropertyPrice)
-
-        const secondUserPropertyPrice = currentUserIsResponder ?
-            initiatorFlat?.pricePerNightInCents
-            : responderFlat?.pricePerNightInCents
-        setSecondUserPropertyPrice(secondUserPropertyPrice)
-
-        // currentUserIsPayer
-        const currentUserIsPayer = 
-            currentUserIsResponder ?
-                isExchange && 
-                    currentUserPropertyPrice && 
-                        secondUserPropertyPrice && 
-                            currentUserPropertyPrice < secondUserPropertyPrice
-            : isExchange ?
-                currentUserPropertyPrice &&
-                    secondUserPropertyPrice &&
-                        currentUserPropertyPrice < secondUserPropertyPrice
-            : true 
-        setCurrentUserIsPayer(currentUserIsPayer)
-
-        // isPureExchange
-        const isPureExchange = isExchange && 
-            currentUserPropertyPrice
-                && secondUserPropertyPrice
-                    && currentUserPropertyPrice === secondUserPropertyPrice
+        let isPureExchange: boolean = false
+        if(isExchange) {
+            isPureExchange = initiatorFlatPrice === responderFlatPrice
+        }
         setIsPureExchange(isPureExchange)
-    }, [user,
-        flats,
-        isPureExchange,
-        responderFlat,
-        currentUserIsResponder,
-        requestedBy,
-        currentUserPropertyPrice,
-        secondUserPropertyPrice,
-        currentUserIsPayer])
-    
-    //* handlers
-    const handleChange = () => {
-        console.log("handleChange checked")
-        setCurrentUserAgreed(prev => !prev)
-    }
 
-    // currentUser updates his agreement status
-    const handleSubmit = async(event) => {
-        event.preventDefault()
-        const fetchedData = await updateTransactionRequest(transactionRequestId, currentUserIsResponder, currentUserAgreed)
+        const initiatorIsPayer: boolean = (!isExchange)
+            || (initiatorFlatPrice && responderFlatPrice && initiatorFlatPrice < responderFlatPrice)
+            || false
+            
+        const initiator: ITransactionUser = {
+            userId: initiatorId,
+            agreedTransaction: initiatorAgreed,
+            isTransactionInitiator: true,
+            flatId: initiatorFlatId,
+            propertyPrice: initiatorFlatPrice,
+            isPayer: initiatorIsPayer && !isPureExchange
+        }
+
+        const responder: ITransactionUser = {
+            userId: responderId,
+            agreedTransaction: responderAgreed,
+            isTransactionInitiator: false,
+            flatId: responderFlatId,
+            propertyPrice: responderFlatPrice,
+            isPayer: !initiatorIsPayer && !isPureExchange
+        }
+
+        // currentUser is initiator
+        if(user.userId === initiatorId) {
+            setCurrentUser(initiator)
+            setSecondUser(responder)
+        } else {
+             // currentUser is responder
+            setCurrentUser(responder)
+            setSecondUser(initiator)
+        }
+    }, [user, flats, transactionRequest])
+
+    //* helpers
+    const handleDeleteTransactionRequest = async (transactionRequestId: number) => {
+        const fetchedData = await deleteTransactionRequest(transactionRequestId)
+        if(!fetchedData) return
+
+        const [response, data] = fetchedData
 
         if(fetchedData) {
-            const data = fetchedData[1]
             setFlashMessage({ message: data.message, type: "success" })
+            setBookingRequests(prev => prev.filter(request => request.transactionRequestId !== transactionRequestId))
         } else {
-            setFlashMessage({ message: "Booking request creation went wrong", type: "warning" })
+            setFlashMessage({ message: "Booking request deletion went wrong, please try again", type: "warning" })
         }
 
         setTimeout(() => {
@@ -151,243 +153,57 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
         }, 3000)
     }
 
-    if(isLoading || typeof currentUserIsResponder === "undefined") return <LoadingSpinners />
-
-    //* render
-    // requested by
-    const renderRequestedBy = () => {
-        return (
-            <>
-                <h5 className="card-title">Booking request #{transactionRequestId}</h5>
-                <span className="card-text d-block">Requested by: {requestedBy}</span>
-                {isExchange && <span className="card-text text-info d-block fw-bolder mb-2">Exchange request</span>}
-            </>
-        )
-    }
-
-    // aggreement switches
-    const uuidKey01 = uuid()
-    const uuidKey02 = uuid()
-
-    const renderAgreementSwitches = () => {
-        return (
-            <div className="booking-request-card---switch-wrapper">
-                <div className="form-check">
-                    <input  
-                        checked={currentUserAgreed} 
-                        onChange={handleChange} 
-                        className="form-check-input" 
-                        type="checkbox" 
-                        role="switch" 
-                        id={uuidKey01}
-                     />
-                    <label className="form-check-label" htmlFor={`#${uuidKey01}`} >I agreed</label>
-                </div>
-    
-                <div className="form-check">
-                    <input 
-                        disabled
-                        checked={secondUserAgreed} 
-                        className="form-check-input" 
-                        type="checkbox" 
-                        role="switch" 
-                        id={uuidKey02} 
-                    />
-                    <label className="form-check-label" htmlFor={`#${uuidKey02}`}>User #{secondUserId} agreed</label>
-                </div>
-            </div>
-        )
-    }
-    
-    // properties info & show flat on map buttons & send message button(d-none d-md-block)
-    const renderLeftPanel = () => {
-        return(
-            <div className="booking-request-card---left-panel">
-                {/* request by */}
-                <div className='d-block d-md-none ms-2 mb-2'>
-                    {renderRequestedBy()}
-                </div>
-                <div>
-                    { currentUserIsResponder ?
-                       <>
-                        <div className="d-flex">
-                            <div className='ms-2'>
-                                <span className='d-block text-info fw-bolder'>My flat</span>
-                                <ul>
-                                    <li><span className='d-block'>{`${responderFlat?.city}, ${responderFlat?.country}`}</span></li>
-                                    <li><span className='d-block'> ${responderFlat?.pricePerNightInCents/100} per night</span></li>
-                                </ul>
-                            </div>
-                            <button 
-                                type='button'
-                                className='btn btn-sm btn-outline-primary my-auto me-2 me-md-0'
-                                onClick={() => setMapSelectedFlatId(responderFlatId)}
-                                >See flat on map
-                            </button>
-                        </div>
-                        { isExchange && 
-                        <div className="d-flex justify-content-between">
-                            <div className='ms-2'>
-                                <span className='d-block text-info fw-bolder'>User #{initiatorId}</span>
-                                <ul>
-                                    <li><span className='d-block'>{`${initiatorFlat?.city}, ${initiatorFlat?.country}`}</span></li>
-                                    <li><span className='d-block'> ${initiatorFlat?.pricePerNightInCents/100} per night</span></li>
-                                </ul>
-                            </div>
-                            <button 
-                                type='button'
-                                className='btn btn-sm btn-outline-primary my-auto me-2 me-md-0'
-                                onClick={() => setMapSelectedFlatId(initiatorFlatId)}
-                                >See flat on map
-                            </button>
-                        </div>
-                        }
-                    </>
-                    : 
-                    <>
-                        { isExchange && 
-                        <div className="d-flex justify-content-between">
-                            <div className='ms-2'>
-                                <span className='d-block text-info fw-bolder'>My flat</span>
-                                <ul>
-                                    <li><span className='d-block'>{`${initiatorFlat?.city}, ${initiatorFlat?.country}`}</span></li>
-                                    <li><span className='d-block'> ${initiatorFlat?.pricePerNightInCents/100} per night</span></li>
-                                </ul>
-                            </div>
-                            <button 
-                                type='button'
-                                className='btn btn-sm btn-outline-primary my-auto me-2 me-md-0'
-                                onClick={() => setMapSelectedFlatId(initiatorFlatId)}
-                                >See flat on map
-                            </button>
-                        </div>
-                        }
-                        <div className="d-flex justify-content-between">
-                            <div className='ms-2'>
-                                <span className='d-block text-info fw-bolder'>User #{responderId} flat</span>
-                                <ul>
-                                    <li><span className='d-block'>{`${responderFlat?.city}, ${responderFlat?.country}`}</span></li>
-                                    <li> <span className='d-block'>${responderFlat?.pricePerNightInCents/100} per night</span></li>
-                                </ul>
-                            </div>
-                            <button 
-                                type='button'
-                                className='btn btn-sm btn-outline-primary my-auto me-2 me-md-0'
-                                onClick={() => setMapSelectedFlatId(responderFlatId)}
-                                >See flat on map
-                            </button>
-                        </div>
-                    </>
-                    }
-                </div>
-                
-                 {/* send message */}
-                 <div className="d-none d-md-block ms-2">
-                    <button 
-                        className="btn btn-sm btn-outline-primary mx-auto mt-1 w-50"
-                        onClick={() => {
-                            // ALWAYS set the "responderFlatId" as the "messageFlatId"
-                            handleSendMessage(secondUserId, responderFlatId, transactionRequestId)
-                        }}
-                    >Send message
-                    </button>
-                 </div>
-
-                {/* delete booking request */}
-                <div className="d-none d-md-block ms-2">
-                    <button className="btn btn-sm btn-outline-warning mx-auto my-1 w-50">Delete request</button>
-                </div>
-            </div>
-        )
-
-    } 
-
-    // proceed to payment button
-    const renderProceedToPaymentButton = () => {
-
-        // waiting for both parties to agree
-        if(!responderAgreed || !initiatorAgreed ) return null
-
-        // not exchange scenario && currentUser is not responder: initiator must pay
-        if(!initiatorFlat && !currentUserIsResponder) return (
-            <Link to="/payments" state={ { mustBePaidToUserId: user.userId , transactionRequestId } } className="btn btn-sm btn-outline-primary mt-1 w-100">
-                Proceed to payment
-            </Link>
-        )
-
-        // exchange scenario
-        if(initiatorFlat) {
-            const rMinusIPriceDelta = responderFlat?.pricePerNightInCents - initiatorFlat?.pricePerNightInCents
-            
-            // pure exchange
-            if(rMinusIPriceDelta === 0) {
-                return <span className="btn btn-sm btn-outline-success mt-1 w-100">You can validate the transaction by creating a 0 value payment</span>
-            }
-            
-            const responderMustPay = rMinusIPriceDelta < 0
-
-            // currentUser is responder
-            if(currentUserIsResponder) {
-                // responder must pay
-                if(responderMustPay) {
-                    return (
-                        <Link 
-                            to="/my-payments"
-                            state={ { mustBePaidByUserId: user.userId , transactionRequestId } }
-                            className="btn btn-sm btn-success mt-1 w-100">
-                            Proceed to payment
-                        </Link>
-                    )
-                } else {
-                    // initiator must pay
-                    return (
-                        <span className="btn btn-sm btn-success mt-1 w-100">Waiting for payment</span>
-                    )
-                }
-            } else {
-                // currentUser is not responder
-                if(responderMustPay) {
-                    return (
-                        <span className="btn btn-sm btn-success mt-1 w-100">Waiting for payment</span>
-                    )
-                } else {
-                    // initiator must pay
-                    return (
-                        <Link
-                            to="/my-payments"
-                            state={ { mustBePaidToUserId: user.userId , transactionRequestId } }
-                            className="btn btn-sm btn-success mt-1 w-100">
-                            Proceed to payment
-                        </Link>
-                    )
-                }
-            }
-        }
-    }
+    if(!currentUser || !secondUser) return null
 
     return (
-        <div className="booking-request-card--wrapper">
-            <div className="card mb-3" >
+        <div
+            ref={cardRef}
+            id={`transactionRequestId-${transactionRequestId}`}
+            className="booking-request-card--wrapper" 
+            >
+            <div className="card mb-3">
                 <div className="row g-0">
+                    {/* left panel */}
                     <div className="col-md-6">
-                        {/* images */}
-                        <FlatCardCarousel images={responderFlat?.images} />
-                        {/* properties info & show on map buttons */}
-                        {renderLeftPanel()}
+                        {/* responderFlat images */}
+                        <FlatCardCarousel images={flats?.find(flat => flat.flatId === responderFlatId)?.images} />
+
+                        <div className='d-block d-md-none ms-2 mb-2'>
+                            <BookingBy
+                                transactionRequestId={transactionRequestId}
+                                currentUser={currentUser}
+                                initiatorId={initiatorId}
+                                isExchange={isExchange}
+                            />
+                        </div>
+
+                        <BookingFlatsDetails
+                            responderFlat={flats.find(flat => flat.flatId === responderFlatId)}
+                            initiatorFlat={flats.find(flat => flat.flatId === initiatorFlatId)}
+                            currentUser={currentUser}
+                            secondUser={secondUser}
+                            setMapSelectedFlatId={setMapSelectedFlatId}
+                            isExchange={isExchange} 
+                        />
                     </div>
 
+                    {/* right panel */}
                     <div className="col-md-6">
                         <div className="card-body">
-                            {/* request by */}
                             <div className='d-none d-md-block'>
-                                {renderRequestedBy()}
+                                <BookingBy
+                                    transactionRequestId={transactionRequestId}
+                                    currentUser={currentUser}
+                                    initiatorId={initiatorId}
+                                    isExchange={isExchange}
+                                />
                             </div>
-                           
+                        
                             {/* dates */}
                             <div className='mb-2'>
-                                <span className='d-block text-info fw-bolder'>Dates</span>
-                                <span className="card-text d-block">From {format(new Date(startingDate), 'MMMM d, yy')}</span>
-                                <span className="card-text d-block">to {format(new Date(endingDate), 'MMMM d, yy')}</span>  
+                                <span className='d-block text-dark fw-bolder'>Dates</span>
+                                <span className="card-text">{format(new Date(startingDate), 'MMMM d, yy')}</span>
+                                {" "}<span className="card-text">to {format(new Date(endingDate), 'MMMM d, yy')}</span>  
                             </div>
 
                             {/* total */}
@@ -396,61 +212,67 @@ const BookingRequestCard: React.FC = ({ transactionRequest, setMapSelectedFlatId
                                 starting_date={startingDate}
                                 ending_date={endingDate}
                             >
-                                <li>
-                                    <span className="d-block text-info fw-bolder">I am the { currentUserIsPayer ? "payer" : "payee"}
-                                    </span>
-                                </li>
+                                <span className="d-block text-info fw-bolder">
+                                    { isPureExchange ? 
+                                        "Booking is free" 
+                                        : currentUser?.isPayer ?
+                                          "I am the payer" 
+                                          : "I am the payee"
+                                    }
+                                </span>
                             </TotalPriceAndDays>
 
                             {/* agreement */}
-                            <span className='d-block text-info fw-bolder'>Agreement</span>
-                            <form onSubmit={handleSubmit}>
-                                <div className="form-check form-switch mt-2">
-                                    {renderAgreementSwitches()}
-                                </div>
-                                <button 
-                                    type="submit"
-                                    className="btn btn-sm btn-outline-primary mt-1 w-100"
-                                    disabled={isLoading}
-                                    >Update agreement
-                                </button>
-                            </form>
-
-                            {/* send message */}
-                            <div className="d-block d-md-none">
-                                <button 
-                                    onClick={() => {
-                                        // ALWAYS set the "responderFlatId" as the "messageFlatId"
-                                        handleSendMessage(secondUserId, responderFlatId, transactionRequestId)
-                                    }}
-                                    >Send message
-                                </button> 
-                            </div>
-                            
-                            {/* delete booking request */}
-                            <div className="d-block d-md-none">
-                                <button
-                                    className="btn btn-sm btn-outline-warning mx-auto mt-1 w-100"
-                                >Deelete request
-                                </button>
-                            </div>
-
-                            {/* go to payment */}
-                            <div className=''>
-                                { renderProceedToPaymentButton() }
-                            </div>
-
-                            {/* last update */}
-                            <p className="card-text text-center mt-1">
-                                <small className="text-body-secondary">Last update {formatDistanceToNow(new Date(updatedAt))} ago
-                                </small>
-                            </p>
+                            <span className='d-block text-dark fw-bolder'>Agreement</span>
+                            <BookingAgreementSwitches
+                                transactionRequestId={transactionRequestId}
+                                currentUser={currentUser}
+                                setCurrentUser={setCurrentUser}
+                                secondUser={secondUser}
+                            />
                         </div>
                     </div>
+                </div>
+
+                <div className="row g-0">
+                    <div className="d-flex justify-content-between">
+                        {/* delete booking request */}
+                        <button
+                            className="btn btn-sm btn-outline-warning mx-3 my-1 w-100"
+                            onClick={() => handleDeleteTransactionRequest(transactionRequestId)}
+                        >
+                            <FontAwesomeIcon icon={faTrashCan} />{" "}Delete request
+                        </button>
+                        {/* send message */}
+                        <button
+                            className="btn btn-sm btn-outline-primary mx-3 my-1 w-100"
+                            onClick={() => {
+                                // responderFlatId => messageFlatId
+                                handleSendMessage(secondUser.userId, responderFlatId, transactionRequestId)
+                            }}
+                            >
+                                <FontAwesomeIcon icon={faPaperPlane} />{" "}Send message
+                        </button>
+                    </div>
+
+                    {/* go to payment */}
+                    <BookingGoToPaymentButton 
+                        transactionRequestId={transactionRequestId}
+                        currentUser={currentUser}
+                        secondUser={secondUser}
+                        isExchange={isExchange}
+                        isPureExchange={isPureExchange}
+                    />
+                    
+                    {/* last update */}
+                    <p className="card-text text-center mt-2 mb-1">
+                        <small className="text-body-secondary">Last update {formatDistanceToNow(new Date(updatedAt))} ago
+                        </small>
+                    </p>
                 </div>
             </div>
         </div>
     )
 }
 
-export default BookingRequestCard
+export default forwardRef(BookingRequestCard)
