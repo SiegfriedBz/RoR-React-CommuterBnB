@@ -11,12 +11,12 @@ const fetchDefaultOptions = {
 }
 
 export const useFetch = () => {
-    // hooks 
+    //# hooks 
     const [token, setToken] = useLocalStorage('bnbToken', null)
-    // context
+    //# context
     const { setFlashMessage, setIsLoading } = useAppContext()
 
-    // fetch
+    //# fetch
     const fetchData = async (url: string, options={}, expectedStatus: number) => {
         setIsLoading(true)
         setFlashMessage({ message: null, type: "success" })
@@ -105,7 +105,16 @@ export const useFetch = () => {
             headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
     }
         
-    //* transaction/booking requests *//
+    //* transaction (booking) requests *//
+    const getUserTransactionRequests = async () => {
+        return await fetchData(TRANSACTION_REQUEST_URL, { 
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json'
+            }
+        }, 200)
+    }
+
     const createTransactionRequest = async (flatId, formValues) => {
         const body = { transaction_request: formValues } 
         
@@ -120,8 +129,8 @@ export const useFetch = () => {
     }
 
     // update current user agreement on transaction/booking request
-    const updateTransactionRequest = async (transactionRequestId, currentUserIsResponder, currentUserAgreed) => {
-        const currentUserAgreedKey = currentUserIsResponder ? "responder_agreed" : "initiator_agreed"
+    const updateTransactionRequest = async (transactionRequestId, currentUserIsTransactionInitiator, currentUserAgreed) => {
+        const currentUserAgreedKey = currentUserIsTransactionInitiator ? "initiator_agreed" : "responder_agreed" 
 
         let body = { transaction_request: {[currentUserAgreedKey]: currentUserAgreed} } 
 
@@ -134,13 +143,10 @@ export const useFetch = () => {
         }, 200)
     }
 
-    const getUserTransactionRequests = async () => {
-        return await fetchData(TRANSACTION_REQUEST_URL, { 
-            headers: { 
-                'Authorization': `Bearer ${JSON.parse(token)}`,
-                'Content-Type': 'application/json'
-            }
-        }, 200)
+    const deleteTransactionRequest = async (transactionRequestId) => {
+        return await fetchData(`${TRANSACTION_REQUEST_URL}/${transactionRequestId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200) 
     }
 
     //* messages *//
@@ -159,9 +165,9 @@ export const useFetch = () => {
         const url = `/api/v1/messages`
         const body = { message: { 
             content,
-            recipient_id: messageRecipientId,
-            flat_id: messageFlatId,
-            transaction_request_id: messageTransactionRequestId
+            recipient_id: parseInt(messageRecipientId),
+            flat_id: parseInt(messageFlatId),
+            transaction_request_id: parseInt(messageTransactionRequestId)
          } } 
 
         console.log("====useFetch createMessage url, body", url, body)
@@ -184,9 +190,10 @@ export const useFetch = () => {
         createFlat,
         updateFlat,
         deleteFlat,
+        getUserTransactionRequests,
         createTransactionRequest,
         updateTransactionRequest,
-        getUserTransactionRequests,
+        deleteTransactionRequest,
         getUserMessages,
         createMessage
      }
