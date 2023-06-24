@@ -1,3 +1,16 @@
 .auth-page--wrapper {
-    background-image: url(../../../images/beach3.png);
+    background-image: url(beach3.png);
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .auth-page--form-input-group {
+        display: flex;
+        flex-direction: column;
+        padding: 42px;
+        border-radius: 8px;
+        background-color: white;
+    }
 }
