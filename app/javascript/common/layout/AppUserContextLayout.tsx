@@ -12,7 +12,7 @@ const AppUserContextLayout: React.FC<any> = () => {
                 <main className="container container-fluid mt-2">
                     <Outlet />
                 </main>
-                {/* <Footer /> */}
+                <Footer />
             </UserContextProvider>
         </AppContextProvider>
     )
