@@ -56,7 +56,7 @@ const UserForm = () => {
                         onChange={handleChange}
                 />
             </div>
-            <button type="submit" className="btn btn-outline-primary">Submit</button>
+            <button type="submit" className="btn btn-outline-dark">Submit</button>
         </form>
         </>
     )
