@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import { useFetch } from '../hooks'
 import { useAppContext, useFlatsContext } from '../contexts'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { LoadingSpinners } from '../components'
 
-const HostedBy: React.FC = () => {
-  const { id: hostFlatId } = useParams()
+const HostedBy: React.FC<number> = ({ selectedFlatId }) => {
   const { getFlatDetails } = useFetch()
   const { isLoading } = useAppContext()
   const { updateFlatInContext } = useFlatsContext()
@@ -13,10 +13,10 @@ const HostedBy: React.FC = () => {
   const [hostFlat, setHostFlat] = useState(null)
 
   useEffect(() => {
-    if(!hostFlatId) return
+    if(!selectedFlatId) return
 
     (async () => {
-      const fetchedData = await getFlatDetails(hostFlatId)
+      const fetchedData = await getFlatDetails(selectedFlatId)
       if (!fetchedData) return
   
       const [response, data] = fetchedData
@@ -29,7 +29,7 @@ const HostedBy: React.FC = () => {
       updateFlatInContext(hostFlat)
     })()
 
-  }, [hostFlatId])
+  }, [selectedFlatId])
 
   if(isLoading) return <LoadingSpinners />
 
@@ -43,8 +43,11 @@ const HostedBy: React.FC = () => {
 
   return (
     <div>
-       <h2 className="text-info">Host</h2>
-        <span className="d-block">{email.split("@")[0]}</span>
+       <h2 className="text-dark">Host</h2>
+        <span className="d-block">
+          <FontAwesomeIcon icon={faUser} />
+          {" "}{email.split("@")[0]}
+        </span>
         {description && <span className="d-block">{description}</span>}
         <span>Member since {formatedDate(createdAt)}</span>
     </div>
