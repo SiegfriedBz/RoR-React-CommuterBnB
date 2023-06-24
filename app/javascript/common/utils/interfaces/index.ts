@@ -1,6 +1,7 @@
 import { IFlashMessage, IAppContext } from "./appInterfaces"
 import { IUser, IUserContext } from "./userInterfaces"
 import { IFlat, IFlatsContext, FlatCategoryType } from "./flatsInterfaces"
+import { IBookingRequest } from "./bookingRequest"
 
 export { 
     IFlashMessage,
@@ -9,5 +10,6 @@ export {
     IUserContext,
     IFlat,
     IFlatsContext,
-    FlatCategoryType
+    FlatCategoryType,
+    IBookingRequest
 }
