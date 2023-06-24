@@ -1,10 +1,14 @@
 import React from 'react'
 
-const Footer = (props) => {
+const Footer = () => {
     return (
-        <>
-            <div>{`Footer`}</div>
-        </>
+        <div className="footer">
+            <div className="d-flex justify-content-center">
+                <span>{`Footer`}</span>
+                <span>{`Footer`}</span>
+                <span>{`Footer`}</span>
+            </div>
+        </div>
     )
 };
 
