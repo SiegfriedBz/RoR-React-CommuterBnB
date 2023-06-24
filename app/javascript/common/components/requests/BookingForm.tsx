@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
-import { IFlat } from '../../utils/interfaces'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faReceipt } from '@fortawesome/free-solid-svg-icons'
 import { FlashMessage, TotalPriceAndDays } from '../../components'
+import { IFlat } from '../../utils/interfaces'
 
 interface ITransactionRequest {
     starting_date: string,
@@ -24,29 +26,29 @@ const initFormValues = {
 };
 
 const BookingForm = () => {
-    // hooks
-    const { id: hostFlatId } = useParams()
+    //* hooks
+    const { state: { selectedFlatId }} = useLocation()
     const { createTransactionRequest } = useFetch()
     const navigate = useNavigate()
 
-    // contexts
+    //* context
     const { flashMessage, setFlashMessage } = useAppContext()
     const { user } = useUserContext()
     const { flats } = useFlatsContext()
 
-    // state
+    //* state
     const [responderFlat, setResponderFlat] = useState(undefined)
     const [currentUserFlats, setCurrentUserFlats] = useState([])
     const [currentUserSelectedFlatId, setCurrentUserSelectedFlatId] = useState(undefined)
     const [pricePerNightInCents, setPricePerNightInCents] = useState(undefined)
-    const [isForExchange, setIsForExchange] = useState(false)
+    const [isExchange, setIsExchange] = useState(false)
     const [formValues, setFormValues] = useState(initFormValues)
 
     // set responderFlat & responder_id, responder_flat_id, exchange_price_per_night_in_cents in form
     useEffect(() => {
-        if(!flats || !hostFlatId) return
+        if(!flats || !selectedFlatId) return
 
-        const hostFlat = flats.find(flat => flat.flatId === parseInt(hostFlatId))
+        const hostFlat = flats.find(flat => flat.flatId === parseInt(selectedFlatId))
         if(!hostFlat) return
 
         const hostFlatOwnerId = hostFlat?.owner?.userId
@@ -57,11 +59,11 @@ const BookingForm = () => {
         setFormValues((prev) => {
             return {
                 ...prev,
-                responder_flat_id: hostFlatId,
+                responder_flat_id: selectedFlatId,
                 responder_id: hostFlatOwnerId,
                 exchange_price_per_night_in_cents: initPricePerNightInCents
         }})
-    }, [flats, hostFlatId])
+    }, [flats, selectedFlatId])
     
     // set currentUserFlats if any
     useEffect(() => {
@@ -78,15 +80,15 @@ const BookingForm = () => {
 
         const responderFlatPricePerNightInCents = responderFlat?.pricePerNightInCents
 
-        const currentUserSelectedFlat = isForExchange ?
+        const currentUserSelectedFlat = isExchange ?
             currentUserFlats.find(flat => flat.flatId === currentUserSelectedFlatId) || currentUserFlats[0]
             : undefined
 
-        const currentUserSelectedFlatPricePerNightInCents = isForExchange ?
+        const currentUserSelectedFlatPricePerNightInCents = isExchange ?
             currentUserSelectedFlat?.pricePerNightInCents
             : 0
 
-        const newPricePerNightInCents = isForExchange ?
+        const newPricePerNightInCents = isExchange ?
             responderFlatPricePerNightInCents - currentUserSelectedFlatPricePerNightInCents
             : responderFlatPricePerNightInCents
         
@@ -98,11 +100,21 @@ const BookingForm = () => {
                 exchange_price_per_night_in_cents: newPricePerNightInCents,
             }
         })
-    }, [responderFlat, currentUserFlats, currentUserSelectedFlatId, isForExchange])
+    }, [responderFlat, currentUserFlats, currentUserSelectedFlatId, isExchange])
+
+
+    // init exchange scenario: set initiator_flat_id to the first flat of the current user
+    useEffect(() => {
+        if(isExchange) {
+            setCurrentUserSelectedFlatId(currentUserFlats[0]?.flatId)
+        } else {
+            setCurrentUserSelectedFlatId(undefined)
+        }
+    }, [isExchange])
 
     // handlers
-    const toggleIsForExchange = () => {
-        setIsForExchange((prev: boolean) => !prev)
+    const toggleIsExchange = () => {
+        setIsExchange((prev: boolean) => !prev)
     }
 
     // only for dates with the current form
@@ -152,17 +164,19 @@ const BookingForm = () => {
     const renderCurrentUserFlatsList = () => {
         return (
             <select
-            id="initiator_flat_id"
-            name="initiator_flat_id"
-            className="form-control mb-2"
-            onChange={(e) => setCurrentUserSelectedFlatId(parseInt(e.target.value))}
+                id="initiator_flat_id"
+                name="initiator_flat_id"
+                className="form-control mb-2"
+                onChange={(e) => setCurrentUserSelectedFlatId(parseInt(e.target.value))}
             >
                 {currentUserFlats.map((flat: IFlat) => {
                     return (
                         <option
                             key={flat.flatId}
-                            value={flat?.flatId}>My property: {flat.title}, ${flat?.pricePerNightInCents/100} per night
-                            </option>
+                            value={flat.flatId}
+                        >
+                            My property: {flat.title}, ${flat.pricePerNightInCents/100} per night
+                        </option>
                     )})
                 }
             </select>
@@ -171,25 +185,28 @@ const BookingForm = () => {
 
     return (
         <>
-          <h3 className="text-info">Request booking</h3>
           {flashMessage.message && <FlashMessage message={flashMessage.message} type={flashMessage.type} />}
           {currentUserFlats.length > 0 && 
             <div className="d-flex-mb-2">
                 <div className="form-check form-switch">
                     <input 
-                        id="isForExchange" 
+                        id="isExchange" 
                         type="checkbox"
                         role="switch"
                         className="form-check-input"
-                        checked={isForExchange}
-                        onChange={toggleIsForExchange}
+                        checked={isExchange}
+                        onChange={toggleIsExchange}
                         />
-                    <label htmlFor="#isForExchange" className={`form-check-label ${isForExchange && "text-info fw-bold"}`} >Exchange</label>
+                    <label 
+                        htmlFor="#isExchange"
+                        className={`form-check-label ${isExchange && "text-info fw-bold"}`}
+                        >Exchange
+                    </label>
                 </div>
             </div>
           }
 
-          {isForExchange && renderCurrentUserFlatsList()}
+          {isExchange && renderCurrentUserFlatsList()}
         
           <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -210,7 +227,12 @@ const BookingForm = () => {
                           onChange={handleDateChange}
                   />
               </div>
-              <button type="submit" className="btn btn-sm btn-outline-primary my-2">Submit</button>
+              <button
+                type="submit"
+                className="btn btn-sm btn-outline-dark my-2"
+                >
+                    <FontAwesomeIcon icon={faReceipt} />{" "}Send booking request
+                </button>
           </form>
           {formValues?.starting_date && formValues?.ending_date &&
             <TotalPriceAndDays 
