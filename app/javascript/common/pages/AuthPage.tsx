@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAt, faUnlock, faRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../hooks'
 import { useAppContext, useUserContext } from '../contexts'
-import { FlashMessage } from '../components'
 
 interface IFormData {
     email: string,
@@ -24,7 +23,7 @@ const AuthPage: React.FC = () => {
     const navigate = useNavigate()
 
     //# context
-    const { flashMessage, setFlashMessage, isLoading } = useAppContext()
+    const { setFlashMessage, isLoading } = useAppContext()
     const { setTokenInStorage } = useUserContext()
 
     //# state
@@ -52,15 +51,11 @@ const AuthPage: React.FC = () => {
         token = token?.split(' ')[1]
         
         try {
-
         const serializedToken = JSON.stringify(token)
         setTokenInStorage(serializedToken)
 
         setFlashMessage({ message: data.message, type: "success" })
-        setTimeout(() => {
-            setFlashMessage({ message: null, type: "success" })
-            navigate('/')
-            }, 1500)
+        setTimeout(() => navigate('/'), 1500)
         } catch (err) {
             setFlashMessage({ message: err.message, type: "danger" })
         }
@@ -70,8 +65,6 @@ const AuthPage: React.FC = () => {
         <div className="auth-page--wrapper ">
             <form onSubmit={handleSubmit} className="mb-5 w-50">
                 <div className="auth-page--form-input-group">
-                    { flashMessage.message && <FlashMessage {...flashMessage} /> }
-
                     <label htmlFor="email">
                         <FontAwesomeIcon icon={faAt} />{" "}email
                     </label>

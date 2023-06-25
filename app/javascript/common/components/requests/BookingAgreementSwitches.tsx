@@ -42,10 +42,6 @@ const BookingAgreementSwitches: React.FC<IProps>  = ({ transactionRequestId, cur
         } else {
             setFlashMessage({ message: "Booking request creation went wrong, please try again", type: "warning" })
         }
-
-        setTimeout(() => {
-            setFlashMessage({ message: null, type: "success" })
-        }, 3000)
     }
 
     if(isLoading) return <LoadingSpinners />

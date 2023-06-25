@@ -170,8 +170,6 @@ export const useFetch = () => {
             transaction_request_id: parseInt(messageTransactionRequestId)
          } } 
 
-        console.log("====useFetch createMessage url, body", url, body)
-
         return await fetchData(url, { 
             method: 'POST', 
             headers: { 

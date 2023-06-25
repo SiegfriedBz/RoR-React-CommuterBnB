@@ -44,9 +44,6 @@ const FlatDetailsPage: React.FC = () => {
             deleteFlatInContext(flatId)
         } else {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
-            setTimeout(() => {
-                setFlashMessage({ message: null, type: "success" })
-            }, 1500)
         }
     }
 

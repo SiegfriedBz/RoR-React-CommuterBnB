@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useFetch } from '../../hooks'
 import { useAppContext, useFlatsContext } from '../../contexts'
-import { FlashMessage } from '../../components'
 import FlatCardCarousel from './FlatCardCarousel'
 import { IFlat, FlatCategoryType } from '../../utils/interfaces'
 import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
@@ -36,7 +35,7 @@ const FlatForm: React.FC = () => {
     const { createFlat, updateFlat } = useFetch()
 
     //# context
-    const { isLoading, flashMessage, setFlashMessage } = useAppContext()
+    const { isLoading, setFlashMessage } = useAppContext()
     const { flats, addFlatInContext, updateFlatInContext } = useFlatsContext()
 
     //# state
@@ -119,10 +118,6 @@ const FlatForm: React.FC = () => {
 
         if(!fetchedFlat) {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
-            setTimeout(() => {
-                setFormValues({})
-                setFlashMessage({ message: null, type: "success" })
-            }, 1500)
             return
         }
 
@@ -131,10 +126,6 @@ const FlatForm: React.FC = () => {
 
         if(!flat) {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
-            setTimeout(() => {
-                setFormValues({})
-                setFlashMessage({ message: null, type: "success" })
-            }, 1500)
             return
         }
         
@@ -145,11 +136,6 @@ const FlatForm: React.FC = () => {
         }
        
         setFlashMessage({ message, type: "success" })
-
-        setTimeout(() => {
-            setFlashMessage({ message: null, type: "success" })
-            navigate(`/`)
-        }, 1500)
     }
 
     const formTitle = editFlatId ? "Edit property" : "Create new property"
@@ -171,9 +157,6 @@ const FlatForm: React.FC = () => {
         <>
         <h2>{formTitle}</h2>
         <form onSubmit={handleSubmit}>
-            <>
-            { flashMessage.message && <FlashMessage {...flashMessage} /> }
-
             <div className="form-group w-50">
                 <label htmlFor="title" className='mt-2'>Title</label>
                 <input
@@ -278,7 +261,7 @@ const FlatForm: React.FC = () => {
                     </div>
                     )}
                 </Dropzone> */}
-{/* 
+    {/* 
                 {images.length > 0 && (
                     <div>
                     <h4>Uploaded Images:</h4>
@@ -292,7 +275,6 @@ const FlatForm: React.FC = () => {
 
                 <button type="submit" className="btn btn-dark mt-2">Submit</button>
             </div>
-            </>
         </form>
         <FlatToEditImages />
         </>

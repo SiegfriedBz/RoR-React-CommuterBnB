@@ -4,7 +4,6 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useBookingRequestsContext } from '../../contexts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpRightDots } from '@fortawesome/free-solid-svg-icons'
-import { FlashMessage } from '../../components'
 import { BookingRequestCard } from '../../components/requests'
 import { MessageFormModalWrapper } from '../../components/messages'
 import MapView from '../../components/map/MapView'
@@ -18,7 +17,6 @@ const BookingRequestListPage: React.FC = () => {
     const cardRef = useRef(null)
 
     //* context
-    const { flashMessage } = useAppContext()
     const { bookingRequests, setBookingRequests } = useBookingRequestsContext()
 
     //* state
@@ -99,8 +97,6 @@ const BookingRequestListPage: React.FC = () => {
             messageTransactionRequestId={messageTransactionRequestId}
           />
           <h3 ref={topRef}>Booking requests</h3>
-          { flashMessage.message && <FlashMessage {...flashMessage} /> }
-
           <div className="row">
             {bookingRequests.length === 0 ?
               ( <span className="d-block my-1">You don't have active booking requests yet,
