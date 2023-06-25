@@ -147,10 +147,6 @@ const BookingRequestCard = ({
         } else {
             setFlashMessage({ message: "Booking request deletion went wrong, please try again", type: "warning" })
         }
-
-        setTimeout(() => {
-            setFlashMessage({ message: null, type: "success" })
-        }, 3000)
     }
 
     if(!currentUser || !secondUser) return null

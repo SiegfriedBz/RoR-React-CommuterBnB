@@ -4,7 +4,7 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt } from '@fortawesome/free-solid-svg-icons'
-import { FlashMessage, TotalPriceAndDays } from '../../components'
+import { TotalPriceAndDays } from '../../components'
 import { IFlat } from '../../utils/interfaces'
 
 interface ITransactionRequest {
@@ -32,7 +32,7 @@ const BookingForm = () => {
     const navigate = useNavigate()
 
     //* context
-    const { flashMessage, setFlashMessage } = useAppContext()
+    const { setFlashMessage } = useAppContext()
     const { user } = useUserContext()
     const { flats } = useFlatsContext()
 
@@ -144,10 +144,6 @@ const BookingForm = () => {
         } else {
             setFlashMessage({ message: "Booking request creation went wrong", type: "warning" })
         }
-
-        setTimeout(() => {
-            setFlashMessage({ message: null, type: "success" })
-        }, 3000)
         
         setFormValues((prev) => {
             return {
@@ -185,7 +181,6 @@ const BookingForm = () => {
 
     return (
         <>
-          {flashMessage.message && <FlashMessage message={flashMessage.message} type={flashMessage.type} />}
           {currentUserFlats.length > 0 && 
             <div className="d-flex-mb-2">
                 <div className="form-check form-switch">

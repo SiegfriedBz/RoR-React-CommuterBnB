@@ -4,7 +4,6 @@ import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
 import { useFetch } from '../../hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { FlashMessage } from '../../components'
 
 interface IProps {
     messageRecipientId?: number,
@@ -27,7 +26,7 @@ const MessageForm: React.FC<IProps> = ({ messageRecipientId, messageFlatId, mess
     const { createMessage } = useFetch()
 
     //* context
-    const { flashMessage, setFlashMessage } = useAppContext()
+    const { setFlashMessage } = useAppContext()
     const { user } = useUserContext()
     const { flats } = useFlatsContext()
 
@@ -80,41 +79,29 @@ const MessageForm: React.FC<IProps> = ({ messageRecipientId, messageFlatId, mess
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault() 
         if(content?.trim() === "") {
-            setFlashMessage({ message: "content can't be blank", type: "warning" })
-            setTimeout(() => {
-                return setFlashMessage({ message: "content can't be blank", type: "warning" }), 1500}
-                )
+            return setFlashMessage({ message: "Message must have a content", type: "warning" })
         }
 
         const fetchedData = await createMessage(content, messageRecipientIdValue, messageFlatIdValue, messageTransactionRequestIdValue)
-
+        
         if(!fetchedData) return
 
         const [response, data] = fetchedData
 
-        if (!fetchedData) {
-            setFlashMessage({ message: "Something went wrong, please try again", type: "warning" })
+        if (!data) {
+            return setFlashMessage({ message: "Something went wrong, please try again", type: "warning" })
         }
 
         if (response.status === 201) {
-            setFlashMessage({ message: data.message, type: "success" })
             setContent("")
-            setTimeout(() => {
-                setFlashMessage({ message: null, type: "success" })
-                navigate(`/my-messages`)
-            }, 1500)
+            setFlashMessage({ message: data.message, type: "success" })
+            return setTimeout(() => navigate(`/my-messages`), 1500)
         } 
-
-        setTimeout(() => {
-            setFlashMessage({ message: null, type: "success" })
-            navigate(`/my-messages`)
-        }, 1500)
 
         if (location.pathname.includes("/my-booking-requests")) {
             // close modal
-            toggleModal()
+            return toggleModal()
         }
-        
         else {
             setFlashMessage({ message: data.error, type: "danger" })
         }
@@ -122,8 +109,6 @@ const MessageForm: React.FC<IProps> = ({ messageRecipientId, messageFlatId, mess
 
     return (
         <form onSubmit={handleSubmit}>
-        { flashMessage.message && <FlashMessage {...flashMessage} /> }
-
             <div className="form-group">
                 <textarea 
                     className="form-control"

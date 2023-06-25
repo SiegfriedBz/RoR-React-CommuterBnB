@@ -9,7 +9,7 @@ class Api::V1::TransactionRequestsController < ApplicationController
 
         render json: {
             transaction_requests: serialized_transaction_requests,
-            message: 'Transaction requests loaded sucessfully'
+            message: 'Booking requests loaded sucessfully'
             }, status: :ok
     end
 
@@ -23,10 +23,10 @@ class Api::V1::TransactionRequestsController < ApplicationController
 
         if transaction_request.save
             render json: {
-                message: 'Transaction request created sucessfully'
+                message: 'Booking request created sucessfully'
               }, status: :created
         else
-            render json: { message: 'Transaction request creation went wrong, please try again.'},
+            render json: { message: 'Booking request creation went wrong, please try again.'},
             status: :unprocessable_entity
         end
     end
