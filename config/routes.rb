@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # action cable server
+  mount ActionCable.server => '/cable'
+
+  # devise
   devise_for :users,
   path: '',
   path_names: { 
