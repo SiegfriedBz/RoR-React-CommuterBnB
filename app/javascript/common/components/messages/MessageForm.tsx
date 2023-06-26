@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
-import { useFetch } from '../../hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { useFetch } from '../../hooks'
+import { useAppContext, useFlatsContext } from '../../contexts'
 
 interface IProps {
     messageRecipientId?: number,
@@ -17,7 +17,13 @@ interface IProps {
 /// /my-booking-requests --- props
 /// /my-messages --- props
 
-const MessageForm: React.FC<IProps> = ({ messageRecipientId, messageFlatId, messageTransactionRequestId, toggleModal }) => {
+const MessageForm: React.FC<IProps> = (props) => {
+    const {
+            messageRecipientId,
+            messageFlatId,
+            messageTransactionRequestId,
+            toggleModal
+        } = props
 
     //* hooks
     const inputRef = useRef()
@@ -27,7 +33,6 @@ const MessageForm: React.FC<IProps> = ({ messageRecipientId, messageFlatId, mess
 
     //* context
     const { setFlashMessage } = useAppContext()
-    const { user } = useUserContext()
     const { flats } = useFlatsContext()
 
     //* state
@@ -111,9 +116,9 @@ const MessageForm: React.FC<IProps> = ({ messageRecipientId, messageFlatId, mess
         <form onSubmit={handleSubmit}>
             <div className="form-group">
                 <textarea 
+                    ref={inputRef}
                     className="form-control"
                     id="content"
-                    ref={inputRef}
                     name="content"
                     value={content}
                     onChange={handleChange}
