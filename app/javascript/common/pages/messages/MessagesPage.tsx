@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useUserContext } from '../../contexts'
+import { useUserContext, useMessagesContext } from '../../contexts'
 import ChatsList from './ChatsList'
 import MessagesList from './MessagesList'
 import MessagesFlat from './MessagesFlat'
@@ -10,9 +10,10 @@ import MessagesFlat from './MessagesFlat'
 // - the "responder" of a transaction request from /my-booking-requests
 // - the 1st "recipient" of a conversation on /my-messages
  
-const MessagesPage: React.FC = () => {
+const MessagesPage = () => {
   //* context
-  const { user, messages } = useUserContext()
+  const { user } = useUserContext()
+  const { conversations } = useMessagesContext()
 
   //* state
   // after select conversation: set messages to read 
@@ -25,7 +26,7 @@ const MessagesPage: React.FC = () => {
   const [selectedTransactionRequestId, setSelectedTransactionRequestId] = useState(undefined)
 
   //* render
-  if(messages?.length === 0) return (
+  if(!conversations) return (
     <div className="row mt-3">
       <span className="">
         You have no messages yet. Start a conversation after
@@ -44,6 +45,7 @@ const MessagesPage: React.FC = () => {
       <div className="col-2">
         <ChatsList
           user={user}
+          conversations={conversations}
           setMessagesToRead={setMessagesToRead}
           setSelectedMessageFlat={setSelectedMessageFlat}
           setNextMessageRecipientUserId={setNextMessageRecipientUserId}
