@@ -1,5 +1,6 @@
 import { IFlashMessage, IAppContext } from "./appInterfaces"
-import { IUser, IUserContext, IMessage, IConversation } from "./userInterfaces"
+import { IUser, IUserContext } from "./userInterfaces"
+import { IMessage, IConversation, IMessagesContext, IMessagesChannelsKeys } from "./messagesInterface"
 import { IFlat, IFlatsContext, FlatCategoryType } from "./flatsInterfaces"
 import { IBookingRequest } from "./bookingRequest"
 
@@ -10,6 +11,8 @@ export {
     IUserContext,
     IMessage,   
     IConversation,
+    IMessagesContext,
+    IMessagesChannelsKeys,
     IFlat,
     IFlatsContext,
     FlatCategoryType,
