@@ -7,7 +7,6 @@ import { faReceipt, faCalendarDays, faTrashCan, faCloudArrowUp } from '@fortawes
 import { HostedBy } from '../../components'
 import { FlatDescription, FlatCardCarousel, FlatImageGrid } from '../../components/flats'
 import MapView from '../../components/map/MapView'
-import { IFlat } from '../../utils/interfaces'
 
 const FlatDetailsPage: React.FC = () => {
     //# hooks
