@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments, faComment, faBell } from '@fortawesome/free-solid-svg-icons'
-import { useUserContext, useFlatsContext } from '../../contexts'
+import { useFlatsContext } from '../../contexts'
 import { IUser, IFlat, IMessage } from '../../utils/interfaces'
 
 interface IProps {
   user?: IUser,
+  conversations?: { [key: string]: IMessage[] },
   setMessagesToRead?: IMessage[],
   setNextMessageRecipientUserId?: (id: number) => void,
   setSelectedMessageFlat?: (flat: IFlat) => void,
@@ -15,6 +16,7 @@ interface IProps {
 const ChatsList: React.FC<IProps> = (props) => {
   const {
     user,
+    conversations,
     setMessagesToRead,
     setNextMessageRecipientUserId,
     setSelectedMessageFlat,
@@ -22,7 +24,6 @@ const ChatsList: React.FC<IProps> = (props) => {
   } = props
 
   //* context
-  const { conversations } = useUserContext()
   const { flats } = useFlatsContext()
 
   //* state
