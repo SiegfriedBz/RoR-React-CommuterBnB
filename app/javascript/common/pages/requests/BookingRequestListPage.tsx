@@ -1,12 +1,11 @@
-import React, { useRef, createRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useFetch } from '../../hooks'
-import { useAppContext, useBookingRequestsContext } from '../../contexts'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowUpRightDots } from '@fortawesome/free-solid-svg-icons'
+import { useBookingRequestsContext } from '../../contexts'
 import { BookingRequestCard } from '../../components/requests'
 import { MessageFormModalWrapper } from '../../components/messages'
 import MapView from '../../components/map/MapView'
+import { ScrollToTopButton } from '../../components'
 import { IBookingRequest } from "../../utils/interfaces"
 
 const BookingRequestListPage: React.FC = () => {
@@ -122,14 +121,7 @@ const BookingRequestListPage: React.FC = () => {
             <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-6"}`}>
               <div className='sticky-top'>
                 <MapView selectedFlatId={mapSelectedFlatId} mapHeight={700} />
-                <div className='d-flex justify-content-end mt-1'>
-                  <button 
-                    className="btn text-white fw-bolder btn-primary"
-                    onClick={scrollToTop}
-                  >
-                    <FontAwesomeIcon icon={faArrowUpRightDots} />
-                  </button>
-                </div>
+                <ScrollToTopButton scrollToTop={scrollToTop} />
               </div>
             </div>
           </div>
