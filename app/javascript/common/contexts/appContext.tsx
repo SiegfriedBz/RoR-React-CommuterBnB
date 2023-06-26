@@ -15,7 +15,12 @@ export const AppContextProvider: React.FC = ({ children }: any ) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     return (
-        <AppContext.Provider value={{ flashMessage, setFlashMessage, isLoading, setIsLoading }}>
+        <AppContext.Provider value={{
+                flashMessage,
+                setFlashMessage,
+                isLoading,
+                setIsLoading
+            }}>
             { children }
         </AppContext.Provider>
     )
