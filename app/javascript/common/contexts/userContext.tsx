@@ -1,7 +1,13 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
 import { useLocalStorage } from '../hooks'
-import { IUser, IUserContext, IMessage, IConversation } from '../utils/interfaces'
+import { IUser, IUserContext } from '../utils/interfaces'
 import jwt_decode from 'jwt-decode'
+
+interface IDecodedToken {
+    user_id?: number,
+    email?: string,
+    role?: string
+}
 
 const initUser = {
     userId: undefined,
@@ -9,29 +15,31 @@ const initUser = {
     role: undefined
 }
 
-const UserContext = createContext<any>(null)
+const UserContext = createContext(null)
 
-export const useUserContext = () => useContext<IUserContext>(UserContext)
+export const useUserContext = () => useContext(UserContext)
 
-const decodeToken = (tokenInStorage: string) => {
-    if (typeof tokenInStorage !== 'string' || tokenInStorage === '{}') return
+const decodeToken = (tokenInStorage: string): IDecodedToken => {
+    if(typeof tokenInStorage !== 'string' || tokenInStorage === '{}') {
+        return { user_id: undefined, email: undefined, role: undefined }
+    }
 
     const deserializedToken = JSON.parse(tokenInStorage)
     return jwt_decode(deserializedToken)
 }
 
-export const UserContextProvider: React.FC = ({ children }) => {
+export const UserContextProvider = ({ children }) => {
     //* state
     // token in local storage
     const [tokenInStorage, setTokenInStorage] = useLocalStorage('bnbToken', null)
-    // fetched user messages
-    const [messages, setMessages] = useState<IMessage[] | undefined>(undefined)
-    // sort messages to set conversations
-    const [conversations, setConversations] = useState<IConversation[] | undefined>(undefined)
+   
     // user 
-    const [user, setUser] = useState<IUser>(() => {
+    const [user, setUser] = useState(() => {
         const decodedToken = decodeToken((tokenInStorage))
-        if (!decodedToken) return initUser
+
+        if(!decodedToken?.user_id || !decodedToken?.email || !decodedToken?.role) {
+            return initUser
+        }
 
         const { user_id, email, role } = decodedToken
         return { userId: user_id, email, role }
@@ -54,11 +62,7 @@ export const UserContextProvider: React.FC = ({ children }) => {
         <UserContext.Provider value={{
                 user,
                 tokenInStorage,
-                setTokenInStorage,
-                messages,
-                setMessages,
-                conversations,
-                setConversations,
+                setTokenInStorage
             }}>
             {children}
         </UserContext.Provider>
