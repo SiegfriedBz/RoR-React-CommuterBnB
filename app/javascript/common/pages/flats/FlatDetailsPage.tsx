@@ -34,7 +34,7 @@ const FlatDetailsPage: React.FC = () => {
 
     //# helpers 
     const handleDeleteFlat = async () => {
-        window.confirm("Are you sure you want to delete this flat?")
+        window.confirm("Are you sure you want to delete this property?")
 
         const fetchedData = await deleteFlat(selectedFlatId)
         

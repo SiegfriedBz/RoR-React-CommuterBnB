@@ -18,28 +18,29 @@ const FlatCard: React.FC<IProps> = ({ flat, flatCardOnMap }) => {
         <div className={`flat-card--wrapper ${flatCardOnMap ? "flat-card-on-map" : ""} h-100`}>
             <div className="flat-card--dark card-body">
                 <h6 className="card-title text-dark fw-bolder">{title}</h6>
-                <div className="d-flex justify-content-between align-content-center">
                     {   address && 
-                        <span className="card-text justify-content-start">
+                        <span className="card-text text-center">
                             <FontAwesomeIcon icon={faHouse} />
                             {" "}{address}
                         </span>
                     }
-                    <span className="card-text">
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                    </span>
-                    <span className="card-text">
-                        <FontAwesomeIcon icon={faDollarSign} />
-                        {pricePerNightInCents/100}
-                    </span>
-                </div>
+
             </div>
             {flat?.images && <FlatCardCarousel key={flatId} images={flat.images} className="card-img-top" />}
             <div className="flat-card--link card-footer bg-transparent border-light-subtle">
+                <div className="d-flex justify-content-between align-content-center">
+                    <span className="card-text text-warning">
+                            <FontAwesomeIcon icon={faStar} />
+                            <FontAwesomeIcon icon={faStar} />
+                            <FontAwesomeIcon icon={faStar} />
+                            <FontAwesomeIcon icon={faStar} />
+                            <FontAwesomeIcon icon={faStar} />
+                    </span>
+                    <span className="card-text">
+                            <FontAwesomeIcon icon={faDollarSign} />
+                            {pricePerNightInCents/100}
+                    </span>
+                </div>
                 <Link 
                     to={`/properties/${flatId}`} 
                     className="btn btn-sm btn-outline-dark w-100 mt-2"

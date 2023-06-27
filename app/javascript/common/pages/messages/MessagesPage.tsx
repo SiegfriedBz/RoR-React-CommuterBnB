@@ -10,11 +10,11 @@ import MessagesFlat from './MessagesFlat'
 // - the "responder" of a transaction request from /my-booking-requests
 // - the 1st "recipient" of a conversation on /my-messages
  
-const MessagesPage = () => {
+const MessagesPage: React.FC = () => {
   //* context
   const { user } = useUserContext()
   const { conversations } = useMessagesContext()
-
+  
   //* state
   // after select conversation: set messages to read 
   const [messagesToRead, setMessagesToRead] = useState([]) 
@@ -24,6 +24,7 @@ const MessagesPage = () => {
   const [selectedMessageFlat, setSelectedMessageFlat] = useState(undefined)
   // selected transaction request#id
   const [selectedTransactionRequestId, setSelectedTransactionRequestId] = useState(undefined)
+
 
   //* render
   if(!conversations) return (
@@ -41,8 +42,8 @@ const MessagesPage = () => {
   
   return (
     <div className="row mt-3">
-      {/* left panel */}
-      <div className="col-2">
+      {/* select a conversation */}
+      <div className="col-5 col-lg-3 col-xxl-2">
         <ChatsList
           user={user}
           conversations={conversations}
@@ -52,8 +53,8 @@ const MessagesPage = () => {
           setSelectedTransactionRequestId={setSelectedTransactionRequestId}
         />
       </div>
-      {/* center panel */}
-      <div className="col-6">
+      {/* selected conversation messages */}
+      <div className="col-7 col-lg-5">
         <MessagesList
           user={user}
           messagesToRead={messagesToRead}
@@ -62,8 +63,8 @@ const MessagesPage = () => {
           nextMessageTransactionRequestId={selectedTransactionRequestId}
         />
       </div>
-      {/* right panel */}
-      <div className="col-4">
+      {/* selected conversation flat description */}
+      <div className="col-12 mt-3 mt-lg-0 col-lg-4 col-xxl-5">
         <MessagesFlat
           selectedMessageFlat={selectedMessageFlat}
           selectedTransactionRequestId={selectedTransactionRequestId}

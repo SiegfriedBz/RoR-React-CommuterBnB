@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faCommentDots } from '@fortawesome/free-regular-svg-icons'
 import { MessageForm } from '../../components/messages'
-import { ScrollToTopButton } from '../../components'
+import { ButtonScrollToTop } from '../../components'
 import { IUser, IMessage } from '../../utils/interfaces'
 
 interface IProps {
@@ -25,11 +25,11 @@ const MessagesList: React.FC<IProps> = (props) => {
 
   const topRef = useRef<HTMLDivElement>(null)
 
+  if(!user || messagesToRead?.length === 0) return null
+
   const scrollToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' })
   }
-
-  if(!user || messagesToRead?.length === 0) return null
 
   return (
     <div ref={topRef}>
@@ -49,13 +49,15 @@ const MessagesList: React.FC<IProps> = (props) => {
           }
         </ul>
         { nextMessageRecipientUserId &&
-            <MessageForm 
+            <MessageForm
+                scrollToTop={scrollToTop}
                 messageRecipientId={nextMessageRecipientUserId}
                 messageFlatId={nextMessageFlatId}
                 messageTransactionRequestId={nextMessageTransactionRequestId}
-            />
+            >
+              <ButtonScrollToTop scrollToTop={scrollToTop} />
+            </MessageForm>
         }
-        <ScrollToTopButton scrollToTop={scrollToTop} />
     </div>
   )
 }

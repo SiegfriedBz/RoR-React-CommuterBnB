@@ -2,12 +2,14 @@ import ProtectedRoute from './ProtectedRoute'
 import LoadingSpinners from './LoadingSpinners'
 import HostedBy from './HostedBy'
 import TotalPriceAndDays from './TotalPriceAndDays'
-import ScrollToTopButton from "./ScrollToTopButton"
+import ButtonSlide from "./ButtonSlide"
+import ButtonScrollToTop from "./ButtonScrollToTop"
 
 export {
     ProtectedRoute,
     LoadingSpinners,
     HostedBy,
     TotalPriceAndDays,
-    ScrollToTopButton
+    ButtonSlide,
+    ButtonScrollToTop
 }

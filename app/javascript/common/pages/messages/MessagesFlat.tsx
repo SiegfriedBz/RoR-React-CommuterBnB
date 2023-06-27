@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FlatDescription, FlatCardCarousel } from '../../components/flats'
+import ButtonSlide from "../../components/ButtonSlide"
 import { IFlat } from '../../utils/interfaces'
 
 interface IProps {
@@ -29,10 +30,13 @@ const MessagesFlat: React.FC<IProps> = (props) => {
             <div>
               <Link 
                 to={`/properties/${selectedMessageFlat.flatId}`}
-                className="btn btn-outline-dark"
-              >
-                <FontAwesomeIcon icon={faEye} />
-                {" "}Visit property
+              > 
+                <ButtonSlide
+                  className="btn-slide btn-slide-dark right-slide"
+                >
+                  <FontAwesomeIcon icon={faEye} />
+                  {" "}Visit property
+                </ButtonSlide>
               </Link>
             </div>
 
@@ -41,8 +45,12 @@ const MessagesFlat: React.FC<IProps> = (props) => {
                 <Link 
                   to={`/my-booking-requests`}
                   state={{ selectedBookingRequestId: selectedTransactionRequestId }}
-                  className="btn btn-outline-dark"
-                ><FontAwesomeIcon icon={faReceipt} />{" "}Check booking request
+                  >
+                    <ButtonSlide
+                      className="btn-slide btn-slide-dark right-slide"
+                    >
+                      <FontAwesomeIcon icon={faReceipt} />{" "}Check booking request
+                    </ButtonSlide>
                 </Link>
               </div>
             }

@@ -4,7 +4,8 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt } from '@fortawesome/free-solid-svg-icons'
-import { TotalPriceAndDays } from '../../components'
+import { TotalPriceAndDays, ButtonSlide } from '../../components'
+
 import { IFlat } from '../../utils/interfaces'
 
 interface ITransactionRequest {
@@ -222,12 +223,12 @@ const BookingForm = () => {
                           onChange={handleDateChange}
                   />
               </div>
-              <button
+              <ButtonSlide
                 type="submit"
-                className="btn btn-sm btn-outline-dark my-2"
+                className="btn-slide-sm btn-slide-primary right-slide my-2"
                 >
                     <FontAwesomeIcon icon={faReceipt} />{" "}Send booking request
-                </button>
+                </ButtonSlide>
           </form>
           {formValues?.starting_date && formValues?.ending_date &&
             <TotalPriceAndDays 

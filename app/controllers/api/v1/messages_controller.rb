@@ -5,10 +5,14 @@ class Api::V1::MessagesController < ApplicationController
         messages = Message.where(author_id: current_user.id).or(Message.where(recipient_id: current_user.id))
 
         serialized_messages = messages.map do |message|
+            author = User.find(message.author_id)
+            serialized_author = UserSerializer.new(author).serializable_hash[:data][:attributes]
+            
             recipient = User.find(message.recipient_id)
             serialized_recipient = UserSerializer.new(recipient).serializable_hash[:data][:attributes]
             
-            MessageSerializer.new(message).serializable_hash[:data][:attributes].merge(
+            serialized_message = MessageSerializer.new(message).serializable_hash[:data][:attributes].merge(
+                author: serialized_author,
                 recipient: serialized_recipient
             )
         end

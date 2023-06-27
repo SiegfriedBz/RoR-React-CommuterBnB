@@ -1,4 +1,17 @@
 import React from "react"
+import { IUser } from "./userInterfaces"
+
+
+export interface IIncomingMessage {
+    id?: number,
+    author?: IUser,
+    recipient?: IUser,
+    content?: string,
+    flatId?: number,
+    transactionRequestId?: number,
+    createdAt?: string,
+    updatedAt?: string,
+}
 
 export interface IMessage {
     messageId: number,

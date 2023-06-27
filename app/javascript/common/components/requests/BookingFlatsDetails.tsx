@@ -1,8 +1,10 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons'
-import { IFlat } from '../../utils/interfaces'
+import ButtonSlide from "../../components/ButtonSlide"
 import { ITransactionUser } from './BookingRequestCard'
+
+import { IFlat } from '../../utils/interfaces'
 
 interface IProps {
     currentUser: ITransactionUser,
@@ -10,7 +12,8 @@ interface IProps {
     responderFlat: IFlat | undefined,
     initiatorFlat: IFlat | undefined,
     setMapSelectedFlatId: React.Dispatch<React.SetStateAction<number>>,
-    isExchange: boolean
+    isExchange: boolean,
+    scrollToMap: () => void
 }
 
 const BookingFlatsDetails: React.FC<IProps> = ({ 
@@ -19,7 +22,8 @@ const BookingFlatsDetails: React.FC<IProps> = ({
     currentUser,
     secondUser,
     setMapSelectedFlatId,
-    isExchange }) => {
+    isExchange,
+    scrollToMap }) => {
 
     return (
         <div> 
@@ -32,13 +36,17 @@ const BookingFlatsDetails: React.FC<IProps> = ({
                         <li><span className='d-block'> ${responderFlat?.pricePerNightInCents/100} per night</span></li>
                     </ul>
                 </div>
-                <button 
+                <ButtonSlide 
                     type='button'
-                    className='btn btn-sm btn-outline-primary my-auto me-2 me-md-0'
-                    onClick={() => setMapSelectedFlatId(responderFlat?.flatId)}
+                    className='btn-slide-sm btn-slide-primary right-slide my-auto me-2 me-md-0'
+                    onClick={() => {
+                        setMapSelectedFlatId(responderFlat?.flatId)
+                        // mobile view
+                        scrollToMap()
+                    }}
                 >
                     <FontAwesomeIcon icon={faMapLocationDot} />{" "}See on map
-                </button>
+                </ButtonSlide>
             </div>
             {/* initiator flat if exchange */}
             { isExchange && 
@@ -50,13 +58,17 @@ const BookingFlatsDetails: React.FC<IProps> = ({
                         <li><span className='d-block'> ${initiatorFlat?.pricePerNightInCents/100} per night</span></li>
                     </ul>
                 </div>
-                <button 
+                <ButtonSlide 
                     type='button'
-                    className='btn btn-sm btn-outline-primary my-auto me-2 me-md-0'
-                    onClick={() => setMapSelectedFlatId(initiatorFlat?.flatId)}
+                    className='btn-slide-sm btn-slide-primary right-slide my-auto me-2 me-md-0'
+                    onClick={() => {
+                        setMapSelectedFlatId(initiatorFlat?.flatId)
+                        // mobile view
+                        scrollToMap()
+                    }}
                 >
                     <FontAwesomeIcon icon={faMapLocationDot} />{" "}See on map
-                </button>
+                </ButtonSlide>
             </div>
             }
         </div>

@@ -11,6 +11,7 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     width: '33%',
+    zIndex: 1000
   },
 }
 
@@ -33,30 +34,32 @@ const MessageFormModalWrapper: React.FC<IProps> = ({
     Modal.setAppElement('#root')
     
     return (
-        <Modal
-            isOpen={modalIsOpen}
-            // onAfterOpen={afterOpenModal}
-            onRequestClose={toggleModal}
-            style={customStyles}
-        >
-            <div className="row">
-                <div className="col-11">
-                    <h3 className="text-dark">Send Message</h3>
-                    <MessageForm 
-                        toggleModal={toggleModal}
-                        messageRecipientId={messageRecipientId}
-                        messageFlatId={messageFlatId}
-                        messageTransactionRequestId={messageTransactionRequestId}
-                    />
+        <div className='modal--wrapper'>
+            <Modal
+                isOpen={modalIsOpen}
+                // onAfterOpen={afterOpenModal}
+                onRequestClose={toggleModal}
+                style={customStyles}
+            >
+                <div className="row">
+                    <div className="col-11">
+                        <h3 className="text-dark">Send Message</h3>
+                        <MessageForm 
+                            toggleModal={toggleModal}
+                            messageRecipientId={messageRecipientId}
+                            messageFlatId={messageFlatId}
+                            messageTransactionRequestId={messageTransactionRequestId}
+                        />
+                    </div>
+                    <div className="col-1">
+                        <button 
+                            className="btn btn-close"
+                            onClick={toggleModal}
+                        />
+                    </div>
                 </div>
-                <div className="col-1">
-                    <button 
-                        className="btn btn-close"
-                        onClick={toggleModal}
-                    />
-                </div>
-            </div>
-        </Modal>
+            </Modal>
+        </div>
     )
 }
 

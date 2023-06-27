@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUser,
@@ -8,15 +8,37 @@ import {
     faMoneyCheck,
     faHouseCircleCheck,
     faRightFromBracket,
-    faRightToBracket
+    faRightToBracket,
+    faBell
 } from '@fortawesome/free-solid-svg-icons'
-import { useUserContext } from '../contexts'
+import { useUserContext, useMessagesContext } from '../contexts'
 
 const Header: React.FC = () => {
+    //* hooks & context
+    const navigate = useNavigate()
     const { user, setTokenInStorage } = useUserContext()
+    const { notificationConversationKeyRef } = useMessagesContext()
     
+    //* handlers
     const handleLogout = () => {
         setTokenInStorage("{}")
+    }
+
+    const handleBellClick = () => {
+        notificationConversationKeyRef.current = null
+        navigate('/my-messages')
+    }
+
+    const renderNotificationBell = () => {
+        return notificationConversationKeyRef.current ?
+            (   <button
+                    className="nav-link text-danger"
+                    onClick={handleBellClick}
+                >
+                    <FontAwesomeIcon icon={faBell} />
+                </button>
+            ) 
+            : null
     }
 
     return (
@@ -24,6 +46,9 @@ const Header: React.FC = () => {
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to='/'>SwapBnb</Link>
+
+                    { renderNotificationBell() }
+
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                             aria-label="Toggle navigation">
@@ -34,7 +59,7 @@ const Header: React.FC = () => {
                         <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    menu
+                                    My SwapBnb
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li>
@@ -44,7 +69,14 @@ const Header: React.FC = () => {
                                     </li>  
                                     <li>
                                         <NavLink className="dropdown-item" to='/my-messages'>
-                                            <FontAwesomeIcon icon={faEnvelope} />{" "}Messages
+                                            <span className="d-flex justify-content-between align-items-center">
+                                                <span>
+                                                    <FontAwesomeIcon icon={faEnvelope} />{" "}Messages
+                                                </span>
+                                                <span>
+                                                    { renderNotificationBell() }
+                                                </span>
+                                            </span>
                                         </NavLink>
                                     </li>
                                     <li>
