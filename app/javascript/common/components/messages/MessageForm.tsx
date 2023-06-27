@@ -3,9 +3,11 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
+import { ButtonSlide } from '../../components'
 import { useAppContext, useFlatsContext } from '../../contexts'
 
 interface IProps {
+    children?: React.ReactNode,
     messageRecipientId?: number,
     messageFlatId?: number,
     messageTransactionRequestId?: number,
@@ -19,6 +21,7 @@ interface IProps {
 
 const MessageForm: React.FC<IProps> = (props) => {
     const {
+            children,
             messageRecipientId,
             messageFlatId,
             messageTransactionRequestId,
@@ -125,11 +128,15 @@ const MessageForm: React.FC<IProps> = (props) => {
                     placeholder="Type your message here..."
                 />
             </div>
-            <button 
-                type="submit"
-                className="btn btn-sm btn-outline-dark my-2">
+            <div className="d-flex justify-content-between align-items-center mt-1">
+                <ButtonSlide 
+                    type="submit"
+                    className="right-slide my-1"
+                >
                     <FontAwesomeIcon icon={faPaperPlane} />{" "}Send
-                </button>
+                </ButtonSlide>
+                { children }
+            </div>
         </form>
     )
 }
