@@ -1,14 +1,18 @@
-export const formatMessagesAndSetConversations = (fetchedData) => {
-    const [response, data] = fetchedData
-    if(!response.ok || !data?.messages) return
+import { 
+    IUser,
+    IFlashMessage,
+    IIncomingMessage,
+    IMessage,
+    IConversation,
+    IMessagesContext,
+    IMessagesChannelsKeys
+ } from '../../utils/interfaces'
 
-    const fetchedMessages = data?.messages
-    
-    const formattedMessages = formatMessages(fetchedMessages)
-    console.log("formattedMessages", formattedMessages)
-    
+
+export const formatMessagesAndSetConversations = (fetchedMessages) => {
+
+    const formattedMessages = formatMessages(fetchedMessages)    
     const conversations = setConversations(formattedMessages)
-    console.log("conversations", conversations)
 
     return conversations
 }
@@ -27,17 +31,7 @@ const formatMessages = (messages) => {
         createdAt,
         updatedAt } = message
 
-        const { 
-        author: {
-            data: {
-            attributes: {
-                email: authorEmail,
-                userId: authorUserId
-            }
-            } 
-        }
-        } = author
-
+        const { email: authorEmail, userId: authorUserId } = author
         const { email: recipientEmail, userId: recipientUserId } = recipient
 
         return {
