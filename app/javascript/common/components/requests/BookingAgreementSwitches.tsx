@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { LoadingSpinners } from '../../components'
 import { ITransactionUser } from './BookingRequestCard'
+import { ButtonSlide } from '../../components'
 
 interface IProps {
     transactionRequestId: number,
@@ -95,16 +96,15 @@ const BookingAgreementSwitches: React.FC<IProps>  = ({ transactionRequestId, cur
                     </div>
                 </div>
                 { showUpdateButton &&
-                    <button 
+                    <ButtonSlide 
                         type="submit"
-                        className="btn btn-sm btn-outline-primary border-0 d-flex align-items-center my-auto mx-0"
-                        disabled={isLoading}
+                        className="btn-slide-sm btn-slide-primary top-slide border-0 d-flex align-items-center my-auto mx-0"                        disabled={isLoading}
                     >   
                         <span className='fs-5 me-1'>
                             <FontAwesomeIcon icon={faCloudArrowUp} />
                         </span>
                         <span>update</span>
-                    </button>
+                    </ButtonSlide>
                 }
             </div>
         </form>

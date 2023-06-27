@@ -131,7 +131,7 @@ const MessageForm: React.FC<IProps> = (props) => {
             <div className="d-flex justify-content-between align-items-center mt-1">
                 <ButtonSlide 
                     type="submit"
-                    className="right-slide my-1"
+                    className="btn-slide-sm btn-slide-primary right-slide my-1"
                 >
                     <FontAwesomeIcon icon={faPaperPlane} />{" "}Send
                 </ButtonSlide>

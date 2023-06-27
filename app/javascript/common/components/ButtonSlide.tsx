@@ -2,17 +2,15 @@ import React from 'react'
 
 interface IProps {
   children: React.ReactNode,
-  slideClass: string
+  rest: any
 }
 
 const ButtonSlide: React.FC<IProps> = (props) => {
-  const { children, className, ...rest } = props
+  const { children, ...rest } = props
+
   return (
-    <button
-      className={`btn-slide ${className}`}
-      { ...rest }
-      >
-        { children }
+    <button { ...rest }>
+      { children }
     </button>
   )
 }

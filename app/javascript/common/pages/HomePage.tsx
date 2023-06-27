@@ -12,7 +12,7 @@ const HomePage = () => {
         <div className="home-page--wrapper">
             <div className="container text-center">
                 <ButtonSlide 
-                    className="right-slide mx-0 my-2"
+                    className="btn-slide-sm btn-slide-dark right-slide mx-0 my-2"
                     onClick={() => setShowMap(!showMap)}
                 >
                     { showMap ?
