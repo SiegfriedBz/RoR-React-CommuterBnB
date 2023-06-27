@@ -5,7 +5,7 @@ import { useBookingRequestsContext } from '../../contexts'
 import { BookingRequestCard } from '../../components/requests'
 import { MessageFormModalWrapper } from '../../components/messages'
 import MapView from '../../components/map/MapView'
-import { ScrollToTopButton } from '../../components'
+import { ButtonScrollToTop } from '../../components'
 import { IBookingRequest } from "../../utils/interfaces"
 
 const BookingRequestListPage: React.FC = () => {
@@ -121,7 +121,7 @@ const BookingRequestListPage: React.FC = () => {
             <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-6"}`}>
               <div className='sticky-top'>
                 <MapView selectedFlatId={mapSelectedFlatId} mapHeight={700} />
-                <ScrollToTopButton scrollToTop={scrollToTop} />
+                <ButtonScrollToTop scrollToTop={scrollToTop} />
               </div>
             </div>
           </div>
