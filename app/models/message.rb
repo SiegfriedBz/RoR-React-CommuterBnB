@@ -32,29 +32,18 @@ class Message < ApplicationRecord
             recipient: serialized_recipient
         )
 
-        logger.debug "=========== broadcast_message =================="
-        logger.debug "=========== broadcast_message =================="
-        logger.debug "=========== broadcast_message =================="
-
         flat_id = self.flat_id
+        flat_key = "flat-#{flat_id}"
+
         author_id = self.author_id
         recipient_id = self.recipient_id
         min_key = [author_id, recipient_id].min
         max_key = [author_id, recipient_id].max
 
-        flat_key = "flat-#{flat_id}"
         channel_key = "#{flat_key}-users-#{min_key}-#{max_key}"
 
-        logger.debug "serialized_message: #{serialized_message}"
-        logger.debug "channel_key: #{channel_key}"
-    
         ActionCable.server.broadcast("MessagesChannel-#{channel_key}", {
             message: serialized_message
         })
-
-        # ActionCable.server.broadcast("MessagesChannel", {
-        #     message: self,
-        #     recipient: recipient(author_id, flat)
-        # })
     end
 end
