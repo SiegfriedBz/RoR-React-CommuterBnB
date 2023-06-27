@@ -17,7 +17,7 @@ const Header: React.FC = () => {
     //* hooks & context
     const navigate = useNavigate()
     const { user, setTokenInStorage } = useUserContext()
-    const { notificationRef } = useMessagesContext()
+    const { notificationConversationKeyRef } = useMessagesContext()
     
     //* handlers
     const handleLogout = () => {
@@ -25,18 +25,18 @@ const Header: React.FC = () => {
     }
 
     const handleBellClick = () => {
-        notificationRef.current = null
+        notificationConversationKeyRef.current = null
         navigate('/my-messages')
     }
 
     const renderNotificationBell = () => {
-        return notificationRef.current ?
-            (   <span
+        return notificationConversationKeyRef.current ?
+            (   <button
                     className="nav-link text-danger"
                     onClick={handleBellClick}
                 >
                     <FontAwesomeIcon icon={faBell} />
-                </span>
+                </button>
             ) 
             : null
     }
@@ -59,7 +59,7 @@ const Header: React.FC = () => {
                         <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    menu
+                                    My SwapBnb
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li>
@@ -69,7 +69,14 @@ const Header: React.FC = () => {
                                     </li>  
                                     <li>
                                         <NavLink className="dropdown-item" to='/my-messages'>
-                                            <FontAwesomeIcon icon={faEnvelope} />{" "}Messages
+                                            <span className="d-flex justify-content-between align-items-center">
+                                                <span>
+                                                    <FontAwesomeIcon icon={faEnvelope} />{" "}Messages
+                                                </span>
+                                                <span>
+                                                    { renderNotificationBell() }
+                                                </span>
+                                            </span>
                                         </NavLink>
                                     </li>
                                     <li>

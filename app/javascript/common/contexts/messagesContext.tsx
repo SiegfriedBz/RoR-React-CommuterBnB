@@ -14,6 +14,7 @@ import {
     IMessagesChannelsKeys
  } from '../utils/interfaces'
 
+
 const MessagesContext = createContext(null)
 
 export const useMessagesContext = () => useContext(MessagesContext)
@@ -27,7 +28,7 @@ export const MessagesContextProvider: React.FC = ({ children }) => {
     //# state
     // set conversations from fetched messages
     const [conversations, setConversations] = useState<IConversation[] | undefined>(undefined)
-    const notificationRef = useRef<IIncomingMessage | undefined>(undefined)
+    const notificationConversationKeyRef = useRef<IIncomingMessage | undefined>(undefined)
 
     //# state
     // websocket
@@ -98,7 +99,7 @@ export const MessagesContextProvider: React.FC = ({ children }) => {
 
             // set notification if user is recipient
             if(user?.userId === inComingMessage?.recipient?.userId) {
-                notificationRef.current = inComingMessage
+                notificationConversationKeyRef.current = inComingMessage
             }
 
             const newConversations = Object.keys(conversations).reduce((acc, key) => {
@@ -122,20 +123,20 @@ export const MessagesContextProvider: React.FC = ({ children }) => {
 
     useEffect(() => {
         if(!user?.userId) return
-        if(!notificationRef.current?.author) return
+        if(!notificationConversationKeyRef.current?.author) return
 
-        const { author: { email: authorEmail } } = notificationRef.current
+        const { author: { email: authorEmail } } = notificationConversationKeyRef.current
 
         const authorName = authorEmail.split("@")[0]
         const notificationMessage = `New message from ${authorName}`
 
         setFlashMessage({ message: notificationMessage, type: "success"})
-    }, [user, notificationRef.current])
+    }, [user, notificationConversationKeyRef.current])
 
     
     return (
         <MessagesContext.Provider value={{
-            notificationRef,
+            notificationConversationKeyRef,
             conversations,
             setConversations,
         }}>
