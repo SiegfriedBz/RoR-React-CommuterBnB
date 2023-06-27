@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUser,
@@ -8,15 +8,37 @@ import {
     faMoneyCheck,
     faHouseCircleCheck,
     faRightFromBracket,
-    faRightToBracket
+    faRightToBracket,
+    faBell
 } from '@fortawesome/free-solid-svg-icons'
-import { useUserContext } from '../contexts'
+import { useUserContext, useMessagesContext } from '../contexts'
 
 const Header: React.FC = () => {
+    //* hooks & context
+    const navigate = useNavigate()
     const { user, setTokenInStorage } = useUserContext()
+    const { notificationRef } = useMessagesContext()
     
+    //* handlers
     const handleLogout = () => {
         setTokenInStorage("{}")
+    }
+
+    const handleBellClick = () => {
+        notificationRef.current = null
+        navigate('/my-messages')
+    }
+
+    const renderNotificationBell = () => {
+        return notificationRef.current ?
+            (   <span
+                    className="nav-link text-danger"
+                    onClick={handleBellClick}
+                >
+                    <FontAwesomeIcon icon={faBell} />
+                </span>
+            ) 
+            : null
     }
 
     return (
@@ -24,6 +46,9 @@ const Header: React.FC = () => {
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to='/'>SwapBnb</Link>
+
+                    { renderNotificationBell() }
+
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                             aria-label="Toggle navigation">
