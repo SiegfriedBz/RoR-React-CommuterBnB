@@ -10,11 +10,11 @@ import MessagesFlat from './MessagesFlat'
 // - the "responder" of a transaction request from /my-booking-requests
 // - the 1st "recipient" of a conversation on /my-messages
  
-const MessagesPage = () => {
+const MessagesPage: React.FC = () => {
   //* context
   const { user } = useUserContext()
   const { conversations } = useMessagesContext()
-
+  
   //* state
   // after select conversation: set messages to read 
   const [messagesToRead, setMessagesToRead] = useState([]) 
@@ -24,6 +24,7 @@ const MessagesPage = () => {
   const [selectedMessageFlat, setSelectedMessageFlat] = useState(undefined)
   // selected transaction request#id
   const [selectedTransactionRequestId, setSelectedTransactionRequestId] = useState(undefined)
+
 
   //* render
   if(!conversations) return (
