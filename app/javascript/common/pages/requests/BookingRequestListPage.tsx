@@ -13,6 +13,7 @@ const BookingRequestListPage: React.FC = () => {
     const location = useLocation()
     const { getUserTransactionRequests } = useFetch()
     const topRef = useRef(null)
+    const mapRef = useRef(null)
     const cardRef = useRef(null)
 
     //* context
@@ -85,6 +86,11 @@ const BookingRequestListPage: React.FC = () => {
     const scrollToTop = () => {
       topRef.current.scrollIntoView({ behavior: 'smooth' })
     }
+
+    // scroll to map on mobile
+    const scrollToMap = () => {
+      mapRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
     
     return (
         <>
@@ -103,7 +109,7 @@ const BookingRequestListPage: React.FC = () => {
                 </span>
               )
               :
-              ( <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-6"}`}>
+              ( <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-5"}`}>
                 {bookingRequests?.map((bookingRequest) => {
                   return (
                     <BookingRequestCard
@@ -112,15 +118,18 @@ const BookingRequestListPage: React.FC = () => {
                         transactionRequest={bookingRequest}
                         handleSendMessage={handleSendMessage}
                         setMapSelectedFlatId={setMapSelectedFlatId}
+                        scrollToMap={scrollToMap}
                     />
                   )
                 })}
               </div>
               )
             }
-            <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-6"}`}>
+            <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-7"}`}>
               <div className='sticky-top'>
-                <MapView selectedFlatId={mapSelectedFlatId} mapHeight={700} />
+                <div ref={mapRef}>
+                  <MapView selectedFlatId={mapSelectedFlatId} mapHeight={700} />
+                </div>
                 <ButtonScrollToTop scrollToTop={scrollToTop} />
               </div>
             </div>

@@ -20,6 +20,8 @@ import { TotalPriceAndDays } from '../../components'
 import BookingBy from './BookingBy'
 import BookingAgreementSwitches from './BookingAgreementSwitches'
 import BookingFlatsDetails from './BookingFlatsDetails'
+import { ButtonSlide } from '../../components'
+
 import BookingGoToPaymentButton from './BookingGoToPaymentButton'
 import { IFlat, IBookingRequest } from '../../utils/interfaces'
 
@@ -35,14 +37,17 @@ export interface ITransactionUser {
 interface IProps {
     transactionRequest: IBookingRequest,
     setMapSelectedFlatId: React.Dispatch<React.SetStateAction<number | undefined>>,
-    handleSendMessage: (recipientId: number) => void
+    handleSendMessage: (secondUserId: number, messageFlatId: number, transactionRequestId?: number) => void,
+    scrollToMap: () => void
 }
 
-const BookingRequestCard = ({
-    transactionRequest,
-    setMapSelectedFlatId,
-    handleSendMessage }, forwardedRef) => {
-    //* props
+const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) => {
+    const {
+        transactionRequest,
+        setMapSelectedFlatId,
+        handleSendMessage,
+        scrollToMap } = props
+
     const {
         transactionRequestId,
         updatedAt,
@@ -136,6 +141,8 @@ const BookingRequestCard = ({
 
     //* helpers
     const handleDeleteTransactionRequest = async (transactionRequestId: number) => {
+        window.confirm("Are you sure you want to delete this booking request?")
+
         const fetchedData = await deleteTransactionRequest(transactionRequestId)
         if(!fetchedData) return
 
@@ -179,7 +186,8 @@ const BookingRequestCard = ({
                             currentUser={currentUser}
                             secondUser={secondUser}
                             setMapSelectedFlatId={setMapSelectedFlatId}
-                            isExchange={isExchange} 
+                            isExchange={isExchange}
+                            scrollToMap={scrollToMap}
                         />
                     </div>
 
@@ -233,22 +241,22 @@ const BookingRequestCard = ({
                 <div className="row g-0">
                     <div className="d-flex justify-content-between">
                         {/* delete booking request */}
-                        <button
-                            className="btn btn-sm btn-outline-warning mx-3 my-1 w-100"
+                        <ButtonSlide
+                            className="btn-slide-sm btn-slide-warning right-slide mx-3 my-1 w-100"
                             onClick={() => handleDeleteTransactionRequest(transactionRequestId)}
                         >
                             <FontAwesomeIcon icon={faTrashCan} />{" "}Delete request
-                        </button>
+                        </ButtonSlide>
                         {/* send message */}
-                        <button
-                            className="btn btn-sm btn-outline-primary mx-3 my-1 w-100"
+                        <ButtonSlide
+                            className="btn-slide-sm btn-slide-primary right-slide mx-3 my-1 w-100"
                             onClick={() => {
-                                // responderFlatId => messageFlatId
+                                // responderFlatId -> messageFlatId
                                 handleSendMessage(secondUser.userId, responderFlatId, transactionRequestId)
                             }}
                             >
                                 <FontAwesomeIcon icon={faPaperPlane} />{" "}Send message
-                        </button>
+                        </ButtonSlide>
                     </div>
 
                     {/* go to payment */}
