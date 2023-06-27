@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments, faComment, faBell } from '@fortawesome/free-solid-svg-icons'
 import { useFlatsContext } from '../../contexts'
+import ButtonSlide from "../../components/ButtonSlide"
 import { IUser, IFlat, IMessage } from '../../utils/interfaces'
 
 interface IProps {
@@ -50,8 +51,11 @@ const ChatsList: React.FC<IProps> = (props) => {
         { user && flats && conversations && 
           Object.keys(conversations).map(flatUsersKey => {
               const conversationMessages = conversations[flatUsersKey]
-              const transactionRequestId = conversationMessages.find(message => { 
+
+
+              const transactionRequestId = conversationMessages?.find(message => { 
                 return message?.transactionRequestId !== null })?.transactionRequestId
+
 
               // get 1st message of the conversation (all messages have same flat#id)
               const { 
@@ -66,8 +70,8 @@ const ChatsList: React.FC<IProps> = (props) => {
             
               return (
                 <div key={flatUsersKey} className="w-100">
-                  <button 
-                    className="btn btn-outline-dark mb-2 w-100"
+                  <ButtonSlide 
+                    className={`right-slide ${flatUsersKey === selectedFlatUsersKey ? "btn-selected" : ""} mb-1 w-100`}
                     onClick={() => {
                       setSelectedFlatUsersKey(flatUsersKey)
                       setMessagesToRead(conversationMessages)
@@ -92,7 +96,7 @@ const ChatsList: React.FC<IProps> = (props) => {
                     <span className='d-block'>
                       { (`${messageFlat?.city}, ${messageFlat?.country}`.slice(0, 24)) }
                   </span>
-                  </button>
+                  </ButtonSlide>
                 </div>
               )
             })
