@@ -1,13 +1,11 @@
-import AppUserContextLayout from "./AppUserContextLayout"
-import MessagesContextLayout from "./MessagesContextLayout"
+import TopContextLayout from "./TopContextLayout"
 import ToastLayout from "./ToastLayout"
 import FlatsContextLayout from "./FlatsContextLayout"
 import ProtectedRouteLayout from "./ProtectedRouteLayout"
 import BookingRequestsLayout from "./BookingRequestsLayout"
 
 export { 
-    AppUserContextLayout,
-    MessagesContextLayout,
+    TopContextLayout,
     ToastLayout,
     FlatsContextLayout,
     ProtectedRouteLayout,

@@ -6,8 +6,7 @@ import {
     Route, 
 } from 'react-router-dom'
 import { 
-    AppUserContextLayout,
-    MessagesContextLayout,
+    TopContextLayout,
     ToastLayout,
     FlatsContextLayout,
     ProtectedRouteLayout,
@@ -33,8 +32,7 @@ const App: React.FC = () => {
 
     const router = createBrowserRouter(
         createRoutesFromElements(
-            <Route path="/" element={<AppUserContextLayout />}>
-                <Route path="" element={<MessagesContextLayout />}>
+            <Route path="/" element={<TopContextLayout />}>
                     <Route path="" element={<ToastLayout />}>
                         <Route path="" element={<FlatsContextLayout />}>
                             <Route path="" element={<HomePage />} />
@@ -61,7 +59,7 @@ const App: React.FC = () => {
                             </Route>
                         </Route>
                     </Route>
-                </Route>
+
                 <Route path="*" element={<NotFoundPage />} />
             </Route>
         )
