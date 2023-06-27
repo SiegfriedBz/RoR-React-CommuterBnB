@@ -42,8 +42,8 @@ const MessagesPage: React.FC = () => {
   
   return (
     <div className="row mt-3">
-      {/* left panel */}
-      <div className="col-2">
+      {/* select a conversation */}
+      <div className="col-5 col-lg-3 col-xxl-2">
         <ChatsList
           user={user}
           conversations={conversations}
@@ -53,8 +53,8 @@ const MessagesPage: React.FC = () => {
           setSelectedTransactionRequestId={setSelectedTransactionRequestId}
         />
       </div>
-      {/* center panel */}
-      <div className="col-6">
+      {/* selected conversation messages */}
+      <div className="col-7 col-lg-5">
         <MessagesList
           user={user}
           messagesToRead={messagesToRead}
@@ -63,8 +63,8 @@ const MessagesPage: React.FC = () => {
           nextMessageTransactionRequestId={selectedTransactionRequestId}
         />
       </div>
-      {/* right panel */}
-      <div className="col-4">
+      {/* selected conversation flat description */}
+      <div className="col-12 mt-3 mt-lg-0 col-lg-4 col-xxl-5">
         <MessagesFlat
           selectedMessageFlat={selectedMessageFlat}
           selectedTransactionRequestId={selectedTransactionRequestId}
