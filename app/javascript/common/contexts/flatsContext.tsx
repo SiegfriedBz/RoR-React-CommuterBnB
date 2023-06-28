@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, createContext, useContext, useCallback } from 'react'
 import { useFetch } from '../hooks'
+import { useUserContext } from '../contexts'
 import { flatsReducer } from '../reducers'
 import { flatsActions } from "../actions"
 import { IFlatsContext } from '../utils/interfaces'
@@ -15,8 +16,9 @@ export const useFlatsContext = (): IFlatsContext => {
 }
 
 export const FlatsContextProvider = ({ children }: any ) => {
+    const { user } = useUserContext()
     const [state, dispatch] = useReducer(flatsReducer, initState)
-    const { getAllFlats } = useFetch()
+    const { getAllFlats, getAllFlatsWithUserFavorites } = useFetch()
 
     useEffect(() => {        
         (async () => {
@@ -29,6 +31,20 @@ export const FlatsContextProvider = ({ children }: any ) => {
             setFlatsInContext(data.flats)
         })()
     }, [])
+
+    useEffect(() => {     
+        if(!user?.userId) return
+
+        (async () => {
+            const fetchedData = await getAllFlatsWithUserFavorites()
+            if (!fetchedData) return
+
+            const [response, data] = fetchedData
+            if(!data) return
+
+            setFlatsInContext(data.flats)
+        })()
+    }, [user])
 
     const setFlatsInContext: IFlatsContext["setFlatsInContext"] = useCallback((flats) => {
         dispatch({
