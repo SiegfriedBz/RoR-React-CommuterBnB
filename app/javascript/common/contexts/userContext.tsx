@@ -50,7 +50,7 @@ export const UserContextProvider = ({ children }) => {
     useEffect(() => {
         const decodedToken = decodeToken(tokenInStorage)
         if (!decodedToken) {
-            // if no user logged in || on log out
+            // if no user logged in / on log out
             return setUser(initUser)
         }
 

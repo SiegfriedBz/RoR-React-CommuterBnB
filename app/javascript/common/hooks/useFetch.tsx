@@ -5,6 +5,7 @@ const BASE_URL = '/api/v1'
 const FLATS_URL = `${BASE_URL}/flats`
 const TRANSACTION_REQUEST_URL = `${BASE_URL}/transaction_requests`
 const MESSAGES_URL = `${BASE_URL}/messages`
+const FAVORITES_URL = `${BASE_URL}/favorites`
 
 const fetchDefaultOptions = {
     method: 'GET',
@@ -102,7 +103,25 @@ export const useFetch = () => {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
     }
-        
+    
+    //* favorites *//
+    const getAllFlatsWithUserFavorites = async () => {
+        return await fetchData(`${FAVORITES_URL}`, {
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
+    }
+
+    const addFlatToUserFavorites = async (flatId) => {
+        return await fetchData(`${FLATS_URL}/${flatId}/favorites`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 201)
+    }
+
+    const removeFlatFromUserFavorites = async (flatId) => {        
+        return await fetchData(`${FLATS_URL}/${flatId}/favorites`, {
+            method: "DELETE",
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
+    }
+
     //* transaction (booking) requests *//
     const getUserTransactionRequests = async () => {
         return await fetchData(TRANSACTION_REQUEST_URL, { 
@@ -188,6 +207,9 @@ export const useFetch = () => {
         updateTransactionRequest,
         deleteTransactionRequest,
         getUserMessages,
-        createMessage
-     }
+        createMessage,
+        getAllFlatsWithUserFavorites,
+        addFlatToUserFavorites,
+        removeFlatFromUserFavorites,
+    }
 }
