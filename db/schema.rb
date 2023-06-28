@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_27_181410) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_28_080428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -82,6 +82,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_181410) do
     t.index ["transaction_request_id"], name: "index_messages_on_transaction_request_id"
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.bigint "transaction_request_id", null: false
+    t.bigint "payer_id", null: false
+    t.bigint "payee_id", null: false
+    t.integer "amount_in_cents", default: 0
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payee_id"], name: "index_payments_on_payee_id"
+    t.index ["payer_id"], name: "index_payments_on_payer_id"
+    t.index ["transaction_request_id"], name: "index_payments_on_transaction_request_id"
+  end
+
   create_table "transaction_requests", force: :cascade do |t|
     t.date "starting_date"
     t.date "ending_date"
@@ -125,6 +138,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_181410) do
   add_foreign_key "messages", "transaction_requests"
   add_foreign_key "messages", "users", column: "author_id"
   add_foreign_key "messages", "users", column: "recipient_id"
+  add_foreign_key "payments", "transaction_requests"
+  add_foreign_key "payments", "users", column: "payee_id"
+  add_foreign_key "payments", "users", column: "payer_id"
   add_foreign_key "transaction_requests", "flats", column: "initiator_flat_id"
   add_foreign_key "transaction_requests", "flats", column: "responder_flat_id"
   add_foreign_key "transaction_requests", "users", column: "initiator_id"
