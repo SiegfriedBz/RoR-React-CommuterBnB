@@ -1,4 +1,4 @@
-//* btn-slide/-sm btn-slide-dark/primary/success/info/warning/danger right/top-slide
+//* btn-slide/-sm btn-slide-dark/primary/success/info/warning/danger left/right/bottom/top-slide
 @mixin button-slide-styles($base-color, $accent-color) {
     position: relative;
     z-index: 1;
@@ -10,6 +10,32 @@
     border: .04rem solid $accent-color;
 
     transition: color .25s ease-in-out;
+
+    &.left-slide {
+        &:hover, &.btn-selected {
+            color: $base-color;
+
+            &::before {
+                transform: scaleX(1);
+            }
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-radius: .25rem;
+            background-color: $accent-color;
+
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform .3s ease-in-out;
+        }
+    }
 
     &.right-slide {
         &:hover, &.btn-selected {
@@ -33,6 +59,32 @@
 
             transform: scaleX(0);
             transform-origin: left;
+            transition: transform .3s ease-in-out;
+        }
+    }
+
+    &.bottom-slide {
+        &:hover, &:focus {
+            color: $base-color;
+
+            &::before {
+                transform: scaleY(1);
+            }
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-radius: .25rem;
+            background-color: $accent-color;
+
+            transform: scaleY(0);
+            transform-origin: top;
             transition: transform .3s ease-in-out;
         }
     }
