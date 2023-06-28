@@ -15,7 +15,8 @@ export interface IFlat {
     latitude: number,
     available: boolean,
     category: FlatCategoryType,
-    images: string[] | []
+    images: string[] | [],
+    isUserFavorite?: boolean,
 }
 
 export interface IFlatsContext {
