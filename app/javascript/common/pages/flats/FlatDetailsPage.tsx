@@ -4,7 +4,7 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext, useBookingRequestsContext } from '../../contexts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt, faCalendarDays, faTrashCan, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
-import { HostedBy } from '../../components'
+import { HostedBy, ButtonSlide } from '../../components'
 import { FlatDescription, FlatCardCarousel, FlatImageGrid } from '../../components/flats'
 import MapView from '../../components/map/MapView'
 
@@ -34,7 +34,7 @@ const FlatDetailsPage: React.FC = () => {
 
     //# helpers 
     const handleDeleteFlat = async () => {
-        window.confirm("Are you sure you want to delete this property?")
+       if(!window.confirm("Are you sure you want to delete this property?")) return
 
         const fetchedData = await deleteFlat(selectedFlatId)
         
@@ -55,34 +55,37 @@ const FlatDetailsPage: React.FC = () => {
                         <span className="fw-bolder text-dark d-block">You own this property</span>
                         <Link 
                             to={`/edit-property/${flatId}`}
-                            className="btn btn-outline-dark me-2"
                             >
-                                <FontAwesomeIcon icon={faCloudArrowUp} />
-                                {" "}Update my property
+                                 <ButtonSlide
+                                    className="btn-slide btn-slide-primary top-slide me-2"
+                                 >
+                                    <FontAwesomeIcon icon={faCloudArrowUp} />
+                                    {" "}Update my property
+                                </ButtonSlide>
                             </Link>
-                        <button 
+                        <ButtonSlide 
                             type="button" 
                             onClick={handleDeleteFlat}
-                            className="btn btn-outline-danger"
+                            className="btn-slide btn-slide-danger bottom-slide me-2"
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
                                 {" "}Delete my property
-                        </button>
+                        </ButtonSlide>
                     </>
                 }
             </div>
             
             {/* {bookingRequests.length > 0 && */}
-                <button
+                <ButtonSlide
                     onClick={() => {
                         return navigate('/my-booking-requests')
                     }}
-                    className="btn btn-outline-dark mt-2 mb-3"
+                    className="btn-slide btn-slide-dark left-slide mt-2 mb-3"
                 >   <FontAwesomeIcon icon={faReceipt} />
                     {" "}Back to booking requests
-                </button>
-            {/* } */}
+                </ButtonSlide>
 
+            {/* images */}
             <div className="row row-gap-1 row-cols-1 row-cols-md-2 mb-3">
                 <div className="col">
                     <FlatCardCarousel images={flat?.images} />
@@ -104,18 +107,24 @@ const FlatDetailsPage: React.FC = () => {
             { currentUserIsOwner ? 
                 <Link 
                     to="/my-profile"
-                    className="btn btn-outline-dark"
                     >
-                        <FontAwesomeIcon icon={faCloudArrowUp} />
-                        {" "}Update my profile
+                        <ButtonSlide
+                            className="btn-slide btn-slide-primary top-slide"
+                        >
+                            <FontAwesomeIcon icon={faCloudArrowUp} />
+                            {" "}Update my profile
+                        </ButtonSlide>
                 </Link>
                 : 
                 <Link 
                     to="requests"
-                    className="btn btn-outline-dark"
                     >
-                        <FontAwesomeIcon icon={faCalendarDays} />
-                        {" "}Contact Host & Book property
+                        <ButtonSlide
+                        className="btn-slide btn-slide-primary right-slide"
+                        >
+                            <FontAwesomeIcon icon={faCalendarDays} />
+                            {" "}Contact Host & Book property
+                        </ButtonSlide>
                 </Link>
             }
             </div>

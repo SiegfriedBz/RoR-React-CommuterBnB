@@ -67,16 +67,18 @@ const FlatCard: React.FC<IProps> = ({ flat, flatCardOnMap }) => {
                             {" "}{address}
                         </span>
                     }
-                    <span 
-                        className={`card-text ${isUserFavorite ? "text-danger" : ""}`}
-                        onClick={() => {
-                            isUserFavorite ?
-                            handleRemoveFromFavorites(flatId)
-                            :handleAddToFavorites(flatId)
-                        }}
-                    >
-                         <FontAwesomeIcon icon={faHeart} />
-                    </span>
+                    { user.userId &&
+                        <span 
+                            className={`card-text ${isUserFavorite ? "text-danger" : ""}`}
+                            onClick={() => {
+                                isUserFavorite ?
+                                handleRemoveFromFavorites(flatId)
+                                : handleAddToFavorites(flatId)
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faHeart} />
+                        </span>
+                    }
                 </div>
             </div>
             {flat?.images && <FlatCardCarousel key={flatId} images={flat.images} className="card-img-top" />}
