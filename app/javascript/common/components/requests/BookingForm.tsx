@@ -136,7 +136,7 @@ const BookingForm = () => {
             }
         })
 
-        // create transaction request
+        // create booking request
         const fetchedNewTransactionRequest = await createTransactionRequest(responderFlat.flatId, formatedFormValues)
                 
         if(fetchedNewTransactionRequest) {
@@ -154,7 +154,7 @@ const BookingForm = () => {
             }
         })
 
-        // nav to BookingRequestListPage
+        // nav to
         navigate("/my-booking-requests")
     }
 
