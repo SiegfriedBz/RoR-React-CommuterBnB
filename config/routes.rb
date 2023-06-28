@@ -24,9 +24,11 @@ Rails.application.routes.draw do
       resources :messages, only: %i[index create]
       resources :flats do
         resources :transaction_requests, only: %i[create]
+        resources :favorites, only: %i[create]
+        delete :favorites, to: 'favorites#destroy'
       end
-      resources :transaction_requests, only: %i[index update destroy] do
-      end
+      resources :transaction_requests, only: %i[index update destroy]
+      resources :favorites, only: %i[index]
     end
   end
 
