@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_28_080428) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_28_093836) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -107,6 +107,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_080428) do
     t.bigint "initiator_flat_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
     t.index ["initiator_flat_id"], name: "index_transaction_requests_on_initiator_flat_id"
     t.index ["initiator_id"], name: "index_transaction_requests_on_initiator_id"
     t.index ["responder_flat_id"], name: "index_transaction_requests_on_responder_flat_id"
