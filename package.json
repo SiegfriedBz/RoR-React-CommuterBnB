@@ -16,7 +16,9 @@
     "esbuild": "^0.18.0",
     "jwt-decode": "^3.1.2",
     "mapbox-gl": "^2.15.0",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
+    "react-dates": "^21.8.0",
     "react-dom": "^18.2.0",
     "react-map-gl": "^7.0.25",
     "react-modal": "^3.16.1",
@@ -26,7 +28,7 @@
     "uuidv4": "^6.2.13"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets --define:global=window",
     "build:css": "sass ./app/assets/stylesheets/application.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   }
 }
