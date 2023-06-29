@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { ITransactionUser } from './BookingRequestCard'
-import ButtonSlide from '../ButtonSlide'
+import { ButtonSlide } from '../../components'
 
 interface IProps {
     transactionRequestId: number,

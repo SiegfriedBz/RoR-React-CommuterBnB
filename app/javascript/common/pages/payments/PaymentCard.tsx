@@ -13,7 +13,7 @@ import {
     faPaperPlane
  } from '@fortawesome/free-solid-svg-icons'
 import Status from '../../components/Status'
-import ButtonSlide from '../../components/ButtonSlide'
+import { ButtonSlide } from '../../components'
 import { IUser, IFlat } from '../../utils/interfaces'
 
 interface IProps {

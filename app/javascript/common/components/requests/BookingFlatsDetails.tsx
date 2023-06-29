@@ -1,9 +1,8 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons'
-import ButtonSlide from "../../components/ButtonSlide"
+import { ButtonSlide } from "../../components"
 import { ITransactionUser } from './BookingRequestCard'
-
 import { IFlat } from '../../utils/interfaces'
 
 interface IProps {
