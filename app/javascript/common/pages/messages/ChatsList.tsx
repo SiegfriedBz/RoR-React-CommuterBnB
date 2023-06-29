@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments, faComment, faBell } from '@fortawesome/free-solid-svg-icons'
 import { useFlatsContext, useMessagesContext } from '../../contexts'
-import ButtonSlide from "../../components/ButtonSlide"
+import { ButtonSlide } from "../../components"
 import { IUser, IFlat, IMessage } from '../../utils/interfaces'
 
 interface IProps {

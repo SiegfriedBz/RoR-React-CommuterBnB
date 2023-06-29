@@ -1,3 +1,5 @@
+export type BookingRequestStatusType = 'pending' | 'rejected' | 'completed'
+
 export interface IBookingRequest {
     transactionRequestId: number,
     updatedAt: string,
@@ -9,5 +11,6 @@ export interface IBookingRequest {
     responderId: number,
     initiatorId: number,
     responderFlatId: number,
-    initiatorFlatId?: number
+    initiatorFlatId?: number,
+    status: BookingRequestStatusType,
 }

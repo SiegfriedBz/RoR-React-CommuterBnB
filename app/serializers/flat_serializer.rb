@@ -10,6 +10,10 @@ class FlatSerializer
     { userId: flat.user_id }
   end
 
+  attribute :future_booked_dates do |flat|
+    flat.future_booked_dates
+  end
+
   attribute :images do |flat|
     flat.images.present? ? flat.images.map { |image| image.blob.url } : []
   end

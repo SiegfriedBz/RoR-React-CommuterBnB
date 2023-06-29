@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRectangleList, faEarthEurope } from '@fortawesome/free-solid-svg-icons'
 import { FlatsList } from '../components/flats/'
 import MapView from '../components/map/MapView'
-import ButtonSlide from "../components/ButtonSlide"
+import { ButtonSlide } from "../components"
 
 const HomePage = () => {
     const [showMap, setShowMap] = useState<boolean>(false)

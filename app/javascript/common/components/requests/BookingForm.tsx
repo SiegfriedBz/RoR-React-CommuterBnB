@@ -4,9 +4,11 @@ import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt } from '@fortawesome/free-solid-svg-icons'
-import { TotalPriceAndDays, ButtonSlide } from '../../components'
-
+import { TotalPriceAndDays } from '../../components'
+import { DateRangePickerWrapper, ButtonSlide } from '../../components'
 import { IFlat } from '../../utils/interfaces'
+import { format, formatDistanceToNow, differenceInDays } from 'date-fns'
+
 
 interface ITransactionRequest {
     starting_date: string,
@@ -18,15 +20,12 @@ interface ITransactionRequest {
     initiator_flat_id?: number
 }
 
-const currentDate = new Date()
-const endingDate = new Date(currentDate.getTime() + 3 * 24 * 60 * 60 * 1000)
-
 const initFormValues = {
-    starting_date: currentDate.toISOString().slice(0, 10),
-    ending_date: endingDate.toISOString().slice(0, 10),
+    starting_date: null,
+    ending_date: null,
 };
 
-const BookingForm = () => {
+const BookingForm: React.FC = () => {
     //* hooks
     const { state: { selectedFlatId }} = useLocation()
     const { createTransactionRequest } = useFetch()
@@ -41,7 +40,7 @@ const BookingForm = () => {
     const [responderFlat, setResponderFlat] = useState(undefined)
     const [currentUserFlats, setCurrentUserFlats] = useState([])
     const [currentUserSelectedFlatId, setCurrentUserSelectedFlatId] = useState(undefined)
-    const [pricePerNightInCents, setPricePerNightInCents] = useState(undefined)
+    const [pricePerNightInCents, setPricePerNightInCents] = useState(0)
     const [isExchange, setIsExchange] = useState(false)
     const [formValues, setFormValues] = useState(initFormValues)
 
@@ -118,26 +117,10 @@ const BookingForm = () => {
         setIsExchange((prev: boolean) => !prev)
     }
 
-    // only for dates with the current form
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setFormValues({ ...formValues, [name]: value })
-    }
-
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-
-        let formatedFormValues = { ...formValues}
-        Object.keys(formValues).forEach((key) => {
-            if(key === "starting_date"|| key === "ending_date") {
-                const [year, month, day] = formValues[key].split("-");
-                const dateIsoString = new Date(year, month - 1, day).toISOString();
-                formValues[key] = dateIsoString
-            }
-        })
-
         // create booking request
-        const fetchedNewTransactionRequest = await createTransactionRequest(responderFlat.flatId, formatedFormValues)
+        const fetchedNewTransactionRequest = await createTransactionRequest(responderFlat.flatId, formValues)
                 
         if(fetchedNewTransactionRequest) {
             const data= fetchedNewTransactionRequest[1]
@@ -158,6 +141,17 @@ const BookingForm = () => {
         navigate("/my-booking-requests")
     }
 
+    let totalDays = 0
+    let totalPriceInCents = 0
+    let pricePerNight = 0
+    if(formValues?.starting_date && formValues?.ending_date) {
+        const start = new Date(formValues?.starting_date)
+        const end = new Date(formValues?.ending_date)
+        totalDays = differenceInDays(end, start)
+        totalPriceInCents = Math.abs(totalDays * pricePerNightInCents)
+        pricePerNight = Math.abs(pricePerNightInCents/100)
+    }
+
     const renderCurrentUserFlatsList = () => {
         return (
             <select
@@ -166,7 +160,7 @@ const BookingForm = () => {
                 className="form-control mb-2"
                 onChange={(e) => setCurrentUserSelectedFlatId(parseInt(e.target.value))}
             >
-                {currentUserFlats.map((flat: IFlat) => {
+                { currentUserFlats.map((flat: IFlat) => {
                     return (
                         <option
                             key={flat.flatId}
@@ -182,61 +176,49 @@ const BookingForm = () => {
 
     return (
         <>
-          {currentUserFlats.length > 0 && 
-            <div className="d-flex-mb-2">
-                <div className="form-check form-switch">
-                    <input 
-                        id="isExchange" 
-                        type="checkbox"
-                        role="switch"
-                        className="form-check-input"
-                        checked={isExchange}
-                        onChange={toggleIsExchange}
-                        />
-                    <label 
-                        htmlFor="#isExchange"
-                        className={`form-check-label ${isExchange && "text-info fw-bold"}`}
-                        >Exchange
-                    </label>
+            { currentUserFlats.length > 0 && 
+                <div className="d-flex-mb-2">
+                    <div className="form-check form-switch">
+                        <input 
+                            id="isExchange" 
+                            type="checkbox"
+                            role="switch"
+                            className="form-check-input"
+                            checked={isExchange}
+                            onChange={toggleIsExchange}
+                            />
+                        <label 
+                            htmlFor="#isExchange"
+                            className={`form-check-label ${isExchange && "text-info fw-bold"}`}
+                            >Exchange
+                        </label>
+                    </div>
                 </div>
-            </div>
-          }
+            }
 
-          {isExchange && renderCurrentUserFlatsList()}
-        
-          <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                  <label htmlFor="starting_date">from</label>
-                  <input  type="date" 
-                          className="form-control" 
-                          id="starting_date" 
-                          name="starting_date"
-                          value={formValues.starting_date}
-                          onChange={handleDateChange}
-                  />
-                  <label htmlFor="ending_date">to</label>
-                  <input  type="date" 
-                          className="form-control" 
-                          id="ending_date" 
-                          name="ending_date"
-                          value={formValues.ending_date}
-                          onChange={handleDateChange}
-                  />
-              </div>
-              <ButtonSlide
-                type="submit"
-                className="btn-slide-sm btn-slide-primary right-slide my-2"
-                >
-                    <FontAwesomeIcon icon={faReceipt} />{" "}Send booking request
+            { isExchange && renderCurrentUserFlatsList() }
+
+            <form onSubmit={handleSubmit}>
+                <DateRangePickerWrapper
+                    flat={responderFlat}
+                    formValues={formValues}
+                    setFormValues={setFormValues}
+                />
+                <ButtonSlide
+                    type="submit"
+                    className="btn-slide-sm btn-slide-primary right-slide my-2"
+                    >
+                        <FontAwesomeIcon icon={faReceipt} />{" "}Send booking request
                 </ButtonSlide>
-          </form>
-          {formValues?.starting_date && formValues?.ending_date &&
-            <TotalPriceAndDays 
-              pricePerNightInCents={pricePerNightInCents}
-              starting_date={formValues.starting_date}
-              ending_date={formValues.ending_date}
-            />
-          }
+            </form>
+            {/* total */}
+            { formValues?.starting_date && formValues?.ending_date &&
+                <TotalPriceAndDays
+                    pricePerNight={pricePerNight}
+                    totalPriceInCents={totalPriceInCents}
+                    totalDays={totalDays}
+                />
+            }
         </>
     )
 }

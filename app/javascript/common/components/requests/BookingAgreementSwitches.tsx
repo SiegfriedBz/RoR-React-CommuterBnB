@@ -35,13 +35,17 @@ const BookingAgreementSwitches: React.FC<IProps>  = ({ transactionRequestId, cur
     // currentUser updates his agreement status
     const handleSubmit = async(event) => {
         event.preventDefault()
-        const fetchedData = await updateTransactionRequest(transactionRequestId, currentUser.isTransactionInitiator, currentUser.agreedTransaction)
+        const fetchedData = await updateTransactionRequest({
+            transactionRequestId,
+            currentUserIsTransactionInitiator: currentUser.isTransactionInitiator,
+            currentUserAgreed:  currentUser.agreedTransaction
+            })
 
         if(fetchedData) {
             const data = fetchedData[1]
             setFlashMessage({ message: data.message, type: "success" })
         } else {
-            setFlashMessage({ message: "Booking request creation went wrong, please try again", type: "warning" })
+            setFlashMessage({ message: "Booking request update went wrong, please try again", type: "warning" })
         }
     }
 

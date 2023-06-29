@@ -2,8 +2,9 @@ import ProtectedRoute from './ProtectedRoute'
 import LoadingSpinners from './LoadingSpinners'
 import HostedBy from './HostedBy'
 import TotalPriceAndDays from './TotalPriceAndDays'
-import ButtonSlide from "./ButtonSlide"
-import ButtonScrollToTop from "./ButtonScrollToTop"
+import ButtonSlide from "./buttons/ButtonSlide"
+import ButtonScrollToTop from "./buttons/ButtonScrollToTop"
+import DateRangePickerWrapper from "./DateRangePickerWrapper"
 
 export {
     ProtectedRoute,
@@ -11,5 +12,6 @@ export {
     HostedBy,
     TotalPriceAndDays,
     ButtonSlide,
-    ButtonScrollToTop
+    ButtonScrollToTop,
+    DateRangePickerWrapper
 }

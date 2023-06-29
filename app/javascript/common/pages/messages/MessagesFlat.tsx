@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FlatDescription, FlatCardCarousel } from '../../components/flats'
-import ButtonSlide from "../../components/ButtonSlide"
+import { ButtonSlide } from "../../components"
 import { IFlat } from '../../utils/interfaces'
 
 interface IProps {

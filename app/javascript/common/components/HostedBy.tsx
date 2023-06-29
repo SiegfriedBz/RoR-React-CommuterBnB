@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useFetch } from '../hooks'
 import { useAppContext, useFlatsContext } from '../contexts'
+import { formatedDate } from '../utils/helpers/formatedDate'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { LoadingSpinners } from '../components'
@@ -36,10 +37,6 @@ const HostedBy: React.FC<number> = ({ selectedFlatId }) => {
   if(!hostFlat || !hostFlat?.owner) return null
 
   const { owner: { email, description, createdAt } } = hostFlat
-
-  const formatedDate = (dateStr) => {
-    return new Date(dateStr).toLocaleDateString("en-US", { month: "long", year: "numeric" })
-  }
 
   return (
     <div>

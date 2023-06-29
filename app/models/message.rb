@@ -6,6 +6,8 @@ class Message < ApplicationRecord
     belongs_to :flat
     belongs_to :transaction_request, optional: true
 
+    scope :author_or_recipient_for_user, -> (user_id) { where("author_id = :user_id OR recipient_id = :user_id", user_id: user_id) }
+
     # scope :user_involved, ->(user_id) {
     #     join(:transaction_request).where(author_id: user_id)
     #                               .or.where(transaction_request: {responder_id: user_id})

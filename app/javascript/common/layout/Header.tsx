@@ -63,11 +63,6 @@ const Header: React.FC = () => {
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <li>
-                                        <NavLink className="dropdown-item" to='/my-profile'>
-                                        <FontAwesomeIcon icon={faUser} />{" "}Profile
-                                        </NavLink>
-                                    </li>  
-                                    <li>
                                         <NavLink className="dropdown-item" to='/my-messages'>
                                             <span className="d-flex justify-content-between align-items-center">
                                                 <span>
@@ -94,6 +89,11 @@ const Header: React.FC = () => {
                                             <FontAwesomeIcon icon={faHouseCircleCheck} />{" "}Add property
                                         </NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink className="dropdown-item" to='/my-profile'>
+                                        <FontAwesomeIcon icon={faUser} />{" "}Profile
+                                        </NavLink>
+                                    </li>  
                                 </ul>
                             </li>
                             <li className="nav-item">
