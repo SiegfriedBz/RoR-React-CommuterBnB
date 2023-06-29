@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpRightDots } from '@fortawesome/free-solid-svg-icons'
-import ButtonSlide from "../components/ButtonSlide"
+import ButtonSlide from "./ButtonSlide"
 
 interface IProps {
     scrollToTop: () => void
