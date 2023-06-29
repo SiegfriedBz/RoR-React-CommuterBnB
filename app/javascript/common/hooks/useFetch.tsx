@@ -148,20 +148,19 @@ export const useFetch = () => {
     // update current user agreement on transaction/booking request
     const updateTransactionRequest = async (args) => {
         const { transactionRequestId, status, currentUserIsTransactionInitiator, currentUserAgreed } = args
-
+        
         let body = {}
 
-        if(currentUserIsTransactionInitiator) {
+         if(status) {
+            // update transaction request status (rejected)
+            body = { transaction_request: { status } }
+        } else {
             // update current user agreement
             const currentUserAgreedKey = currentUserIsTransactionInitiator ? "initiator_agreed" : "responder_agreed" 
             body = { transaction_request: {
                 [currentUserAgreedKey]: currentUserAgreed
             } } 
-         } else if(status) {
-            // update transaction request status (rejected)
-            body = { transaction_request: { status } }
         }
-
         return await fetchData(`${TRANSACTION_REQUEST_URL}/${transactionRequestId}`, {
             method: 'PATCH',
             headers: { 
