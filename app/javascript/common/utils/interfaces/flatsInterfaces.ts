@@ -2,6 +2,12 @@ import { IUser } from "./userInterfaces"
 // FlatCategory types to handle client & server sides
 export type FlatCategoryType = "entire place" | "private room" | "entire_place" | "private_room";
 
+export interface IFutureBookedDates {
+    startDate: string,
+    endDate: string,
+}
+
+
 export interface IFlat {
     flatId: number,
     owner: IUser,
@@ -17,6 +23,7 @@ export interface IFlat {
     category: FlatCategoryType,
     images: string[] | [],
     isUserFavorite?: boolean,
+    futureBookedDates?: IFutureBookedDates[],
 }
 
 export interface IFlatsContext {

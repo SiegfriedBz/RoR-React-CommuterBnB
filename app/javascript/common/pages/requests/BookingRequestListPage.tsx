@@ -7,6 +7,7 @@ import { MessageFormModalWrapper } from '../../components/messages'
 import MapView from '../../components/map/MapView'
 import { ButtonScrollToTop } from '../../components'
 import { IBookingRequest } from "../../utils/interfaces"
+import { ButtonSlide } from '../../components'
 
 const BookingRequestListPage: React.FC = () => {
     //* hooks
@@ -30,7 +31,9 @@ const BookingRequestListPage: React.FC = () => {
     const [messageRecipientId, setMessageRecipientId] = useState<number | undefined>(undefined)
     const [messageFlatId, setMessageFlatId] = useState<number | undefined>(undefined)
     const [messageTransactionRequestId, setMessageTransactionRequestId] = useState<number | undefined>(undefined)
-
+    const [showOnlyPending, setShowOnlyPending] = useState(false)
+    console.log('BookingRequestListPage bookingRequests', bookingRequests)
+    
     //* effects
     // fetch all transaction requests and set them in context
     useEffect(() => {
@@ -91,6 +94,10 @@ const BookingRequestListPage: React.FC = () => {
     const scrollToMap = () => {
       mapRef.current.scrollIntoView({ behavior: 'smooth' })
     }
+
+    const selectedBookingRequests = showOnlyPending ?
+      bookingRequests.filter(bookingRequest => bookingRequest.status === 'pending')
+      : bookingRequests
     
     return (
         <>
@@ -101,7 +108,14 @@ const BookingRequestListPage: React.FC = () => {
             messageFlatId={messageFlatId}
             messageTransactionRequestId={messageTransactionRequestId}
           />
-          <h3 ref={topRef}>Booking requests</h3>
+          <div ref={topRef} className="d-flex justify-content-center justify-content-lg-start mt-2 mb-3">
+            <ButtonSlide
+              className=" fs-5 btn-slide btn-slide-primary right-slide"
+              onClick={() => setShowOnlyPending(!showOnlyPending)}
+            >
+              Show {showOnlyPending ? "all booking requests" : "only pending booking requests"} 
+            </ButtonSlide>
+          </div>
           <div className="row">
             {bookingRequests.length === 0 ?
               ( <span className="d-block my-1">You don't have active booking requests yet,
@@ -109,8 +123,8 @@ const BookingRequestListPage: React.FC = () => {
                 </span>
               )
               :
-              ( <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-5"}`}>
-                {bookingRequests?.map((bookingRequest) => {
+              ( <div className={`col-12 ${selectedBookingRequests.length > 0 && "col-xl-5"}`}>
+                {selectedBookingRequests?.map((bookingRequest) => {
                   return (
                     <BookingRequestCard
                         key={bookingRequest.transactionRequestId}
@@ -125,7 +139,7 @@ const BookingRequestListPage: React.FC = () => {
               </div>
               )
             }
-            <div className={`col-12 ${bookingRequests.length > 0 && "col-xl-7"}`}>
+            <div className={`col-12 ${selectedBookingRequests.length > 0 && "col-xl-7"}`}>
               <div className='sticky-top'>
                 <div ref={mapRef}>
                   <MapView selectedFlatId={mapSelectedFlatId} mapHeight={700} />

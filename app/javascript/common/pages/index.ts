@@ -5,7 +5,7 @@ import AboutPage from './AboutPage'
 import UserPage from './UserPage'
 import { RequestFormsPage, BookingRequestListPage } from './requests'
 import MessagesPage from './messages/MessagesPage'
-import PaymentsPage from './PaymentsPage'
+import PaymentsPage from './payments/PaymentsPage'
 import NotFoundPage from './NotFoundPage'
 
 export {

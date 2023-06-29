@@ -146,10 +146,21 @@ export const useFetch = () => {
     }
 
     // update current user agreement on transaction/booking request
-    const updateTransactionRequest = async (transactionRequestId, currentUserIsTransactionInitiator, currentUserAgreed) => {
-        const currentUserAgreedKey = currentUserIsTransactionInitiator ? "initiator_agreed" : "responder_agreed" 
+    const updateTransactionRequest = async (args) => {
+        const { transactionRequestId, status, currentUserIsTransactionInitiator, currentUserAgreed } = args
 
-        let body = { transaction_request: { [currentUserAgreedKey]: currentUserAgreed } } 
+        let body = {}
+
+        if(currentUserIsTransactionInitiator) {
+            // update current user agreement
+            const currentUserAgreedKey = currentUserIsTransactionInitiator ? "initiator_agreed" : "responder_agreed" 
+            body = { transaction_request: {
+                [currentUserAgreedKey]: currentUserAgreed
+            } } 
+         } else if(status) {
+            // update transaction request status (rejected)
+            body = { transaction_request: { status } }
+        }
 
         return await fetchData(`${TRANSACTION_REQUEST_URL}/${transactionRequestId}`, {
             method: 'PATCH',
@@ -160,10 +171,31 @@ export const useFetch = () => {
         }, 200)
     }
 
-    const deleteTransactionRequest = async (transactionRequestId) => {
-        return await fetchData(`${TRANSACTION_REQUEST_URL}/${transactionRequestId}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200) 
+    //* payments *//
+    const getUserPayments = async () => {
+        return await fetchData("/api/v1/payments", {
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
+    }
+
+    // params.require(:payment).permit(:transaction_request_id, :payer_id, :payee_id, :amount_in_cents)
+    const createPayment = async (transactionRequestId, payerId, payeeId, amountInCents) => {
+        const url = `${BASE_URL}/transaction_requests/${transactionRequestId}/payments`
+        
+        const body = { payment: {
+            transaction_request_id: parseInt(transactionRequestId),
+            payer_id: parseInt(payerId),
+            payee_id: parseInt(payeeId),
+            amount_in_cents: parseInt(amountInCents)
+        } }
+
+        return await fetchData(url, { 
+            method: 'POST', 
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body) 
+        }, 201)
     }
 
     //* messages *//
@@ -205,7 +237,8 @@ export const useFetch = () => {
         getUserTransactionRequests,
         createTransactionRequest,
         updateTransactionRequest,
-        deleteTransactionRequest,
+        getUserPayments,
+        createPayment,
         getUserMessages,
         createMessage,
         getAllFlatsWithUserFavorites,

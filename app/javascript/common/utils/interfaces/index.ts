@@ -8,7 +8,8 @@ import {
     IMessagesChannelsKeys
  } from "./messagesInterfaces"
 import { IFlat, IFlatsContext, FlatCategoryType } from "./flatsInterfaces"
-import { IBookingRequest } from "./bookingRequest"
+import { IBookingRequest, BookingRequestStatusType } from "./bookingRequestInterfaces"
+import { IPayment } from "./paymentInterfaces"
 
 export { 
     IFlashMessage,
@@ -23,5 +24,7 @@ export {
     IFlat,
     IFlatsContext,
     FlatCategoryType,
-    IBookingRequest
+    IBookingRequest,
+    BookingRequestStatusType,
+    IPayment
 }
