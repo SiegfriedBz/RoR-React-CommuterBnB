@@ -39,7 +39,7 @@ class Api::V1::TransactionRequestsController < ApplicationController
         return render json: { message: 'Booking request not found.'},
             status: :not_found if transaction_request.nil?
 
-        return render json: { message: 'You are not authorized to update this booking request.'},
+            return render json: { message: 'You are not authorized to update this booking request.'},
             status: :unauthorized unless current_user_is_involved(transaction_request)
 
         if transaction_request.update(transaction_request_params)
