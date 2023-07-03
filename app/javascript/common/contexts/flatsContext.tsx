@@ -18,11 +18,11 @@ export const useFlatsContext = (): IFlatsContext => {
 export const FlatsContextProvider = ({ children }: any ) => {
     const { user } = useUserContext()
     const [state, dispatch] = useReducer(flatsReducer, initState)
-    const { getAllFlats, getAllFlatsWithUserFavorites } = useFetch()
+    const { getFlats, getFlatsWithUserFavorites } = useFetch()
 
     useEffect(() => {        
         (async () => {
-            const fetchedData = await getAllFlats()
+            const fetchedData = await getFlats()
             if (!fetchedData) return
 
             const [response, data] = fetchedData
@@ -36,7 +36,7 @@ export const FlatsContextProvider = ({ children }: any ) => {
         if(!user?.userId) return
 
         (async () => {
-            const fetchedData = await getAllFlatsWithUserFavorites()
+            const fetchedData = await getFlatsWithUserFavorites()
             if (!fetchedData) return
 
             const [response, data] = fetchedData

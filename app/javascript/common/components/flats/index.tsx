@@ -1,15 +1,15 @@
 import FlatCard from "./FlatCard"
-import FlatCardCarousel from "./FlatCardCarousel"
+import FlatHostedBy from "./FlatHostedBy"
 import FlatDescription from "./FlatDescription"
-import FlatForm from "./FlatForm"
-import FlatsList from "./FlatsList"
+import FlatCardCarousel from "./FlatCardCarousel"
 import FlatImageGrid from "./FlatImageGrid"
+import FlatRating from "./FlatRating"
 
 export {
     FlatCard,
-    FlatCardCarousel,
+    FlatHostedBy,
     FlatDescription,
-    FlatForm,
-    FlatsList,
-    FlatImageGrid
+    FlatCardCarousel,
+    FlatImageGrid,
+    FlatRating
 }

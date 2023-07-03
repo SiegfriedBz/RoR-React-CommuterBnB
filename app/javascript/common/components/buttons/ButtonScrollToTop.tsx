@@ -13,7 +13,7 @@ const ButtonScrollToTop: React.FC<IProps> = (props) => {
     return (
         <div className='d-flex justify-content-end my-1'>
             <ButtonSlide 
-                className="btn-slide-sm btn-slide-primary top-slide"
+                className="btn-slide btn-slide-primary top-slide"
                 type="button"
                 onClick={scrollToTop}
             >

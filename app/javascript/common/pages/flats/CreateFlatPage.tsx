@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatForm } from '../../components/flats'
+import FlatForm from './components/FlatForm'
 
 const CreateFlatPage: React.FC = () => {
     return (

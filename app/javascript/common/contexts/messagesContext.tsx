@@ -20,17 +20,17 @@ const MessagesContext = createContext(null)
 export const useMessagesContext = () => useContext(MessagesContext)
 
 export const MessagesContextProvider: React.FC = ({ children }) => {
-    //# hooks & context
+    //* hooks & context
     const { getUserMessages } = useFetch()
     const { setFlashMessage } = useAppContext()
     const { user, tokenInStorage: token } = useUserContext()
 
-    //# state
+    //* state
     // set conversations from fetched messages
     const [conversations, setConversations] = useState<IConversation[] | undefined>(undefined)
     const notificationConversationKeyRef = useRef<IIncomingMessage | undefined>(undefined)
 
-    //# state
+    //* state
     // websocket
     const [ws, setWs] = useState(undefined)
     const [guid, setGuid] = useState<number>(uuid())
@@ -92,7 +92,9 @@ export const MessagesContextProvider: React.FC = ({ children }) => {
             if(data.type === "confirm_subscription") return
             
             // if(!!data?.message) return
-            const inComingMessage: IIncomingMessage =  data.message.message
+            const inComingMessage: IIncomingMessage =  data?.message?.message
+            if(!inComingMessage) return
+            
             const inComingConversation: IConversation = formatMessagesAndSetConversations([inComingMessage])
             const inComingConversationKey = Object.keys(inComingConversation)[0]
             const inComingConversationValue = inComingConversation[inComingConversationKey]

@@ -3,6 +3,13 @@ import "react-dates/initialize";
 import { DateRangePicker } from "react-dates";
 // import "react-dates/lib/css/_datepicker.css";
 import moment from 'moment'
+import { IFlat } from '../utils/interfaces'
+
+interface IProps {
+    flat?: IFlat,
+    formValues: any,
+    setFormValues: any
+}
 
 const DateRangePickerWrapper = (props) => {
     const { flat, formValues, setFormValues } = props

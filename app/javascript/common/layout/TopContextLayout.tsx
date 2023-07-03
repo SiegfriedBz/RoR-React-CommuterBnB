@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { AppContextProvider, UserContextProvider, MessagesContextProvider } from '../contexts'
-import Header from "./Header"
+import Header from './header/Header'
 import Footer from "./Footer"
 
 const TopContextLayout: React.FC<any> = () => {
@@ -10,10 +10,10 @@ const TopContextLayout: React.FC<any> = () => {
             <UserContextProvider>
                 <MessagesContextProvider>
                     <Header />
-                    <main className="container container-fluid mt-2">
+                    <main className="container mt-2">
                         <Outlet />
                     </main>
-                    <Footer />
+                    {/* <Footer /> */}
                 </MessagesContextProvider>
             </UserContextProvider>
         </AppContextProvider>

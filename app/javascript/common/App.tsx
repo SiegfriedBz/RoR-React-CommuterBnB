@@ -10,7 +10,7 @@ import {
     ToastLayout,
     FlatsContextLayout,
     ProtectedRouteLayout,
-    BookingRequestsLayout
+    BookingsLayout
  } from './layout'
 import { 
     HomePage,
@@ -19,13 +19,13 @@ import {
     AboutPage,
     UserPage,
     CreateFlatPage,
-    RequestFormsPage,
-    BookingRequestListPage,
+    BookingFormsPage,
+    BookingListPage,
     MessagesPage,
     PaymentsPage,
     NotFoundPage
    } from './pages'
-import { BookingForm } from './components/requests'
+import BookingForm from './pages/booking_requests/components/BookingForm'
 import { MessageForm } from './components/messages'
 
 const App: React.FC = () => {
@@ -46,13 +46,13 @@ const App: React.FC = () => {
                                 <Route path="edit-property/:id" element={ <CreateFlatPage /> } />
                                 {/*  */}
                                 {/* TO FIX */}
-                                <Route path="" element={ <BookingRequestsLayout /> }>
+                                <Route path="" element={ <BookingsLayout /> }>
                                 {/*  */}
-                                    <Route path="properties/:id/requests" element={ <RequestFormsPage /> }>
+                                    <Route path="properties/:id/requests" element={ <BookingFormsPage /> }>
                                         <Route path="booking" element={ <BookingForm /> } />
                                         <Route path="message" element={ <MessageForm /> } />
                                     </Route>
-                                    <Route path="my-booking-requests" element={ <BookingRequestListPage /> } />
+                                    <Route path="my-booking-requests" element={ <BookingListPage /> } />
                                 </Route>
                                 <Route path="my-messages" element={ <MessagesPage /> } />
                                 <Route path="my-payments" element={ <PaymentsPage /> } />

@@ -3,7 +3,7 @@ import { useAppContext, useUserContext } from '../contexts'
 
 const BASE_URL = '/api/v1'
 const FLATS_URL = `${BASE_URL}/flats`
-const TRANSACTION_REQUEST_URL = `${BASE_URL}/transaction_requests`
+const BOOKING_REQUEST_URL = `${BASE_URL}/transaction_requests`
 const MESSAGES_URL = `${BASE_URL}/messages`
 const FAVORITES_URL = `${BASE_URL}/favorites`
 
@@ -12,10 +12,10 @@ const fetchDefaultOptions = {
 }
 
 export const useFetch = () => {
-    //# context
+    //* context
     const { setFlashMessage, setIsLoading } = useAppContext()
     const { tokenInStorage: token } = useUserContext()
-    //# fetch
+    //* fetch
     const fetchData = async (url: string, options={}, expectedStatus: number) => {
         setIsLoading(true)
         setFlashMessage({ message: null, type: "success" })
@@ -58,28 +58,32 @@ export const useFetch = () => {
         }, expectedStatus)
     }
 
-    const updateUser = async (changedUser) => {
+    const updateUser = async (formData) => {
         const url = `${BASE_URL}/signup`
-        const body = { user: changedUser } 
 
-        return await fetch(url, {
+        console.log("formData", formData)
+
+        return await fetchData(url, {
             method: 'PATCH',
-            headers: { 
-                'Authorization': `Bearer ${JSON.parse(token)}`,
-                'Content-Type': 'application/json' },
-            body: JSON.stringify(body), 
-        })
+            headers: { 'Authorization': `Bearer ${JSON.parse(token)}` },
+            body: formData
+        }, 200)
     }
 
     //* flats *//
-    const getAllFlats = useCallback(async() => {
-        return await fetchData(FLATS_URL, {
-            headers: { 'Content-Type': 'application/json' } }, 200)
+    const getFlats = useCallback(async(queryParams) => {
+        const url = queryParams ? `${FLATS_URL}/search?${queryParams}` : FLATS_URL
+        
+        return await fetchData(url, {
+            headers: { 'Content-Type': 'application/json' },
+        }, 200)
     }, [])
+
 
     const getFlatDetails = async (id) => {
         return await fetchData(`${FLATS_URL}/${id}`, {
-            headers: { 'Content-Type': 'application/json' } }, 200)
+            headers: { 'Content-Type': 'application/json' },
+        }, 200)
     }
 
     const createFlat = async (formData) => {
@@ -105,7 +109,7 @@ export const useFetch = () => {
     }
     
     //* favorites *//
-    const getAllFlatsWithUserFavorites = async () => {
+    const getFlatsWithUserFavorites = async () => {
         return await fetchData(`${FAVORITES_URL}`, {
             headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
     }
@@ -123,8 +127,8 @@ export const useFetch = () => {
     }
 
     //* transaction (booking) requests *//
-    const getUserTransactionRequests = async () => {
-        return await fetchData(TRANSACTION_REQUEST_URL, { 
+    const getUserBookingRequests = async () => {
+        return await fetchData(BOOKING_REQUEST_URL, { 
             headers: { 
                 'Authorization': `Bearer ${JSON.parse(token)}`,
                 'Content-Type': 'application/json'
@@ -132,7 +136,7 @@ export const useFetch = () => {
         }, 200)
     }
 
-    const createTransactionRequest = async (flatId, formValues) => {
+    const createBookingRequest = async (flatId, formValues) => {
         const body = { transaction_request: formValues } 
         
         return await fetchData(`${FLATS_URL}/${flatId}/transaction_requests`, { 
@@ -145,14 +149,14 @@ export const useFetch = () => {
         }, 201)
     }
 
-    // update current user agreement on transaction/booking request
-    const updateTransactionRequest = async (args) => {
+    // update current user agreement on booking request
+    const updateBookingRequest = async (args) => {
         const { transactionRequestId, status, currentUserIsTransactionInitiator, currentUserAgreed } = args
         
         let body = {}
 
          if(status) {
-            // update transaction request status (rejected)
+            // update booking request status (rejected)
             body = { transaction_request: { status } }
         } else {
             // update current user agreement
@@ -161,7 +165,7 @@ export const useFetch = () => {
                 [currentUserAgreedKey]: currentUserAgreed
             } } 
         }
-        return await fetchData(`${TRANSACTION_REQUEST_URL}/${transactionRequestId}`, {
+        return await fetchData(`${BOOKING_REQUEST_URL}/${transactionRequestId}`, {
             method: 'PATCH',
             headers: { 
                 'Authorization': `Bearer ${JSON.parse(token)}`,
@@ -176,7 +180,6 @@ export const useFetch = () => {
             headers: { 'Authorization': `Bearer ${JSON.parse(token)}` } }, 200)
     }
 
-    // params.require(:payment).permit(:transaction_request_id, :payer_id, :payee_id, :amount_in_cents)
     const createPayment = async (transactionRequestId, payerId, payeeId, amountInCents) => {
         const url = `${BASE_URL}/transaction_requests/${transactionRequestId}/payments`
         
@@ -187,6 +190,24 @@ export const useFetch = () => {
             amount_in_cents: parseInt(amountInCents)
         } }
 
+        return await fetchData(url, { 
+            method: 'POST', 
+            headers: { 
+                'Authorization': `Bearer ${JSON.parse(token)}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body) 
+        }, 201)
+    }
+
+    //* reviews *//
+    const createReview = async (flatId, transactionRequestId, review) => {
+        const url = `/api/v1/flats/${flatId}/transaction_requests/${transactionRequestId}/reviews`
+        const body = { review: { ...review,
+            transaction_request_id: transactionRequestId,
+            flat_id: flatId
+         } }
+        
         return await fetchData(url, { 
             method: 'POST', 
             headers: { 
@@ -228,20 +249,21 @@ export const useFetch = () => {
     return { 
         authenticate,
         updateUser,
-        getAllFlats,
+        getFlats,
         getFlatDetails,
         createFlat,
         updateFlat,
         deleteFlat,
-        getUserTransactionRequests,
-        createTransactionRequest,
-        updateTransactionRequest,
+        getUserBookingRequests,
+        createBookingRequest,
+        updateBookingRequest,
         getUserPayments,
         createPayment,
         getUserMessages,
         createMessage,
-        getAllFlatsWithUserFavorites,
+        getFlatsWithUserFavorites,
         addFlatToUserFavorites,
         removeFlatFromUserFavorites,
+        createReview
     }
 }

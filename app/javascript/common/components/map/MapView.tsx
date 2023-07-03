@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'
 import clsx from "clsx"
 import { useFlatsContext } from "../../contexts"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDollarSign, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import FlatCard from '../flats/FlatCard'
 import LoadingSpinners from '../LoadingSpinners'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDollarSign, faLocationDot } from '@fortawesome/free-solid-svg-icons'
+
 import { IFlat } from '../../utils/interfaces'
 
 //************************************************ */

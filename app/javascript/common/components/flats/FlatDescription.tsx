@@ -1,10 +1,16 @@
 import React from 'react'
+import { useAppContext } from '../../contexts'
+import { LoadingSpinners } from '../../components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFontAwesome, faHouse, faArrowUpShortWide, faMoneyBill, faDollarSign } from '@fortawesome/free-solid-svg-icons'
 import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 import { IFlat } from '../../utils/interfaces'
 
 const FlatDescription: React.FC<IFlat> = ({ flat }) => {
+    const { isLoading } = useAppContext()
+  
+    if(isLoading || !flat) return <LoadingSpinners />
+
     const { title, description, city, country, pricePerNightInCents, category } = flat
     const address = `${city}, ${country}`
 
@@ -12,18 +18,19 @@ const FlatDescription: React.FC<IFlat> = ({ flat }) => {
     FlatCategoryEnum.ENTIRE_PLACE
     : FlatCategoryEnum.PRIVATE_ROOM
 
+
     return (
         <>
-            <h3 className="text-dark">{title}</h3>
-            <p className="fw-bold">
+            <h1>{title}</h1>
+            <h3>
                 <FontAwesomeIcon icon={faFontAwesome} />
                 {" "}{description}
-            </p>
+            </h3>
             <span className="d-block">
                 <FontAwesomeIcon icon={faHouse} />
                 {" "}{address}
             </span>
-            <span className="d-block">
+            <span className="d-block my-1">
                 <FontAwesomeIcon icon={faArrowUpShortWide} />
                 {" "}{flatCategory}
             </span>

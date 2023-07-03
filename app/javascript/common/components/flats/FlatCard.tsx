@@ -1,24 +1,30 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faHouse, faDollarSign, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
-import FlatCardCarousel from './FlatCardCarousel'
+import { FlatCardCarousel, FlatRating } from "../../components/flats"
+import {ButtonSlide} from '../buttons'
+import { LoadingSpinners } from '../../components'
 import { IFlat } from '../../utils/interfaces'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse, faDollarSign, faHeart, faEye } from '@fortawesome/free-solid-svg-icons'
+
 
 interface IProps {
-    flat: IFlat,
+    flat?: IFlat,
     flatCardOnMap?: boolean
 }
 
 const FlatCard: React.FC<IProps> = ({ flat, flatCardOnMap }) => {
+    //* props
+    const { flatId, title, city, country, pricePerNightInCents, isUserFavorite } = flat
+    const address = `${city}, ${country}`
+
+    //* hooks & context
     const { addFlatToUserFavorites, removeFlatFromUserFavorites } = useFetch()
     const { setFlashMessage } = useAppContext()
     const { user } = useUserContext()
     const { flats, updateFlatInContext } = useFlatsContext()
-    const { flatId, title, city, country, pricePerNightInCents, isUserFavorite } = flat
-    const address = `${city}, ${country}`
 
     //* handlers
     const handleAddToFavorites = async(flatId: number) => {
@@ -56,50 +62,57 @@ const FlatCard: React.FC<IProps> = ({ flat, flatCardOnMap }) => {
         setFlashMessage({message: "Property successfully removed from favorites", type: "success"})
     }
 
+    if(!flat) return <LoadingSpinners />
+    
     return (
         <div className={`flat-card--wrapper ${flatCardOnMap ? "flat-card-on-map" : ""} h-100`}>
-            <div className="flat-card--dark card-body">
-                <h6 className="card-title text-dark fw-bolder">{title}</h6>
+            <div className="flat-card--body card-body">
+                <h6 className="fw-bolder">{title}</h6>
                 <div className="d-flex justify-content-between align-content-center">
-                    {   address && 
+                    { address && 
                         <span className="card-text text-center">
-                            <FontAwesomeIcon icon={faHouse} />
+                            <FontAwesomeIcon className=" text-dark" icon={faHouse} />
                             {" "}{address}
                         </span>
                     }
-                    { user.userId &&
+                    {/* handle favorites */}
+                    { user?.userId &&
                         <span 
-                            className={`card-text ${isUserFavorite ? "text-danger" : ""}`}
+                            className={"card-text"}
                             onClick={() => {
                                 isUserFavorite ?
                                 handleRemoveFromFavorites(flatId)
                                 : handleAddToFavorites(flatId)
                             }}
                         >
-                            <FontAwesomeIcon icon={faHeart} />
+                            <FontAwesomeIcon 
+                                className={`icon ${isUserFavorite ? "text-danger" : "text-dark"}`} 
+                                icon={faHeart} 
+                            />
                         </span>
                     }
                 </div>
             </div>
-            {flat?.images && <FlatCardCarousel key={flatId} images={flat.images} className="card-img-top" />}
+            { flat?.images && <FlatCardCarousel key={flatId} images={flat.images} className="card-img-top" />}
             <div className="flat-card--link card-footer bg-transparent border-light-subtle">
                 <div className="d-flex justify-content-between align-content-center">
-                    <span className="card-text text-warning">
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
+                    <span className="card-text my-auto">
+                        <FlatRating flatRating={flat?.averageRating} />
                     </span>
-                    <span className="card-text">
+                    <span className="card-text text-primary my-auto">
                             <FontAwesomeIcon icon={faDollarSign} />
                             {pricePerNightInCents/100}
                     </span>
                 </div>
                 <Link 
                     to={`/properties/${flatId}`} 
-                    className="btn btn-sm btn-outline-dark w-100 mt-2"
-                >Visit
+                >   
+                     <ButtonSlide
+                        className="btn-slide-sm btn-slide-primary top-slide fw-bolder w-100 mt-2"
+                        >
+                        <FontAwesomeIcon icon={faEye} />
+                        {" "}Visit
+                    </ButtonSlide>
                 </Link>
             </div>
         </div>

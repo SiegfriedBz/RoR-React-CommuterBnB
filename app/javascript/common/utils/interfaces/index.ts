@@ -10,6 +10,7 @@ import {
 import { IFlat, IFlatsContext, FlatCategoryType } from "./flatsInterfaces"
 import { IBookingRequest, BookingRequestStatusType } from "./bookingRequestInterfaces"
 import { IPayment } from "./paymentInterfaces"
+import { IReview } from "./reviewsInterfaces"
 
 export { 
     IFlashMessage,
@@ -26,5 +27,6 @@ export {
     FlatCategoryType,
     IBookingRequest,
     BookingRequestStatusType,
-    IPayment
+    IPayment,
+    IReview
 }
