@@ -7,6 +7,7 @@ class Api::V1::FlatsController < ApplicationController
 
     def index
         flats = Flat.all.order(updated_at: :desc)
+
         serialized_flats = flats.map do |flat|
             serialized_flat(flat)
         end
@@ -14,15 +15,24 @@ class Api::V1::FlatsController < ApplicationController
         render json: { flats: serialized_flats }, status: :ok
     end
 
-    # get flat with owner details
-    # TODO: add flat reviews
     def show
-        render json: { flat: serialized_flat(@flat).merge(owner: serialized_owner(@flat.user))},
-            status: :ok
+        return render json: { message: 'Property not found.'}, status: :not_found if @flat.nil?
 
-        # flat_reviews = Review.joins(transaction: [:flat_a, :flat_b])
-        #           .where('transactions.flat_a_id = ? OR transactions.flat_b_id = ?', flat.id, flat.id)
+        render json: { flat: serialized_flat(@flat) }, status: :ok
+    end
 
+    def search
+        debugger
+        flats = Flat.filter(params).order(updated_at: :desc)
+        # flats = Flat.where(city: params[:city], country: params[:country]).order(updated_at: :desc)
+
+        debugger
+        serialized_flats = flats.map do |flat|
+            serialized_flat(flat)
+        end
+        
+        debugger
+        render json: { flats: serialized_flats }, status: :ok
     end
 
     def create
@@ -45,10 +55,11 @@ class Api::V1::FlatsController < ApplicationController
 
     def update
         return render json: { message: 'Property not found.'}, status: :not_found if @flat.nil?
+
         return render json: { message: 'Only owner can update its property.' },
             status: :unauthorized unless current_user_is_owner(@flat)
 
-        attach_images(flat) if params[:@flat][:images].present?
+        attach_images(@flat) if params[:flat][:images].present?
     
         if @flat.update(flat_params.except(:images))
             render json: {
@@ -64,6 +75,7 @@ class Api::V1::FlatsController < ApplicationController
 
     def destroy
         return render json: { message: 'Property not found.'}, status: :not_found if @flat.nil?
+
         return render json: { message: 'Only owner can delete its property.'},
             status: :unauthorized unless current_user_is_owner(@flat)
 
@@ -100,7 +112,11 @@ class Api::V1::FlatsController < ApplicationController
         end
     end
 
+    # def filter_params
+    #     params.permit(:city, :country, :start_date, :end_date, :category).fetch(:flat, {})
+    # end
+
     def flat_params
-        params.require(:flat).permit(:title, :description, :street, :city, :country, :price_per_night_in_cents, :available, :category, images: [])
+        params.fetch(:flat, {}).permit(:flat, :start_date, :end_date, :title, :description, :street, :city, :country, :price_per_night_in_cents, :available, :category, images: [])
     end
 end
