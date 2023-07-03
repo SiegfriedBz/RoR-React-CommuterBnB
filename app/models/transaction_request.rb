@@ -6,6 +6,8 @@ class TransactionRequest < ApplicationRecord
 
     scope :initiator_or_responder_for_user, -> (user_id) { where("responder_id = :user_id OR initiator_id = :user_id", user_id: user_id) }
 
+    scope :completed_for_flat, -> (flat) { where("responder_flat_id = :flat_id OR initiator_flat_id = :flat_id", flat_id: flat.id).where(status: :completed) }
+    
     # validates :status, inclusion: { in: %i[pending completed rejected] }
   
     enum status: { pending: 0, completed: 1, rejected: 2 }
