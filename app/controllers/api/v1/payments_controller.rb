@@ -3,7 +3,7 @@ class Api::V1::PaymentsController < ApplicationController
 
     # all payments for current user (as payer or payee)
     def index
-        payments = Payment.payer_or_payee_for_user(current_user.id)
+        payments = Payment.payer_or_payee_for_user(current_user.id).order(updated_at: :desc)
         
         serialized_payments = payments.map do |payment|
             serialized_payment(payment)
@@ -23,7 +23,7 @@ class Api::V1::PaymentsController < ApplicationController
 
         payment = Payment.new(payment_params)
 
-        # TODO AFTER PAYMENT PROCESSOR IS SET UP:
+        # TODO AFTER PAYMENT PROCESSOR SET UP:
         # 1. set payment status to initiated UNTIL PAYMENT PROCESSOR RETURNS PAYMENT STATUS
         # 2. set payment status to completed && set transaction_request status to completed
         payment.status = :completed

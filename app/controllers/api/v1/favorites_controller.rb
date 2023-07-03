@@ -12,7 +12,7 @@ class Api::V1::FavoritesController < ApplicationController
         end
 
         render json: { flats: serialized_flats }, status: :ok
-      end
+    end
       
     def create
         favorite = current_user.favorites.new(flat: @flat)
