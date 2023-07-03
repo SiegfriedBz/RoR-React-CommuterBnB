@@ -30,7 +30,7 @@ const FlatHostedBy: React.FC<IProps> = ({ hostFlat }) => {
 
         <Avatar image={image} />
         {description && <span className="d-block my-1">{description}</span>}
-        <span>Member since {formatedDate(createdAt)}</span>
+        <span className="d-block">Member since {formatedDate(createdAt)}</span>
     </div>
   )
 }
