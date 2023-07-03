@@ -5,6 +5,7 @@ import DateRangePickerWrapper from "./DateRangePickerWrapper"
 import ModalWrapper from "./ModalWrapper"
 import NewsLetterSuscribe from "./NewsLetterSuscribe"
 import Status from "./Status"
+import DropZoneWrapper from './DropZoneWrapper'
 
 export {
     ProtectedRoute,
@@ -14,4 +15,5 @@ export {
     ModalWrapper,
     Status,
     LoadingSpinners,
+    DropZoneWrapper
 }

@@ -6,7 +6,8 @@ import { IUser } from '../../../utils/interfaces'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAt, faMedal, faFaceSmile, faUnlock, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { ButtonSlide } from '../../../components/buttons'
-import LoadingSpinners from '../../../components/LoadingSpinners';
+import LoadingSpinners from '../../../components/LoadingSpinners'
+import DropZoneWrapper from '../../../components/DropZoneWrapper'
 
 interface IFormValues extends IUser {
     password: string,
@@ -33,15 +34,22 @@ const UserForm: React.FC = (props) => {
     const { updateUser } = useFetch()
     const { isLoading, setFlashMessage } = useAppContext()
 
+    // Dropzone
+    const onDrop = (acceptedFiles) => {
+        console.log("acceptedFiles[0]", acceptedFiles[0])
+        setDroppedFile(acceptedFiles[0])
+    }
+
     //* state
     const [formValues, setFormValues] = useState<IFormValues>(initFormValues)
-    const imageRef = useRef();
+    const [droppedFile, setDroppedFile] = useState(undefined)
 
     //* effects
     useEffect(() => {
         if(!user) return
         setFormValues(prevState => ({ ...prevState, ...user }))
     }, [user])
+    
 
     //* helpers
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -67,8 +75,8 @@ const UserForm: React.FC = (props) => {
         formData.append('user[description]', formValues.description);
         formData.append('user[password]', formValues.password)
 
-        if(imageRef.current.files.length >= 1) {
-            formData.append('user[image]', imageRef.current.files[0])
+        if(droppedFile) {
+            formData.append('user[image]', droppedFile)
         }
         
         const fetchedData = await updateUser(formData)
@@ -183,12 +191,14 @@ const UserForm: React.FC = (props) => {
                     <FontAwesomeIcon icon={faFaceSmile} />
                     {" "}Image
                 </label>
-                <input
-                    type="file"
-                    ref={imageRef}
-                    className="form-control"
-                    id="image"
-                    name="image"
+
+                <DropZoneWrapper 
+                    onDrop={onDrop}
+                    droppedFiles={[droppedFile]}
+                    maxFiles={1}
+                    maxSize={15000}
+                    multiple={false}
+                    className="drop-zone--wrapper"
                 />
 
                 <ButtonSlide 

@@ -1,12 +1,13 @@
 .auth-page--wrapper {
     height: 75vh;
-    background-image: url(greece_a01.jpg);
+    background-image: url(greece_a03.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
     .auth-page--form-input-group {
         display: flex;

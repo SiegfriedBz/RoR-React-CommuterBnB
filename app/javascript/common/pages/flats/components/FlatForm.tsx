@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useFetch } from '../../../hooks'
 import { useAppContext, useFlatsContext } from '../../../contexts'
 import { FlatCardCarousel } from '../../../components/flats'
+import {ButtonSlide} from '../../../components/buttons'
+import { DropZoneWrapper, LoadingSpinners } from '../../../components'
 import { IFlat, FlatCategoryType } from '../../../utils/interfaces'
 import FlatCategoryEnum from '../../../utils/constants/flatCategoryEnum'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ButtonSlide from '../../../components/buttons/ButtonSlide';
 import { 
     faFontAwesome, 
     faHouse, 
@@ -17,6 +18,7 @@ import {
     faDollarSign,
     faCloudArrowUp
 } from '@fortawesome/free-solid-svg-icons'
+
 
 interface IFormValues {
     title: string,
@@ -42,11 +44,19 @@ const initFormValues = {
     beds: 1
 }
 
-const FlatForm: React.FC = () => {
-    //* hooks
-    const { id: editFlatId } = useParams()
+interface IProps {
+    editFlatId?: string;
+}
+
+const FlatForm: React.FC<IProps> = ({ editFlatId }) => {
     const navigate = useNavigate()
     const { createFlat, updateFlat } = useFetch()
+
+    // Dropzone
+    const onDrop = (acceptedFiles) => {
+        // console.log("acceptedFiles[0]", acceptedFiles[0])
+        setDroppedFiles([...droppedFiles, ...acceptedFiles])
+    }
 
     //* context
     const { isLoading, setFlashMessage } = useAppContext()
@@ -55,7 +65,8 @@ const FlatForm: React.FC = () => {
     //* state
     const [formValues, setFormValues] = useState<IFormValues>(initFormValues)
     const [flatToEdit, setFlatToEdit] = useState<IFlat | undefined>(undefined)
-    const imagesRef = useRef();
+    // const imagesRef = useRef();
+    const [droppedFiles, setDroppedFiles] = useState([])
 
     //* effects
     // set form values if editing
@@ -117,11 +128,11 @@ const FlatForm: React.FC = () => {
 
         formData.append('flat[available]', formValues.available);
 
-        if(imagesRef.current.files.length >= 1) {
-            for(let i = 0; i < imagesRef.current.files.length; i++) {
-                formData.append('flat[images][]', imagesRef.current.files[i]);
+        if(droppedFiles?.length >= 1) {
+            for(let i = 0; i < droppedFiles.length; i++) {
+                formData.append('flat[images][]', droppedFiles[i]);
             }
-        }
+        }        
         
         let fetchedFlat
         if(editFlatId) {
@@ -150,9 +161,9 @@ const FlatForm: React.FC = () => {
         }
        
         setFlashMessage({ message, type: "success" })
+        navigate("/")
     }
 
-    const formTitle = editFlatId ? "Edit property" : "Create new property"
     const FlatToEditImages = () => {
         if(!flatToEdit) return null
 
@@ -165,206 +176,183 @@ const FlatForm: React.FC = () => {
     }
 
     if(editFlatId && !flatToEdit) return <div>Loading...</div>
-    if(isLoading) return <div>Loading...</div>
+    if(isLoading) return <LoadingSpinners />
 
     return (
         <>
-        <h2>{formTitle}</h2>
-
-        <form onSubmit={handleSubmit}>
-            <div className="form-group w-50">
-                <label 
-                    htmlFor="title" 
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faHouse} />
-                    {" "}Title
-                </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="title"
-                    name="title"
-                    value={formValues.title}
-                    onChange={handleChange}
-                    required
-                />
-                <label
-                    htmlFor="description"
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faFontAwesome} />
-                    {" "}Description
-                </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="description"
-                    name="description"
-                    value={formValues.description}
-                    onChange={handleChange}
-                    required
-                />
-                <label 
-                    htmlFor="street" 
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faStreetView} />
-                    {" "}Street
-                </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="street"
-                    name="street"
-                    value={formValues.street}
-                    onChange={handleChange}
-                />
-                <label 
-                    htmlFor="city"
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faTreeCity} />
-                    {" "}City
-                </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="city"
-                    name="city"
-                    value={formValues.city}
-                    onChange={handleChange}
-                    required
-                />
-                <label 
-                    htmlFor="country"
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faGlobe} />
-                    {" "}Country
-                </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="country"
-                    name="country"
-                    value={formValues.country}
-                    onChange={handleChange}
-                    required
-                />
-                <label 
-                    htmlFor="price_per_night"
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faDollarSign} />
-                    {" "}Price per night
-                </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="price_per_night"
-                    name="price_per_night"
-                    value={formValues.price_per_night}
-                    onChange={handleChange}
-                    required
-                />
-                <div className="d-flex mt-2">
-                <input
-                    type="checkbox"
-                    checked={formValues.available}
-                    className="form-check me-2"
-                    id="available"
-                    name="available"
-                    onChange={handleChange}
-                />
-                <label htmlFor="available">Available now</label>
-                </div>
-
-                <label 
-                    htmlFor="category" 
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faBed} />
-                    {" "}Category
-                </label>
-                <div className="d-flex">
-                    <select 
-                        className="form-select" 
-                        aria-label="Default select example" 
-                        name="category" 
-                        value={formValues.category}
+            <form onSubmit={handleSubmit}>
+                <div className="form-group custom-form">
+                    <label 
+                        htmlFor="title" 
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faHouse} />
+                        {" "}Title
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="title"
+                        name="title"
+                        value={formValues.title}
                         onChange={handleChange}
+                        required
+                    />
+                    <label
+                        htmlFor="description"
+                        className='text-primary mt-2'
                     >
-                        <option value="entire place">Entire place</option>
-                        <option value="private room">Private room</option>
-                    </select>
+                        <FontAwesomeIcon icon={faFontAwesome} />
+                        {" "}Description
+                    </label>
+                    <textarea
+                        className="form-control"
+                        id="description"
+                        name="description"
+                        value={formValues.description}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label 
+                        htmlFor="street" 
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faStreetView} />
+                        {" "}Street
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="street"
+                        name="street"
+                        value={formValues.street}
+                        onChange={handleChange}
+                    />
+                    <label 
+                        htmlFor="city"
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faTreeCity} />
+                        {" "}City
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="city"
+                        name="city"
+                        value={formValues.city}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label 
+                        htmlFor="country"
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faGlobe} />
+                        {" "}Country
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="country"
+                        name="country"
+                        value={formValues.country}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label 
+                        htmlFor="price_per_night"
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faDollarSign} />
+                        {" "}Price per night
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="price_per_night"
+                        name="price_per_night"
+                        value={formValues.price_per_night}
+                        onChange={handleChange}
+                        required
+                    />
+                    <div className="d-flex mt-2">
+                    <input
+                        type="checkbox"
+                        checked={formValues.available}
+                        className="form-check me-2"
+                        id="available"
+                        name="available"
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="available">Available now</label>
+                    </div>
+
+                    <label 
+                        htmlFor="category" 
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faBed} />
+                        {" "}Category
+                    </label>
+                    <div className="d-flex">
+                        <select 
+                            className="form-select" 
+                            aria-label="Default select example" 
+                            name="category" 
+                            value={formValues.category}
+                            onChange={handleChange}
+                        >
+                            <option value="entire place">Entire place</option>
+                            <option value="private room">Private room</option>
+                        </select>
+                    </div>
+
+                    <label 
+                        htmlFor="beds"
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faBed} />
+                        {" "}Beds
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="beds"
+                        name="beds"
+                        value={formValues.beds}
+                        onChange={handleChange}
+                        required
+                    />
+
+                    <label
+                        htmlFor="images"
+                        className='text-primary mt-2'
+                    >
+                        <FontAwesomeIcon icon={faBed} />
+                        {" "}Images
+                    </label>
+
+                    <DropZoneWrapper 
+                        onDrop={onDrop}
+                        droppedFiles={droppedFiles}
+                        maxFiles={5}
+                        maxSize={15000}
+                        multiple={true}
+                        className="drop-zone--wrapper"
+                    />  
+
+                    <ButtonSlide 
+                        type="submit"
+                        disabled={isLoading}
+                        className="btn-slide btn-slide-primary top-slide mt-2"
+                        >
+                            <FontAwesomeIcon icon={faCloudArrowUp} />
+                            {" "}Create property
+                    </ButtonSlide>
                 </div>
-
-
-                <label 
-                    htmlFor="beds"
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faBed} />
-                    {" "}Beds
-                </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="beds"
-                    name="beds"
-                    value={formValues.beds}
-                    onChange={handleChange}
-                    required
-                />
-
-                <label
-                    htmlFor="images"
-                    className='text-primary mt-2'
-                >
-                    <FontAwesomeIcon icon={faBed} />
-                    {" "}Images
-                </label>
-                <input
-                    type="file"
-                    multiple ref={imagesRef}
-                    required={!editFlatId}
-                    className="form-control"
-                    id="images"
-                    name="images"
-                />
-
-                {/* <Dropzone onDrop={onDrop} multiple>
-                    {({ getRootProps, getInputProps, isDragActive }) => (
-                    <div {...getRootProps()} className={isDragActive ? 'dropzone active' : 'dropzone'}>
-                        <input name="image" {...getInputProps()} />
-                        {isDragActive ? <p>Drop the files here...</p> : <p>Drag and drop some files here, or click to select files</p>}
-                    </div>
-                    )}
-                </Dropzone> */}
-    {/* 
-                {images.length > 0 && (
-                    <div>
-                    <h4>Uploaded Images:</h4>
-                    {images.map((image, index) => (
-                        <div key={index}>
-                        <img src={URL.createObjectURL(image)} alt={`Image ${index}`} />
-                        </div>
-                    ))}
-                    </div>
-                )} */}
-
-                <ButtonSlide 
-                    type="submit"
-                    disabled={isLoading}
-                    className="btn-slide btn-slide-primary top-slide mt-2"
-                    >
-                        <FontAwesomeIcon icon={faCloudArrowUp} />
-                        {" "}Create property
-                </ButtonSlide>
-            </div>
-        </form>
-        <FlatToEditImages />
+            </form>
+            <FlatToEditImages />
         </>
     )
 }
