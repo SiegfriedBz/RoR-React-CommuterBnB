@@ -12,19 +12,27 @@ import Avatar from '../../components/user/Avatar'
     } = useUserContext()
 
     console.log('UserPage user?.image', user?.image)
+    console.log('UserPage user', user)
   
 
   return (
     <div>
         <h2>My Profile</h2>
-        <Avatar image={user?.image} />
-        <br />
-        <UserForm 
-          user={user}
-          setUser={setUser}
-          tokenInStorage={tokenInStorage}
-          setTokenInStorage={setTokenInStorage}
-        />
+        <div className="row">
+          {/* uer form  */}'
+          <div className='col col-12 col-md-5'>
+              <Avatar image={user?.image} />
+              <br />
+              <UserForm 
+                user={user}
+                setUser={setUser}
+                tokenInStorage={tokenInStorage}
+                setTokenInStorage={setTokenInStorage}
+              />
+          </div>
+          {/* right panel image from md */}
+          <div className='col d-none d-md-block ms-md-5 col-md-6 form-image'></div>
+        </div>
     </div>
   )
 }
