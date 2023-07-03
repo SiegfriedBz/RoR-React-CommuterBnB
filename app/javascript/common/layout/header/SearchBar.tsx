@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useFetch } from '../../hooks/useFetch';
-import { useAppContext } from '../../contexts';
+import { useAppContext, useFlatsContext } from '../../contexts';
 import DateRangePickerWrapper from '../../components/DateRangePickerWrapper';
 import ButtonSlide from '../../components/buttons/ButtonSlide';
 
@@ -14,8 +14,8 @@ const initFormValues = {
 const SearchBar = () => {
     //* hooks
     const { getFlats } = useFetch()
-    // const { setFlatsInContext } = useFlatsContext()
     const { setFlashMessage } = useAppContext()
+    const { setFlatsInContext } = useFlatsContext()
 
     //* state
     const [formValues, setFormValues] = useState(initFormValues)
@@ -38,20 +38,22 @@ const SearchBar = () => {
                 return acc
             }, '').slice(0, -1)
 
-        console.log('queryParams', queryParams)
-        
         const fetchedData = await getFlats(queryParams)
-        console.log('fetchedData', fetchedData)
-        
         if (!fetchedData) return
 
         const [response, data] = fetchedData
-        console.log('data', data)
         if(!data) return
 
-        // ADD FLASH MESSAGE IF SEARCH RETURNED NO FLATS THEN RETURNED ALL FLATS
+        const filteredFlats = data?.flats
 
-        // setFlatsInContext(data.flats)
+        if(filteredFlats?.length === 0) {
+            return setFlashMessage({
+                message: 'No flats found with your search criteria',
+                type: 'warning'
+            })
+        }
+
+        setFlatsInContext(filteredFlats)
     }
     
     return (

@@ -8,6 +8,8 @@ const FlatsList: React.FC = () => {
     const { flats } = useFlatsContext()
 
     if(!flats) return <LoadingSpinners />
+
+    console.log("flats", flats)
     
     return (
         <div className="row row-gap-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">

@@ -52,8 +52,6 @@ export const UserContextProvider = ({ children }) => {
     //* effects
     // set user from token in local storage
     useEffect(() => {
-        console.log('userContextProvider: useEffect: tokenInStorage: ', tokenInStorage);
-        
         const decodedToken = decodeToken(tokenInStorage)
         if (!decodedToken) {
             // if no user logged in / on log out
@@ -63,8 +61,6 @@ export const UserContextProvider = ({ children }) => {
         const { user_id, email, description, role, image } = decodedToken
         setUser({ userId: user_id, email, description, role, image })
     }, [tokenInStorage])
-
-    console.log('userContextProvider: user: ', user)
 
     return (
         <UserContext.Provider value={{

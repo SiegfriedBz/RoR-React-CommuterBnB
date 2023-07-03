@@ -73,6 +73,9 @@ export const FlatsContextProvider = ({ children }: any ) => {
             payload: flatId
         })
     }
+
+    console.log('flats', state?.flats);
+    
     
     return (
         <FlatsContext.Provider value={
