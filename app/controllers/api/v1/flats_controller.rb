@@ -22,16 +22,12 @@ class Api::V1::FlatsController < ApplicationController
     end
 
     def search
-        debugger
         flats = Flat.filter(params).order(updated_at: :desc)
-        # flats = Flat.where(city: params[:city], country: params[:country]).order(updated_at: :desc)
 
-        debugger
         serialized_flats = flats.map do |flat|
             serialized_flat(flat)
         end
         
-        debugger
         render json: { flats: serialized_flats }, status: :ok
     end
 

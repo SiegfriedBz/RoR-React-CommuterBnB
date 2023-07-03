@@ -3,7 +3,7 @@ class Api::V1::ReviewsController < ApplicationController
 
     # 1 user 1 completed transaction_request 1 review 1 flat
     def create
-        debugger
+        
         # check if the flat exists
         # return render json: { message: 'Property not found.'}, status: :not_found if Flat.find_by(id: review_params[:flat_id]).nil?
 
@@ -21,19 +21,19 @@ class Api::V1::ReviewsController < ApplicationController
 
 
         review = Review.new(review_params)
-        debugger
+        
         review.reviewer = current_user
         # review.transaction_request_id = review_params[:transaction_request_id]
 
         if review.save
-            debugger
+            
             render json: {
                 review: serialized_review(review),
                 message: 'Review created sucessfully'
             },
                 status: :created
         else
-            debugger
+            
             render json: { message: 'Review creation went wrong, please try again.'},
                 status: :unprocessable_entity
         end

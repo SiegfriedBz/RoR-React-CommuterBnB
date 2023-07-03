@@ -11,7 +11,7 @@ class FlatSerializer
   end
 
   attribute :future_booked_dates do |flat|
-    flat.future_booked_dates
+    flat.future_booked_dates_for_flat
   end
 
   attribute :reviews do |flat|
