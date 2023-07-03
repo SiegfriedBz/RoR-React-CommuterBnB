@@ -11,7 +11,7 @@
                 opacity: 1;
             }
 
-            .flat-card--dark {
+            .flat-card--body {
                 opacity: 1;
                 transform: translateY(-5px);
             }
@@ -29,7 +29,7 @@
             opacity: 0;
         }
 
-        .flat-card--dark {
+        .flat-card--body {
             position: relative;
             opacity: 0;
             transform: translateY(30px);

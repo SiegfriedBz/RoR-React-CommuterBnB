@@ -13,18 +13,15 @@ const TotalPriceAndDays: React.FC<IProps> = (props) => {
     const pluralizeDays = totalDays > 1 ? "days" : "day"
 
     return (
-        <>
-            <span className='d-block text-dark fw-bolder'>Total</span>
-            <ul className='list-unstyled'>
-                <li><span className="d-block">${pricePerNight} per night</span></li>
-                <li>
-                    <span className="text-dark">${totalPriceInCents/100}</span>
-                    <span> for </span>
-                    <span className="text-dark">{totalDays} {pluralizeDays}</span>
-                </li>
-                <li>{ children }</li>
-            </ul>
-        </>
+        <div className="d-flex flex-column">
+            <span className="d-block">${pricePerNight} per night</span>
+            <span className="d-block">
+            <span className="text-success fw-bold">${totalPriceInCents/100}</span>
+                <span> for </span>
+                <span className="text-success fw-bold">{totalDays} {pluralizeDays}</span>
+            </span>
+            <div>{ children }</div>
+        </div>
     )
 }
 

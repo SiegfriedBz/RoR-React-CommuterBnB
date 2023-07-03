@@ -6,13 +6,17 @@ import jwt_decode from 'jwt-decode'
 interface IDecodedToken {
     user_id?: number,
     email?: string,
-    role?: string
+    description?: string,
+    role?: string,
+    image?: string
 }
 
 const initUser = {
     userId: undefined,
     email: undefined,
-    role: undefined
+    description: undefined,
+    role: undefined,
+    image: undefined
 }
 
 const UserContext = createContext(null)
@@ -21,7 +25,7 @@ export const useUserContext = () => useContext(UserContext)
 
 const decodeToken = (tokenInStorage: string): IDecodedToken => {
     if(typeof tokenInStorage !== 'string' || tokenInStorage === '{}') {
-        return { user_id: undefined, email: undefined, role: undefined }
+        return initUser
     }
 
     const deserializedToken = JSON.parse(tokenInStorage)
@@ -41,8 +45,8 @@ export const UserContextProvider = ({ children }) => {
             return initUser
         }
 
-        const { user_id, email, role } = decodedToken
-        return { userId: user_id, email, role }
+        const { user_id, email, description, role, image } = decodedToken
+        return { userId: user_id, email, description, role, image }
     })
 
     //* effects
@@ -54,13 +58,14 @@ export const UserContextProvider = ({ children }) => {
             return setUser(initUser)
         }
 
-        const { user_id, email, role } = decodedToken
-        setUser({ userId: user_id, email, role })
+        const { user_id, email, description, role, image } = decodedToken
+        setUser({ userId: user_id, email, description, role, image })
     }, [tokenInStorage])
 
     return (
         <UserContext.Provider value={{
                 user,
+                setUser,
                 tokenInStorage,
                 setTokenInStorage
             }}>

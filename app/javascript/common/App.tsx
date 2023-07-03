@@ -8,9 +8,8 @@ import {
 import { 
     TopContextLayout,
     ToastLayout,
-    FlatsContextLayout,
     ProtectedRouteLayout,
-    BookingRequestsLayout
+    BookingsLayout
  } from './layout'
 import { 
     HomePage,
@@ -19,13 +18,13 @@ import {
     AboutPage,
     UserPage,
     CreateFlatPage,
-    RequestFormsPage,
-    BookingRequestListPage,
+    BookingFormsPage,
+    BookingListPage,
     MessagesPage,
     PaymentsPage,
     NotFoundPage
    } from './pages'
-import { BookingForm } from './components/requests'
+import BookingForm from './pages/booking_requests/components/BookingForm'
 import { MessageForm } from './components/messages'
 
 const App: React.FC = () => {
@@ -33,33 +32,30 @@ const App: React.FC = () => {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<TopContextLayout />}>
-                    <Route path="" element={<ToastLayout />}>
-                        <Route path="" element={<FlatsContextLayout />}>
-                            <Route path="" element={<HomePage />} />
-                            <Route path="properties/:id" element={<FlatDetailsPage />} />
-                            <Route path="auth" element={<AuthPage />} />
-                            <Route path="about" element={<AboutPage />} />
-                            <Route path="" element={<ProtectedRouteLayout />} >
-                                <Route path="my-profile" element={ <UserPage /> } />
-                                <Route path="add-property" element={ <CreateFlatPage /> } />
-                                {/* TO FIX */}
-                                <Route path="edit-property/:id" element={ <CreateFlatPage /> } />
-                                {/*  */}
-                                {/* TO FIX */}
-                                <Route path="" element={ <BookingRequestsLayout /> }>
-                                {/*  */}
-                                    <Route path="properties/:id/requests" element={ <RequestFormsPage /> }>
-                                        <Route path="booking" element={ <BookingForm /> } />
-                                        <Route path="message" element={ <MessageForm /> } />
-                                    </Route>
-                                    <Route path="my-booking-requests" element={ <BookingRequestListPage /> } />
+                <Route path="" element={<ToastLayout />}>
+                        <Route path="" element={<HomePage />} />
+                        <Route path="properties/:id" element={<FlatDetailsPage />} />
+                        <Route path="auth" element={<AuthPage />} />
+                        <Route path="about" element={<AboutPage />} />
+                        <Route path="" element={<ProtectedRouteLayout />} >
+                            <Route path="my-profile" element={ <UserPage /> } />
+                            <Route path="add-property" element={ <CreateFlatPage /> } />
+                            {/* TO FIX */}
+                            <Route path="edit-property/:id" element={ <CreateFlatPage /> } />
+                            {/*  */}
+                            {/* TO FIX */}
+                            <Route path="" element={ <BookingsLayout /> }>
+                            {/*  */}
+                                <Route path="properties/:id/requests" element={ <BookingFormsPage /> }>
+                                    <Route path="booking" element={ <BookingForm /> } />
+                                    <Route path="message" element={ <MessageForm /> } />
                                 </Route>
-                                <Route path="my-messages" element={ <MessagesPage /> } />
-                                <Route path="my-payments" element={ <PaymentsPage /> } />
+                                <Route path="my-booking-requests" element={ <BookingListPage /> } />
                             </Route>
+                            <Route path="my-messages" element={ <MessagesPage /> } />
+                            <Route path="my-payments" element={ <PaymentsPage /> } />
                         </Route>
                     </Route>
-
                 <Route path="*" element={<NotFoundPage />} />
             </Route>
         )

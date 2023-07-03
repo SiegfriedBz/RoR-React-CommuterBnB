@@ -30,16 +30,13 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   def update
-    debugger
-
     user_email = current_user.email if user_params[:email].blank?
-    debugger
 
-    if current_user.update(user_params)
-      debugger
-      render json: { message: 'User updated successfully.' }
+      current_user.image.attach(user_params[:image]) if user_params[:image].present?
+
+    if current_user.update(user_params.except(:image))
+      render json: { message: 'You updated your profile successfully' }
     else
-      debugger
       render json: { errors: current_user.errors.full_messages }, status: :unprocessable_entity
     end
   end
@@ -86,7 +83,7 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
     if resource.persisted? 
       render json: {
         data: UserSerializer.new(resource).serializable_hash[:data][:attributes],
-        message: 'Signed up sucessfully'
+        message: 'You signed up sucessfully'
       }, status: :created
     else
       render json: {
@@ -96,6 +93,6 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def user_params
-    params.require(:user).permit(:email, :description, :password, :password_confirmation, image: [])
+    params.require(:user).permit(:email, :description, :password, :password_confirmation, :image)
   end
 end

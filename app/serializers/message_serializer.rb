@@ -4,6 +4,11 @@ class MessageSerializer
   
   attributes :id, :content, :flat_id, :transaction_request_id, :created_at, :updated_at
 
+  # TO CHANGE TO 
+  # attribute :author do |message|
+  #   UserSerializer.new(message.author).serializable_hash[:data][:attributes]
+  # end
+
   attribute :author do |message|
     { author: UserSerializer.new(message.author) }
   end

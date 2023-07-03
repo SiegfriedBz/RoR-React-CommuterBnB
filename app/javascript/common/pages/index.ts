@@ -1,9 +1,9 @@
-import HomePage from './HomePage'
+import HomePage from './home/HomePage'
 import { CreateFlatPage, FlatDetailsPage } from './flats'
-import AuthPage from './AuthPage'
+import AuthPage from './user/AuthPage'
 import AboutPage from './AboutPage'
-import UserPage from './UserPage'
-import { RequestFormsPage, BookingRequestListPage } from './requests'
+import UserPage from './user/UserPage'
+import { BookingFormsPage, BookingListPage } from './booking_requests'
 import MessagesPage from './messages/MessagesPage'
 import PaymentsPage from './payments/PaymentsPage'
 import NotFoundPage from './NotFoundPage'
@@ -15,8 +15,8 @@ export {
     AboutPage,
     UserPage,
     CreateFlatPage,
-    RequestFormsPage,
-    BookingRequestListPage,
+    BookingFormsPage,
+    BookingListPage,
     MessagesPage,
     PaymentsPage,
     NotFoundPage

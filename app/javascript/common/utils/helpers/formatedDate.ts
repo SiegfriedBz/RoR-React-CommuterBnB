@@ -1,4 +1,5 @@
-import moment from 'moment';
+import moment from 'moment'
+
 export const formatedDate = (dateStr) => {
-    return moment(dateStr).format("MMM Do YY");  
+    return moment(dateStr).format("MMM Do YY")
 }

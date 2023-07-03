@@ -22,10 +22,13 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :messages, only: %i[index create]
+      get 'flats/search', to: 'flats#search'
       resources :flats do
-        resources :transaction_requests, only: %i[create]
         resources :favorites, only: %i[create]
         delete :favorites, to: 'favorites#destroy'
+        resources :transaction_requests, only: %i[create] do
+          resources :reviews, only: %i[create]
+        end
       end
       resources :transaction_requests, only: %i[index update destroy] do
         resources :payments, only: %i[create]

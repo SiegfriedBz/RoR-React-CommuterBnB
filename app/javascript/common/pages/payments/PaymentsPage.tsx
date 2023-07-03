@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import { useFetch } from '../../hooks'
-import PaymentCard from './PaymentCard'
+import PaymentCard from './components/PaymentCard'
 
 const PaymentsPage: React.FC = () => {
   //* hooks
@@ -25,15 +25,14 @@ const PaymentsPage: React.FC = () => {
 
   return (
     <>
-      <h3>PaymentsPage</h3>
-      <div className="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-1 g-md-2">
+      <h3>My payments</h3>
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-2 g-md-3">
         { payments && payments?.map(payment => {
           return (
-            <div className="col" key={payment.paymentId} >
+            <div className="col d-flex justify-content-center" key={payment.paymentId} >
               <PaymentCard payment={payment} />
             </div>
           )
-          
         }) }
        </div>
     </>

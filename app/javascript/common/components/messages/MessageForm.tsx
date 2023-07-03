@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
-import { ButtonSlide } from '../../components'
 import { useAppContext, useFlatsContext } from '../../contexts'
+import {ButtonSlide} from '../buttons'
 
 interface IProps {
     children?: React.ReactNode,
@@ -131,7 +131,7 @@ const MessageForm: React.FC<IProps> = (props) => {
             <div className="d-flex justify-content-between align-items-center mt-1">
                 <ButtonSlide 
                     type="submit"
-                    className="btn-slide-sm btn-slide-primary right-slide my-1"
+                    className="btn-slide btn-slide-primary right-slide my-1"
                 >
                     <FontAwesomeIcon icon={faPaperPlane} />{" "}Send
                 </ButtonSlide>

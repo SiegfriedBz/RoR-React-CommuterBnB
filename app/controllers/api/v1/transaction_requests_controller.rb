@@ -33,6 +33,7 @@ class Api::V1::TransactionRequestsController < ApplicationController
         end
     end
 
+    # update agreement or status
     def update
         transaction_request = TransactionRequest.find_by(id: params[:id])
 

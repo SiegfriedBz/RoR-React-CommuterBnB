@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_28_093836) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_29_164823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -95,6 +95,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_093836) do
     t.index ["transaction_request_id"], name: "index_payments_on_transaction_request_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.text "content"
+    t.integer "rating", default: 5, null: false
+    t.bigint "reviewer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "transaction_request_id", null: false
+    t.bigint "flat_id", null: false
+    t.index ["flat_id"], name: "index_reviews_on_flat_id"
+    t.index ["reviewer_id"], name: "index_reviews_on_reviewer_id"
+    t.index ["transaction_request_id"], name: "index_reviews_on_transaction_request_id"
+  end
+
   create_table "transaction_requests", force: :cascade do |t|
     t.date "starting_date"
     t.date "ending_date"
@@ -142,6 +155,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_093836) do
   add_foreign_key "payments", "transaction_requests"
   add_foreign_key "payments", "users", column: "payee_id"
   add_foreign_key "payments", "users", column: "payer_id"
+  add_foreign_key "reviews", "flats"
+  add_foreign_key "reviews", "transaction_requests"
+  add_foreign_key "reviews", "users", column: "reviewer_id"
   add_foreign_key "transaction_requests", "flats", column: "initiator_flat_id"
   add_foreign_key "transaction_requests", "flats", column: "responder_flat_id"
   add_foreign_key "transaction_requests", "users", column: "initiator_id"
