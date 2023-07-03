@@ -1,5 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    // color: $primary;
+}
+
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    background-color: $body-bg;
+}
+
+input {
+    &:focus {
+        outline: none !important;
+    }
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-weight: 400;
+    color: $primary;
+}
+
+.sub-title {
+    font-weight: 500;
+}
+
+.text-exchange {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 800;
+    color: $primary;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+
+    &.checked {
+        color: $success;
+    }
 }

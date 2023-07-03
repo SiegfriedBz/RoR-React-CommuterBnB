@@ -1,13 +1,13 @@
-//* btn-slide/-sm btn-slide-dark/primary/success/info/warning/danger left/right/bottom/top-slide
-@mixin button-slide-styles($base-color, $accent-color) {
+//* btn-slide/-sm btn-slide-primary/primary/success/info/warning/danger left/right/bottom/top-slide
+@mixin button-slide-styles($base-color, $accent-color-start, $accent-color-end) {
     position: relative;
-    z-index: 1;
+    z-index: 0;
     padding: .5rem 1rem;
     border-radius: .25rem;
 
-    color: $accent-color;
+    color: $accent-color-start;
     background-color: transparent;
-    border: .04rem solid $accent-color;
+    border: .08rem solid $accent-color-start;
 
     transition: color .25s ease-in-out;
 
@@ -29,7 +29,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background-color: $accent-color;
+            background: linear-gradient(to left, $accent-color-start, $accent-color-end);
 
             transform: scaleX(0);
             transform-origin: right;
@@ -46,6 +46,10 @@
             }
         }
 
+        &.btn-selected:hover {
+            border: 0.08rem solid $gold;
+        }
+
         &::before {
             content: "";
             position: absolute;
@@ -55,8 +59,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background-color: $accent-color;
-
+            background: linear-gradient(to right, $accent-color-start, $accent-color-end);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform .3s ease-in-out;
@@ -64,7 +67,7 @@
     }
 
     &.bottom-slide {
-        &:hover, &:focus {
+        &:hover, &.btn-selected {
             color: $base-color;
 
             &::before {
@@ -81,8 +84,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background-color: $accent-color;
-
+            background: linear-gradient($accent-color-start, $accent-color-end);
             transform: scaleY(0);
             transform-origin: top;
             transition: transform .3s ease-in-out;
@@ -90,7 +92,7 @@
     }
 
     &.top-slide {
-        &:hover, &:focus {
+        &:hover, &.btn-selected {
             color: $base-color;
 
             &::before {
@@ -107,7 +109,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background-color: $accent-color;
+            background: linear-gradient(to top, $accent-color-start, $accent-color-end);
 
             transform: scaleY(0);
             transform-origin: bottom;
@@ -117,28 +119,24 @@
 }
 
 .btn-slide {
-    &.btn-slide-dark {
-        @include button-slide-styles(var(--bs-white), var(--bs-dark));
-    }
-
     &.btn-slide-primary {
-        @include button-slide-styles(var(--bs-white), var(--bs-primary));
+        @include button-slide-styles(var(--bs-white), $green, $green-light);
     }
 
-    &.btn-slide-success {
-        @include button-slide-styles(var(--bs-white), var(--bs-success));
+    &.btn-slide-yellow {
+        @include button-slide-styles(var(--bs-white), $gold-light, $gold-lighter);
     }
 
-    &.btn-slide-info {
-        @include button-slide-styles(var(--bs-white), var(--bs-info));
+    &.btn-slide-red {
+        @include button-slide-styles(var(--bs-white), $red, $red-light);
     }
 
-    &.btn-slide-warning {
-        @include button-slide-styles(var(--bs-white), var(--bs-warning));
+    &.btn-slide-dark {
+        @include button-slide-styles(var(--bs-white), $dark-light, $dark-lighter);
     }
 
-    &.btn-slide-danger {
-        @include button-slide-styles(var(--bs-white), var(--bs-danger));
+    &.btn-slide-blue {
+        @include button-slide-styles(var(--bs-white), $blue-light, $blue-lighter);
     }
 }
 

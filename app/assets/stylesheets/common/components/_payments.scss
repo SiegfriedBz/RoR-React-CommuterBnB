@@ -1,0 +1,8 @@
+.payment-card {
+    height: 100%;
+    width: 19rem;
+
+    @include media-breakpoint-up(sm) {
+        width: 22rem;
+    }
+}

@@ -1,6 +1,8 @@
 .auth-page--wrapper {
-    background-image: url(beach3.png);
     height: 75vh;
+    background-image: url(greece_a01.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -9,8 +11,9 @@
     .auth-page--form-input-group {
         display: flex;
         flex-direction: column;
-        padding: 42px;
+        padding: 24px;
         border-radius: 8px;
         background-color: white;
+        min-width: 312px;
     }
 }
