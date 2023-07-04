@@ -16,7 +16,7 @@ import {
 } from '../../../contexts'
 
 import { FlatCardCarousel } from '../../../components/flats'
-import { TotalPriceAndDays } from '../../../components'
+import { ModalWrapper, TotalPriceAndDays } from '../../../components'
 import BookingInfo from './BookingInfo'
 import BookingAgreementSwitches from './BookingAgreementSwitches'
 import BookingFlatsDetails from './BookingFlatsDetails'
@@ -25,8 +25,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { formatedDate } from '../../../utils/helpers/formatedDate'
 import { IFlat, IBookingRequest } from '../../../utils/interfaces'
-import {ButtonSlide} from '../../../components/buttons/'
-
+import { ButtonSlide } from '../../../components/buttons/'
+import { MessageForm } from '../../../components/messages'
 
 export interface ITransactionUser {
     userId: number,
@@ -40,15 +40,15 @@ export interface ITransactionUser {
 interface IProps {
     transactionRequest: IBookingRequest,
     setMapSelectedFlatId: React.Dispatch<React.SetStateAction<number | undefined>>,
-    handleSendMessage: (secondUserId: number, messageFlatId: number, transactionRequestId?: number) => void,
-    scrollToMap: () => void
+    scrollToMap: () => void,
+    containerWidth
 }
 
 const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) => {
     const {
+        containerWidth,
         transactionRequest,
         setMapSelectedFlatId,
-        handleSendMessage,
         scrollToMap } = props
 
     const {
@@ -80,11 +80,18 @@ const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) =>
     //* state
     const [currentUser, setCurrentUser] = useState<ITransactionUser | undefined>(undefined)
     const [secondUser, setSecondUser] = useState<ITransactionUser | undefined>(undefined)
-
     const [isExchange, setIsExchange] = useState<boolean>(false)
     const [isPureExchange, setIsPureExchange] = useState<boolean>(false)
+    // handle modal
+    const [modalIsOpen, setModalIsOpen] = useState(false)
+    // message
+    const [messageRecipientId, setMessageRecipientId] = useState<number | undefined>(undefined)
+    const [messageFlatId, setMessageFlatId] = useState<number | undefined>(undefined)
+    const [messageTransactionRequestId, setMessageTransactionRequestId] = useState<number | undefined>(undefined)
+    
 
-    // scrollIntoView forwarded from BookingRequestListPage
+    //* useImperativeHandle
+    // scroll Into View forwarded from BookingRequestListPage
     useImperativeHandle(forwardedRef, () => (
         { goIntoView: () => cardRef.current?.scrollIntoView({ behavior: 'smooth' }) }
         )
@@ -145,8 +152,20 @@ const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) =>
     }, [user, flats, transactionRequest])
 
     //* handlers
+    const handleSendMessage = (messageRecipientId: number, messageFlatId: number, messageTransactionRequestId: number) => {
+        // set message
+        setMessageRecipientId(messageRecipientId)
+        setMessageFlatId(messageFlatId)
+        setMessageTransactionRequestId(messageTransactionRequestId)
+        // open send-message modal
+        toggleModal()
+    }
+
+    const toggleModal = () => {
+        setModalIsOpen(prev => !prev)
+    }
+
     // currentUser rejects transactionRequest
-    // (TODO : ADD ADMIN DELETE)
     const handleRejectTransactionRequest = async (transactionRequestId: number) => {
         if(!window.confirm("Are you sure you want to reject this booking request?")) return
 
@@ -209,43 +228,38 @@ const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) =>
     if(!currentUser || !secondUser) return null
 
     return (
-        <div
-            ref={cardRef}
-            id={`transactionRequestId-${transactionRequestId}`}
-            className="booking-request-card--wrapper mx-auto" 
-            >
-                <div className="card mb-3">
-                    <div className="row mx-auto">
-                        {/* left panel */}
-                        <div className="col-md-7 d-flex flex-column justify-content-between">
-                            {/* responderFlat images */}
-                            <FlatCardCarousel images={flats?.find(flat => flat.flatId === responderFlatId)?.images} />
-                            {/* BookingInfo */}
-                            <div className='d-block d-md-none my-2'>
-                                <BookingInfo
-                                    transactionRequestId={transactionRequestId}
-                                    status={status}
-                                    currentUser={currentUser}
-                                    initiatorId={initiatorId}
-                                    isExchange={isExchange}
-                                />
-                            </div>
-                            {/* Booking Flats Details */}
-                            <BookingFlatsDetails
-                                responderFlat={flats.find(flat => flat.flatId === responderFlatId)}
-                                initiatorFlat={flats.find(flat => flat.flatId === initiatorFlatId)}
-                                currentUser={currentUser}
-                                secondUser={secondUser}
-                                setMapSelectedFlatId={setMapSelectedFlatId}
-                                isExchange={isExchange}
-                                scrollToMap={scrollToMap}
-                            />
-                        </div>
+        <>
+            {/* send message modal */}
+            <ModalWrapper 
+                modalIsOpen={modalIsOpen}
+                toggleModal={toggleModal}
+                containerWidth={containerWidth}
+            > 
+                <>
+                <h5 className="text-primary">Send a message</h5>
+                <MessageForm 
+                    toggleModal={toggleModal}
+                    messageRecipientId={messageRecipientId}
+                    messageFlatId={messageFlatId}
+                    messageTransactionRequestId={messageTransactionRequestId}
+                />
+                </>
+            </ModalWrapper>
 
-                        {/* right panel */}
-                        <div className="col-md-5">
-                            <div className="card-body p-0">
-                                <div className='d-none d-md-block my-2'>
+            {/* booking request card */}
+            <div
+                ref={cardRef}
+                id={`transactionRequestId-${transactionRequestId}`}
+                className="booking-request-card--wrapper mx-auto" 
+                >
+                    <div className="card mb-3">
+                        <div className="row mx-auto">
+                            {/* left panel */}
+                            <div className="col-md-7 d-flex flex-column justify-content-between">
+                                {/* responderFlat images */}
+                                <FlatCardCarousel images={flats?.find(flat => flat.flatId === responderFlatId)?.images} />
+                                {/* BookingInfo */}
+                                <div className='d-block d-md-none my-2'>
                                     <BookingInfo
                                         transactionRequestId={transactionRequestId}
                                         status={status}
@@ -254,117 +268,142 @@ const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) =>
                                         isExchange={isExchange}
                                     />
                                 </div>
+                                {/* Booking Flats Details */}
+                                <BookingFlatsDetails
+                                    responderFlat={flats.find(flat => flat.flatId === responderFlatId)}
+                                    initiatorFlat={flats.find(flat => flat.flatId === initiatorFlatId)}
+                                    currentUser={currentUser}
+                                    secondUser={secondUser}
+                                    setMapSelectedFlatId={setMapSelectedFlatId}
+                                    isExchange={isExchange}
+                                    scrollToMap={scrollToMap}
+                                />
+                            </div>
 
-                                {/* total */}
-                                <TotalPriceAndDays className="my-md-2"
-                                    pricePerNight={pricePerNight}
-                                    totalPriceInCents={totalPriceInCents}
-                                    totalDays={totalDays}
-                                >
-                                    {/* free/payer/payee */}
-                                    <span className="d-block fw-bolder text-success my-2">
-                                        { isPureExchange ? 
-                                            "Booking is free" 
-                                            : currentUser?.isPayer ?
-                                            "I am the payer" 
-                                            : "I am the payee"
-                                        }
-                                    </span>
-                                    {/* dates */}
-                                    <div className='mt-1'>
-                                        <span className="card-text">{formatedDate(startingDate)}</span>
-                                        {" "}<span className="card-text">to {formatedDate(endingDate)}</span>  
-                                    </div>
-                                </TotalPriceAndDays>
-
-                                {/* agreement */}
-                                { status === "pending" ?
-                                    <>
-                                        <BookingAgreementSwitches
+                            {/* right panel */}
+                            <div className="col-md-5">
+                                <div className="card-body p-0">
+                                    <div className='d-none d-md-block my-2'>
+                                        <BookingInfo
                                             transactionRequestId={transactionRequestId}
+                                            status={status}
                                             currentUser={currentUser}
-                                            setCurrentUser={setCurrentUser}
-                                            secondUser={secondUser}
+                                            initiatorId={initiatorId}
+                                            isExchange={isExchange}
                                         />
-                                    </>
-                                    : null
-                                }
+                                    </div>
 
-                                <div className="d-none d-md-flex mt-1 mb-2 flex-column justify-content-around">
-                                    {/* send message */}
-                                    <ButtonSlide
-                                        className="btn-slide-sm btn-slide-primary right-slide mx-auto my-1 w-100"
-                                        onClick={() => {
-                                            // responderFlatId -> messageFlatId
-                                            handleSendMessage(secondUser.userId, responderFlatId, transactionRequestId)
-                                        }}
-                                        >
-                                            <FontAwesomeIcon icon={faPaperPlane} />
-                                            {" "}Send message
-                                    </ButtonSlide>
-                                    {/* reject booking request */}
+                                    {/* total */}
+                                    <TotalPriceAndDays className="my-md-2"
+                                        pricePerNight={pricePerNight}
+                                        totalPriceInCents={totalPriceInCents}
+                                        totalDays={totalDays}
+                                    >
+                                        {/* free/payer/payee */}
+                                        <span className="d-block fw-bolder text-success my-2">
+                                            { isPureExchange ? 
+                                                "Booking is free" 
+                                                : currentUser?.isPayer ?
+                                                "I am the payer" 
+                                                : "I am the payee"
+                                            }
+                                        </span>
+                                        {/* dates */}
+                                        <div className='mt-1'>
+                                            <span className="card-text">{formatedDate(startingDate)}</span>
+                                            {" "}<span className="card-text">to {formatedDate(endingDate)}</span>  
+                                        </div>
+                                    </TotalPriceAndDays>
+
+                                    {/* agreement */}
                                     { status === "pending" ?
-                                        <ButtonSlide
-                                            className="btn-slide-sm btn-slide-warning right-slide mx-auto my-1 w-100"
-                                            onClick={() => handleRejectTransactionRequest(transactionRequestId)}
-                                        >
-                                            <FontAwesomeIcon icon={faTrashCan} />
-                                            {" "}Reject request
-                                        </ButtonSlide>
+                                        <>
+                                            <BookingAgreementSwitches
+                                                transactionRequestId={transactionRequestId}
+                                                currentUser={currentUser}
+                                                setCurrentUser={setCurrentUser}
+                                                secondUser={secondUser}
+                                            />
+                                        </>
                                         : null
                                     }
+
+                                    <div className="d-none d-md-flex mt-1 mb-2 flex-column justify-content-around">
+                                        {/* send message */}
+                                        <ButtonSlide
+                                            className="btn-slide-sm btn-slide-primary right-slide mx-auto my-1 w-100"
+                                            onClick={() => {
+                                                // responderFlatId -> messageFlatId
+                                                handleSendMessage(secondUser.userId, responderFlatId, transactionRequestId)
+                                            }}
+                                            >
+                                                <FontAwesomeIcon icon={faPaperPlane} />
+                                                {" "}Send message
+                                        </ButtonSlide>
+                                        {/* reject booking request */}
+                                        { status === "pending" ?
+                                            <ButtonSlide
+                                                className="btn-slide-sm btn-slide-warning right-slide mx-auto my-1 w-100"
+                                                onClick={() => handleRejectTransactionRequest(transactionRequestId)}
+                                            >
+                                                <FontAwesomeIcon icon={faTrashCan} />
+                                                {" "}Reject request
+                                            </ButtonSlide>
+                                            : null
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="row g-0 mt-1">
-                        <div className="d-flex d-md-none justify-content-between">
-                            {/* send message */}
-                            <ButtonSlide
-                                className="btn-slide-sm btn-slide-primary right-slide mx-2 my-1 w-100"
-                                onClick={() => {
-                                    // responderFlatId -> messageFlatId
-                                    handleSendMessage(secondUser.userId, responderFlatId, transactionRequestId)
-                                }}
-                                >
-                                    <FontAwesomeIcon icon={faPaperPlane} />
-                                    {" "}Send message
-                            </ButtonSlide>
-                            {/* reject booking request */}
-                            { status === "pending" ?
+                        <div className="row g-0 mt-1">
+                            <div className="d-flex d-md-none justify-content-between">
+                                {/* send message */}
                                 <ButtonSlide
-                                    className="btn-slide-sm btn-slide-warning right-slide mx-2 my-1 w-100"
-                                    onClick={() => handleRejectTransactionRequest(transactionRequestId)}
-                                >
-                                    <FontAwesomeIcon icon={faTrashCan} />
-                                    {" "}Reject request
+                                    className="btn-slide-sm btn-slide-primary right-slide mx-2 my-1 w-100"
+                                    onClick={() => {
+                                        // responderFlatId -> messageFlatId
+                                        handleSendMessage(secondUser.userId, responderFlatId, transactionRequestId)
+                                    }}
+                                    >
+                                        <FontAwesomeIcon icon={faPaperPlane} />
+                                        {" "}Send message
                                 </ButtonSlide>
+                                {/* reject booking request */}
+                                { status === "pending" ?
+                                    <ButtonSlide
+                                        className="btn-slide-sm btn-slide-warning right-slide mx-2 my-1 w-100"
+                                        onClick={() => handleRejectTransactionRequest(transactionRequestId)}
+                                    >
+                                        <FontAwesomeIcon icon={faTrashCan} />
+                                        {" "}Reject request
+                                    </ButtonSlide>
+                                    : null
+                                }
+                            </div>
+
+                            {/* go to payment */}
+                            { status === "pending" ? 
+                                <BookingGoToPayment 
+                                    transactionRequestId={transactionRequestId}
+                                    currentUser={currentUser}
+                                    secondUser={secondUser}
+                                    isExchange={isExchange}
+                                    isPureExchange={isPureExchange}
+                                    onCreatePayment={onCreatePayment}
+                                />
                                 : null
                             }
+                            {/* last update */}
+                            <p className="card-text text-center mt-2 mb-1">
+                                <small className="text-body-secondary">
+                                    Last update {formatDistanceToNow(new Date(updatedAt))} ago
+                                </small>
+                            </p>
                         </div>
-
-                        {/* go to payment */}
-                        { status === "pending" ? 
-                            <BookingGoToPayment 
-                                transactionRequestId={transactionRequestId}
-                                currentUser={currentUser}
-                                secondUser={secondUser}
-                                isExchange={isExchange}
-                                isPureExchange={isPureExchange}
-                                onCreatePayment={onCreatePayment}
-                            />
-                            : null
-                        }
-                        {/* last update */}
-                        <p className="card-text text-center mt-2 mb-1">
-                            <small className="text-body-secondary">
-                                Last update {formatDistanceToNow(new Date(updatedAt))} ago
-                            </small>
-                        </p>
                     </div>
-                </div>
-        </div>
+            </div>
+        </>
     )
 }
 
