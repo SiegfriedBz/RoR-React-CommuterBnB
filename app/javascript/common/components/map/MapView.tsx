@@ -42,6 +42,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     //* context
     // const { user } = useUserContext()
     const { flats } = useFlatsContext()
+    
 
     if(!flats) return <LoadingSpinners />
     
@@ -53,24 +54,25 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     const [flatsMarkers, setFlatsMarkers] = useState<IFlatMarker[] | []>([])
     const [showPopup, setShowPopup] = useState(false)
 
-    // set mapSelectedFlat
+
+
+    // set mapSelectedFlat && center map on selected flat
     useEffect(() => {
-        if(!selectedFlatId) return
+        if(!flats || !selectedFlatId) return
 
         const selectedFlat = flats.find(flat => flat.flatId === parseInt(selectedFlatId))
+        if(!selectedFlat) return
+
         setMapSelectedFlat(selectedFlat)
-    }, [flats, selectedFlatId ])
 
-    // center map on selected flat
-    useEffect(() => {
-        if(!mapSelectedFlat) return
+        const { longitude, latitude } = selectedFlat
 
-        const { longitude, latitude } = mapSelectedFlat
-        
         if(!longitude || !latitude) return
 
+        // TO FIX
         mapRef.current?.flyTo({ center: [ longitude, latitude ] })
-    }, [mapSelectedFlat])
+    }, [flats, selectedFlatId])
+
 
     // set flats markers
     const getflatsMarkers = useCallback(() => {
@@ -116,16 +118,16 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     const flatMarkerPointerClass = (flatId) => {
         const isSelectedFlat = parseInt(flatId) === parseInt(mapSelectedFlat?.flatId)
         return clsx("marker-location", {
-            "text-success": isSelectedFlat,
-            "text-primary": !isSelectedFlat
+            "text-primary": isSelectedFlat,
+            "text-white": !isSelectedFlat
         })
     }
 
     const flatMarkerPriceClass = (flatId) => {
         const isSelectedFlat = parseInt(flatId) === parseInt(mapSelectedFlat?.flatId)
         return clsx("marker-price badge rounded-pill", {
-            "text-bg-success": isSelectedFlat,
-            "text-bg-primary": !isSelectedFlat
+            "text-white text-bg-primary": isSelectedFlat,
+            "text-white text-bg-success": !isSelectedFlat
         })
     }
     
