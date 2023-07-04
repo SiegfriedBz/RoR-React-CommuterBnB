@@ -5,6 +5,7 @@ import { useAppContext, useUserContext } from '../../contexts'
 import {ButtonSlide} from '../../components/buttons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAt, faUnlock, faRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { TypeAnimationWrapper } from '../../components'
 
 interface IFormData {
     email: string,
@@ -63,74 +64,77 @@ const AuthPage: React.FC = () => {
     }
 
     return (
-        <div className="auth-page--wrapper ">
-            <form onSubmit={handleSubmit} className="w-md-50">
-                <div className="auth-page--form-input-group">
-                    <label 
-                        className="text-primary"
-                        htmlFor="email">
-                        <FontAwesomeIcon icon={faAt} />{" "}email
-                    </label>
-                    <input 
-                        type="email" 
-                        name="email"
-                        value={formValues.email}
-                        onChange={handleChange}
-                        autoComplete="email"
-                        className="form-control"
-                    />
-                    <label 
-                        className="text-primary mt-2"
-                        htmlFor="password">
-                        <FontAwesomeIcon icon={faUnlock} />{" "}password
-                    </label>
-                    <input 
-                        type="password" 
-                        name="password"
-                        value={formValues.password}
-                        onChange={handleChange}
-                        autoComplete="new-password"
-                        className="form-control mb-2"
-                    />
-                    { !isLoginForm ?
-                        <>
-                            <label
-                                className="text-primary mt-2"
-                                htmlFor="password_confirmation">
-                                <FontAwesomeIcon icon={faUnlock} />{" "}confirm password
-                            </label>
-                            <input 
-                                type="password" 
-                                name="password_confirmation"
-                                value={formValues.password_confirmation}
-                                onChange={handleChange} 
-                                autoComplete="new-password"
-                                className="form-control mb-2"
-                            />
-                        </>
-                        : null
-                    }
-                    <ButtonSlide 
-                        type="submit"
-                        disabled={isLoading}
-                        className={`btn-slide right-slide mt-2 ${isLoading? "btn-slide-blue" : "btn-slide-primary"}`}>
-                        { isLoginForm ? 
-                            <><FontAwesomeIcon icon={faRightToBracket} />{" "}login</>
-                            : <><FontAwesomeIcon icon={faRightToBracket} />{" "}sign up</>
+        <>
+            <div className="auth-page--wrapper ">
+                <TypeAnimationWrapper customClass={"text-white fs-3 mb-3"}/>
+                <form onSubmit={handleSubmit} className="w-md-50">
+                    <div className="auth-page--form-input-group">
+                        <label 
+                            className="text-primary"
+                            htmlFor="email">
+                            <FontAwesomeIcon icon={faAt} />{" "}email
+                        </label>
+                        <input 
+                            type="email" 
+                            name="email"
+                            value={formValues.email}
+                            onChange={handleChange}
+                            autoComplete="email"
+                            className="form-control"
+                        />
+                        <label 
+                            className="text-primary mt-2"
+                            htmlFor="password">
+                            <FontAwesomeIcon icon={faUnlock} />{" "}password
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password"
+                            value={formValues.password}
+                            onChange={handleChange}
+                            autoComplete="new-password"
+                            className="form-control mb-2"
+                        />
+                        { !isLoginForm ?
+                            <>
+                                <label
+                                    className="text-primary mt-2"
+                                    htmlFor="password_confirmation">
+                                    <FontAwesomeIcon icon={faUnlock} />{" "}confirm password
+                                </label>
+                                <input 
+                                    type="password" 
+                                    name="password_confirmation"
+                                    value={formValues.password_confirmation}
+                                    onChange={handleChange} 
+                                    autoComplete="new-password"
+                                    className="form-control mb-2"
+                                />
+                            </>
+                            : null
                         }
-                    </ButtonSlide>
-                    <ButtonSlide
-                        type="button"
-                        onClick={toggleLoginRegister}
-                        className='btn-slide top-slide mt-2 btn-slide-blue'>
-                        {!isLoginForm ? 
-                            'Already a member, please login'
-                            : 'Not yet a member, please signup'
-                        }
-                    </ButtonSlide>
-                </div>
-            </form>
-        </div>
+                        <ButtonSlide 
+                            type="submit"
+                            disabled={isLoading}
+                            className={`btn-slide right-slide mt-2 ${isLoading? "btn-slide-info" : "btn-slide-primary"}`}>
+                            { isLoginForm ? 
+                                <><FontAwesomeIcon icon={faRightToBracket} />{" "}login</>
+                                : <><FontAwesomeIcon icon={faRightToBracket} />{" "}sign up</>
+                            }
+                        </ButtonSlide>
+                        <ButtonSlide
+                            type="button"
+                            onClick={toggleLoginRegister}
+                            className='btn-slide top-slide mt-2 btn-slide-info'>
+                            {!isLoginForm ? 
+                                'Already a member, please login'
+                                : 'Not yet a member, please signup'
+                            }
+                        </ButtonSlide>
+                    </div>
+                </form>
+            </div>
+        </>
     )
 }
 
