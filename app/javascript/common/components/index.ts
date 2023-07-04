@@ -6,14 +6,16 @@ import ModalWrapper from "./ModalWrapper"
 import NewsLetterSuscribe from "./NewsLetterSuscribe"
 import Status from "./Status"
 import DropZoneWrapper from './DropZoneWrapper'
+import TypeAnimationWrapper from "./TypeAnimationWrapper"
 
 export {
     ProtectedRoute,
     TotalPriceAndDays,
     NewsLetterSuscribe,
-    DateRangePickerWrapper,
-    ModalWrapper,
     Status,
     LoadingSpinners,
-    DropZoneWrapper
+    ModalWrapper,
+    DateRangePickerWrapper,
+    DropZoneWrapper,
+    TypeAnimationWrapper
 }
