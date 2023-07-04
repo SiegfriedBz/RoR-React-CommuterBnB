@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react'
 import { useUserContext, useFlatsContext } from '../../../contexts'
  import ReviewForm from './ReviewForm'
 import { ModalWrapper, Status } from '../../../components'
-import {ButtonSlide} from '../../../components/buttons'
+import { ButtonSlide } from '../../../components/buttons'
 import { IUser, IFlat, IReview } from '../../../utils/interfaces'
 import { formatedDate } from '../../../utils/helpers/formatedDate'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -19,6 +19,7 @@ import {
 import { tr } from 'date-fns/locale'
 
 interface IProps {
+    containerWidth?: number,
     payment: {
         paymentId: number,
         transactionRequestId: number,
@@ -35,7 +36,9 @@ interface IProps {
 }
 
 const PaymentCard: React.FC = (props) => {
-    const { payment:
+    const { 
+        containerWidth,
+        payment:
         { 
             paymentId,
             transactionRequestId,
@@ -146,23 +149,24 @@ const PaymentCard: React.FC = (props) => {
         return `${flat.city}, ${flat.country}`
     }
   
-
-    console.log("currentUserDidReview", currentUserDidReview)
-    
     return (
         <>  
+            {/* send message modal */}
             <ModalWrapper 
                 modalIsOpen={modalIsOpen}
                 toggleModal={toggleModal}
+                containerWidth={containerWidth}
             > 
                 <>
-                    <h3 className="text-dark">Send review</h3>
+                    <h5 className="text-primary">Send review</h5>
                     <ReviewForm
                         flatId={secondUserFlat?.flatId}
                         transactionRequestId={transactionRequestId}
                     />
                 </>
             </ModalWrapper>
+
+            {/* payment card */}
             <div className="card payment-card">
                 <div className="card-body">
                     <h4 className="card-title text-primary">
