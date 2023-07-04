@@ -11,7 +11,7 @@ const Status: React.FC<BookingRequestStatusType> = ({ status }) => {
           : status === "rejected" ?
               <FontAwesomeIcon className="text-danger" icon={faBan} />
             : status === "completed" ?
-                <FontAwesomeIcon className="text-success" icon={faCircleCheck} />
+                <FontAwesomeIcon className="text-primary" icon={faCircleCheck} />
               : null
         }
         {" "}{status}
