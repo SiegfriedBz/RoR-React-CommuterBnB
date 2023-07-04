@@ -5,15 +5,11 @@ import { useAppContext } from '../../../contexts'
 import {ButtonSlide} from '../../../components/buttons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import StarRating from './StarRating'
 
 interface IProps {
     flatId: number,
     transactionRequestId: number
-}
-
-const initReview = {
-    content: 'Awesome',
-    rating: 5
 }
 
 const ReviewForm: React.FC<IProps> = (props) => {
@@ -25,19 +21,14 @@ const ReviewForm: React.FC<IProps> = (props) => {
     const { setFlashMessage } = useAppContext()
 
     //* state
-    const [review, setReview] = useState(initReview)
-
-    //* methods
-    const handleChange = (e) => {
-        setReview({
-            ...review,
-            [e.target.name]: e.target.value
-        })
-    }
+    const [content, setContent] = useState("Awesome")
+    const [rating, setRating] = useState(4)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if(!review?.content || !transactionRequestId || !transactionRequestId) return
+        if(!content || !transactionRequestId || !transactionRequestId) return
+
+        const review = { content, rating }
         
         const fetchedData = await createReview(flatId, transactionRequestId, review)
 
@@ -51,7 +42,6 @@ const ReviewForm: React.FC<IProps> = (props) => {
 
         if (response.status === 201) {
             navigate(`/properties/${flatId}`)
-            setReview(initReview)
             setFlashMessage({ message: data.message, type: "success" })
         } 
         else {
@@ -60,22 +50,25 @@ const ReviewForm: React.FC<IProps> = (props) => {
     }
 
     return (
-            <form>
-                <div className="d-flex flex-column">
-                    <label htmlFor="content">Content</label>
-                    <textarea name="content" value={review.content} onChange={handleChange} />
-                </div>
-                <div className="d-flex flex-column">
-                    <label htmlFor="rating">Rating</label>
-                    <input type="number" name="rating" value={review.rating} onChange={handleChange} />
+            <form onSubmit={handleSubmit}>
+                <div className="form-group w-100">
+                    <textarea
+                        className='w-100 mb-1'
+                        name="content"
+                        value={content.content}
+                        onChange={(e) => setContent(e.target.value)}
+                    />
+                    <StarRating
+                        rating={rating}
+                        setRating={setRating}
+                    />
                 </div>
                 <ButtonSlide 
                     type="submit"
-                    className="btn-slide btn-slide-info right-slide mt-2"
-                    onClick={handleSubmit}
+                    className="btn-slide btn-slide-primary right-slide mt-3"
                 >
                    <FontAwesomeIcon icon={faPaperPlane} />
-                    {" "}Send review
+                    {" "}Send
                 </ButtonSlide>
             </form>
     )
