@@ -6,7 +6,6 @@ import FlatCard from '../flats/FlatCard'
 import LoadingSpinners from '../LoadingSpinners'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDollarSign, faLocationDot } from '@fortawesome/free-solid-svg-icons'
-
 import { IFlat } from '../../utils/interfaces'
 
 //************************************************ */
@@ -49,12 +48,10 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     //* state
     const mapRef = useRef(null)
     const [mapSelectedFlat, setMapSelectedFlat] = useState<IFlat | undefined>(undefined)
-    const [userMarker, setUserMarker] = useState<IUserMarker>({longitude: 14.44, latitude: 35.89 })
+    const [userMarker, setUserMarker] = useState<IUserMarker>({ longitude: 26.85, latitude: 37.76 })
     // const [userFlats, setUserFlats] = useState([])
     const [flatsMarkers, setFlatsMarkers] = useState<IFlatMarker[] | []>([])
     const [showPopup, setShowPopup] = useState(false)
-
-
 
     // set mapSelectedFlat && center map on selected flat
     useEffect(() => {
@@ -119,7 +116,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
         const isSelectedFlat = parseInt(flatId) === parseInt(mapSelectedFlat?.flatId)
         return clsx("marker-location", {
             "text-primary": isSelectedFlat,
-            "text-white": !isSelectedFlat
+            "text-info": !isSelectedFlat
         })
     }
 
@@ -127,7 +124,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
         const isSelectedFlat = parseInt(flatId) === parseInt(mapSelectedFlat?.flatId)
         return clsx("marker-price badge rounded-pill", {
             "text-white text-bg-primary": isSelectedFlat,
-            "text-white text-bg-success": !isSelectedFlat
+            "text-white text-bg-info": !isSelectedFlat
         })
     }
     
@@ -150,8 +147,8 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
                     return (
                         <Marker key={flatId} longitude={longitude} latitude={latitude} >
                             <div
-                                onMouseEnter={() => { console.log("enter",flatId )}}
-                                onMouseLeave={() => { console.log("leave",flatId )}}
+                                // onMouseEnter={() => { console.log("enter",flatId )}}
+                                // onMouseLeave={() => { console.log("leave",flatId )}}
                                 onClick={() => handleFlatMarkerClick(flatId)}
                             >
                                 <div className="map-markers">

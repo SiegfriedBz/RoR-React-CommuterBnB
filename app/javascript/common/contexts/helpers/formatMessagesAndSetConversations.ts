@@ -48,8 +48,6 @@ const formatMessages = (messages) => {
         }
         }
     )
-    console.log(formattedMessages);
-    
     return formattedMessages
 }
 

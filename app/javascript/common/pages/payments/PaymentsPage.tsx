@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Link } from "react-router-dom"
 import { useFetch } from '../../hooks'
 import PaymentCard from './components/PaymentCard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse } from '@fortawesome/free-solid-svg-icons'
+import MapView from '../../components/map/MapView'
 
 const PaymentsPage: React.FC = () => {
   //* hooks
@@ -31,6 +35,18 @@ const PaymentsPage: React.FC = () => {
     
     setContainerWidth(containerWidth)
   }, [])
+
+  if(payments.length === 0) {
+    return (
+      <div className="text-center">
+        <Link to="/" replace={true} className="text-primary fs-5 text-decoration-none mb-2">
+          <FontAwesomeIcon icon={faHouse} />
+          {" "}<span className="d-block text-primary fs-5">Start contacting members to rent or swap your property</span>
+        </Link>
+        <MapView />
+      </div>
+    )
+  }
 
   return (
     <div ref={containerRef}>

@@ -18,8 +18,6 @@ const FlatHostedBy: React.FC<IProps> = ({ hostFlat }) => {
 
   const { owner: { email, description, image, createdAt } } = hostFlat
 
-  console.log('FlatHostedBy hostFlat.owner', hostFlat.owner)
-
   return (
     <div className="my-3">
        <h2>Host</h2>
