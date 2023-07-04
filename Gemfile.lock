@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/faker-ruby/faker.git
+  revision: a342e3e2200ca7862ef30e8e54bddc215dbd1ff8
+  branch: main
+  specs:
+    faker (3.2.0)
+      i18n (>= 1.8.11, < 2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -329,6 +337,7 @@ DEPENDENCIES
   devise
   devise-jwt
   factory_bot_rails
+  faker!
   figaro
   geocoder (~> 1.8, >= 1.8.1)
   jbuilder

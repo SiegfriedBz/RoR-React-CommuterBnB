@@ -18,6 +18,7 @@ gem "figaro"
 gem 'geocoder', '~> 1.8', '>= 1.8.1'
 gem "jsonapi-serializer"
 gem "rack-cors"
+gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main'
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"

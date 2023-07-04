@@ -71,7 +71,7 @@ const FlatCard: React.FC<IProps> = ({ flat, flatCardOnMap }) => {
                 <div className="d-flex justify-content-between align-content-center">
                     { address && 
                         <span className="card-text text-center">
-                            <FontAwesomeIcon className=" text-dark" icon={faHouse} />
+                            <FontAwesomeIcon className="text-primary" icon={faHouse} />
                             {" "}{address}
                         </span>
                     }
@@ -86,7 +86,7 @@ const FlatCard: React.FC<IProps> = ({ flat, flatCardOnMap }) => {
                             }}
                         >
                             <FontAwesomeIcon 
-                                className={`icon ${isUserFavorite ? "text-danger" : "text-dark"}`} 
+                                className={`icon ${isUserFavorite ? "text-danger" : "text-primary"}`} 
                                 icon={faHeart} 
                             />
                         </span>

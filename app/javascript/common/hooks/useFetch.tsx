@@ -61,8 +61,6 @@ export const useFetch = () => {
     const updateUser = async (formData) => {
         const url = `${BASE_URL}/signup`
 
-        console.log("formData", formData)
-
         return await fetchData(url, {
             method: 'PATCH',
             headers: { 'Authorization': `Bearer ${JSON.parse(token)}` },

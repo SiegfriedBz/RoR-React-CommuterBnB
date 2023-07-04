@@ -1,6 +1,9 @@
 //* custom
+
 $primary-light: hsl(182, 96%, 37%);
-$primary-lighter: hsl(182, 96%, 97%);
+$primary-lighter: hsl(182, 74%, 72%);
+$primary-test: hsl(182, 96%, 86%);
+$primary-x-lighter: hsl(182, 96%, 97%);
 $secondary-light: hsl(0, 0%, 70%);
 $success-light: hsl(182, 96%, 87%);
 $dark-light: hsl(0, 0%, 40%);
@@ -22,21 +25,25 @@ $black: black;
 
 // 
 $body-bg: $white;
-$header-bg: $primary-lighter;
+$header-bg: $primary-x-lighter;
 
 // $header-bg-gradient: linear-gradient(to right, $success, $secondary);
-// _form form-control
+// form 
 $form-switch-color: $success;
 $form-switch-checked-color: $white;
 $form-check-input-checked-bg-color: $success;
+// dropdown
 $dropdown-color: $primary;
-$dropdown-bg: $white;
-$dropdown-link-hover-bg: $primary-lighter;
+$dropdown-bg: $primary-x-lighter;
+
+$dropdown-link-hover-bg: $primary;
 $dropdown-link-active-color: $white;
 $dropdown-link-active-bg: $primary;
-// _input
+
+// input
 $input-focus-box-shadow: 0 0 0 0.1rem rgba($success, 0.25);
-/* _navbar */
-$navbar-light-color: $success;
-$navbar-light-toggler-border-color: $dark;
+
+// navbar
+$navbar-light-color: $primary;
+$navbar-light-toggler-border-color: $primary;
 $navbar-toggler-focus-width: 0.08rem;

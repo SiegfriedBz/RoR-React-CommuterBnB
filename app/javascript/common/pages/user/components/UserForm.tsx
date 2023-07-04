@@ -36,7 +36,6 @@ const UserForm: React.FC = (props) => {
 
     // Dropzone
     const onDrop = (acceptedFiles) => {
-        console.log("acceptedFiles[0]", acceptedFiles[0])
         setDroppedFile(acceptedFiles[0])
     }
 
@@ -80,9 +79,6 @@ const UserForm: React.FC = (props) => {
         }
         
         const fetchedData = await updateUser(formData)
-        console.log("UserForm fetchedData", fetchedData)
-        
-
         if(!fetchedData) {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
             return
@@ -90,7 +86,6 @@ const UserForm: React.FC = (props) => {
 
         const response = fetchedData[0]
         const data = fetchedData[1]
-
         if(!response || response.status !== 200 || !data) {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
             return
