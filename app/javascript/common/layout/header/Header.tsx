@@ -102,7 +102,7 @@ const Header: React.FC = () => {
         <>
         <header className="header--wrapper">
             <nav className="navbar navbar-expand-lg">
-                <div className="container-fluid">
+                <div className="container-fluid pt-2">
                     <Link className="navbar-brand fs-2" to='/'>SwapBnb</Link>
                     { renderNotificationBell() }
 
@@ -180,6 +180,7 @@ const Header: React.FC = () => {
                                         </NavLink>
                                 }
                             </li>
+                        {/* </div> */}
                         </ul>
                     </div>
                 </div>

@@ -10,11 +10,7 @@ import Avatar from '../../components/user/Avatar'
         tokenInStorage,
         setTokenInStorage 
     } = useUserContext()
-
-    console.log('UserPage user?.image', user?.image)
-    console.log('UserPage user', user)
   
-
   return (
     <div>
         <h2>My Profile</h2>

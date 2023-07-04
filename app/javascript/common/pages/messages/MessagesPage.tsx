@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useFetch } from '../../hooks'
-import { useUserContext, useMessagesContext } from '../../contexts'
+import { useAppContext, useUserContext, useMessagesContext } from '../../contexts'
 import ChatsList from './components/ChatsList'
 import MessagesList from './components/MessagesList'
 import MessagesFlat from './components/MessagesFlat'
 import { formatMessagesAndSetConversations } from '../../contexts/helpers/formatMessagesAndSetConversations'
+import { LoadingSpinners } from '../../components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse } from '@fortawesome/free-solid-svg-icons'
+import MapView from '../../components/map/MapView'
 
 //* NOTE: flat with messageFlatId always belongs to:
 // - the user contacted from /properties/:id/requests/message
@@ -13,8 +17,9 @@ import { formatMessagesAndSetConversations } from '../../contexts/helpers/format
 // - the 1st "recipient" of a conversation on /my-messages
  
 const MessagesPage: React.FC = () => {
-  const topRef = useRef<HTMLElement>(null)
   //* hooks & context
+  const topRef = useRef<HTMLElement>(null)
+  const { setFlashMessage } = useAppContext()
   const { user } = useUserContext()
   const { conversations, setConversations } = useMessagesContext()
   const { getUserMessages } = useFetch()
@@ -49,20 +54,22 @@ const MessagesPage: React.FC = () => {
   const scrollToTop = () => {
     topRef.current.scrollIntoView({ behavior: 'smooth' })
   }
+  
+  if(!conversations) return <LoadingSpinners />
 
-  //* render
-  if(!conversations) return (
-    <div className="row mt-3">
-      <span className="">
-        You have no messages yet. Start a conversation after
-        <Link
-          to="/"
-          className=""
-          >selecting a property
+  if(Object.keys(conversations)?.length === 0) {
+    return (
+      <div className="text-center">
+        <Link to="/" replace={true} className="text-primary fs-5 text-decoration-none">
+          <FontAwesomeIcon icon={faHouse} />
+          {" "}<span className="d-block text-primary fs-5">Start contacting members to rent or swap your property</span>
         </Link>
-      </span>
-    </div>
-  )
+        <MapView />
+      </div>
+    )
+
+
+  }
   
   return (
     <>

@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import { useFetch } from '../../hooks'
 import { useBookingsContext } from '../../contexts'
 import BookingRequestCard from './components/BookingRequestCard'
 import MapView from '../../components/map/MapView'
 import { ButtonSlide, ButtonScrollToTop } from '../../components/buttons/'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faEye } from '@fortawesome/free-solid-svg-icons'
 import { IBookingRequest } from "../../utils/interfaces"
 
 const BookingRequestListPage: React.FC = () => {
@@ -90,6 +90,18 @@ const BookingRequestListPage: React.FC = () => {
     const selectedBookingRequests = showOnlyPending ?
       bookingRequests.filter(bookingRequest => bookingRequest.status === 'pending')
       : bookingRequests
+
+    if(bookingRequests.length === 0) {
+      return (
+        <div className="text-center">
+          <Link to="/" replace={true} className="text-primary fs-5 text-decoration-none mb-2">
+            <FontAwesomeIcon icon={faHouse} />
+            {" "}<span className="d-block text-primary fs-5">Start contacting members to rent or swap your property</span>
+          </Link>
+          <MapView />
+        </div>
+      )
+    }
     
     return (
         <div ref={containerRef}>
@@ -104,29 +116,23 @@ const BookingRequestListPage: React.FC = () => {
           </div>
 
           <div className="row row-cols-1 row-cols-xl-2 mx-auto">
-            {bookingRequests.length === 0 ?
-              ( <span className="d-block my-1">You don't have active booking requests yet,
-                  <span className="text-primary fw-bolder"> start exploring the properties on the map</span>
-                </span>
-              )
-              :
-              // ( <div className={`mx-auto ${selectedBookingRequests.length > 0 && "row row-cols-1 row-cols-lg-2 gb-2gx-lg-2 row-cols-xl-1 gx-xl-0"}`}>
-              ( <div className={`mx-auto col`}>
-                {selectedBookingRequests?.map((bookingRequest) => {
-                  return (
-                    <BookingRequestCard
-                        key={bookingRequest.transactionRequestId}
-                        ref={bookingRequest.transactionRequestId === cardRefSelectedId ? cardRef : null}
-                        transactionRequest={bookingRequest}
-                        setMapSelectedFlatId={setMapSelectedFlatId}
-                        scrollToMap={scrollToMap}
-                        containerWidth={containerWidth}
-                    />
-                  )
-                })}
-              </div>
-              )
-            }
+
+            {/* ( <div className={`mx-auto ${selectedBookingRequests.length > 0 && "row row-cols-1 row-cols-lg-2 gb-2gx-lg-2 row-cols-xl-1 gx-xl-0"}`}> */}
+            ( <div className={`mx-auto col`}>
+              {selectedBookingRequests?.map((bookingRequest) => {
+                return (
+                  <BookingRequestCard
+                      key={bookingRequest.transactionRequestId}
+                      ref={bookingRequest.transactionRequestId === cardRefSelectedId ? cardRef : null}
+                      transactionRequest={bookingRequest}
+                      setMapSelectedFlatId={setMapSelectedFlatId}
+                      scrollToMap={scrollToMap}
+                      containerWidth={containerWidth}
+                  />
+                )
+              })}
+            </div>
+            )
 
             {/* <div className={`mx-auto col ${selectedBookingRequests.length > 0 && "col"}`}> */}
             <div className={`mx-auto col`}>
