@@ -4,9 +4,7 @@ import { useFetch } from '../../hooks'
 import { useBookingsContext } from '../../contexts'
 import BookingRequestCard from './components/BookingRequestCard'
 import MapView from '../../components/map/MapView'
-import { ModalWrapper } from '../../components'
-import {ButtonSlide, ButtonScrollToTop} from '../../components/buttons/'
-import MessageForm from '../../components/messages/MessageForm'
+import { ButtonSlide, ButtonScrollToTop } from '../../components/buttons/'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { IBookingRequest } from "../../utils/interfaces"
@@ -18,6 +16,7 @@ const BookingRequestListPage: React.FC = () => {
     const topRef = useRef(null)
     const mapRef = useRef(null)
     const cardRef = useRef(null)
+    const containerRef = useRef(null)
 
     //* context
     const { bookingRequests, setBookingRequests } = useBookingsContext()
@@ -27,13 +26,10 @@ const BookingRequestListPage: React.FC = () => {
     const [cardRefSelectedId, setCardRefSelectedId] = useState<number | undefined>(undefined)
     // fly to flat map marker when flat is selected from a BookingRequestCard
     const [mapSelectedFlatId, setMapSelectedFlatId] = useState<number | undefined>(undefined)
-    // send-message form modal
-    const [modalIsOpen, setModalIsOpen] = useState(false)
-    // message
-    const [messageRecipientId, setMessageRecipientId] = useState<number | undefined>(undefined)
-    const [messageFlatId, setMessageFlatId] = useState<number | undefined>(undefined)
-    const [messageTransactionRequestId, setMessageTransactionRequestId] = useState<number | undefined>(undefined)
+    //  showOnlyPending bookings
     const [showOnlyPending, setShowOnlyPending] = useState(false)
+    // containerWidth for modal
+    const [containerWidth, setContainerWidth] = useState(undefined)
     
     //* effects
     // fetch all transaction requests and set them in context
@@ -60,6 +56,14 @@ const BookingRequestListPage: React.FC = () => {
 
     }, [bookingRequests, cardRefSelectedId])
 
+    // containerWidth for modal
+    useEffect(() => {
+      const containerWidth = containerRef?.current?.offsetWidth
+      if(!containerWidth) return 
+
+      setContainerWidth(containerWidth)
+    }, [])
+
     //* helpers
     const getAllTransactionRequests = async() => {
       const fetchedBookingRequests = await getUserBookingRequests()        
@@ -72,19 +76,6 @@ const BookingRequestListPage: React.FC = () => {
       if(!bookingRequests) return
 
       setBookingRequests(bookingRequests)
-    }
-
-    const handleSendMessage = (messageRecipientId: number, messageFlatId: number, messageTransactionRequestId: number) => {
-      // set message
-      setMessageRecipientId(messageRecipientId)
-      setMessageFlatId(messageFlatId)
-      setMessageTransactionRequestId(messageTransactionRequestId)
-      // open send-message modal
-      toggleModal()
-    }
-
-    const toggleModal = () => {
-      setModalIsOpen(prev => !prev)
     }
 
     const scrollToTop = () => {
@@ -101,22 +92,7 @@ const BookingRequestListPage: React.FC = () => {
       : bookingRequests
     
     return (
-        <>
-          <ModalWrapper 
-            modalIsOpen={modalIsOpen}
-            toggleModal={toggleModal}
-          > 
-            <>
-              <h3 className="text-dark">Send a message</h3>
-              <MessageForm 
-                toggleModal={toggleModal}
-                messageRecipientId={messageRecipientId}
-                messageFlatId={messageFlatId}
-                messageTransactionRequestId={messageTransactionRequestId}
-              />
-            </>
-          </ModalWrapper>
-
+        <div ref={containerRef}>
           <div ref={topRef} className="d-flex justify-content-center w-100 mt-2 mb-3">
             <ButtonSlide
               className=" fs-5 btn-slide btn-slide-primary bottom-slide"
@@ -142,9 +118,9 @@ const BookingRequestListPage: React.FC = () => {
                         key={bookingRequest.transactionRequestId}
                         ref={bookingRequest.transactionRequestId === cardRefSelectedId ? cardRef : null}
                         transactionRequest={bookingRequest}
-                        handleSendMessage={handleSendMessage}
                         setMapSelectedFlatId={setMapSelectedFlatId}
                         scrollToMap={scrollToMap}
+                        containerWidth={containerWidth}
                     />
                   )
                 })}
@@ -162,7 +138,7 @@ const BookingRequestListPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
     )
 }
 

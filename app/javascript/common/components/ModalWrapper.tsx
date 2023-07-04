@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCircleXmark
  } from '@fortawesome/free-regular-svg-icons'
     
-const customStyles = {
+const initCustomStyles = {
   content: {
     top: '50%',
     left: '33%',
@@ -21,18 +21,43 @@ const customStyles = {
 interface IProps {
     modalIsOpen: boolean,
     toggleModal: () => void,
+    containerWidth?: number
 }
 
 const ModalWrapper: React.FC<IProps> = ({ 
         modalIsOpen,
         toggleModal,
+        containerWidth,
         children
      }) => {
 
     Modal.setAppElement('#root')
+
+    // wrapper styles
+    const [customStyles, setCustomStyles] = useState(initCustomStyles)
+
+    useEffect(() => {
+        if(!containerWidth) return 
+
+        if(containerWidth < 768) {
+            setCustomStyles(prev => {
+                return { 
+                    content: { 
+                        ...prev.content,
+                        left: '50%',
+                        width: '85%'
+                    }
+            }})
+        }
+
+        return () => {
+            setCustomStyles(initCustomStyles)
+        }
+
+    }, [])
     
     return (
-        <div className='modal--wrapper'>
+        <div>
             <Modal
                 isOpen={modalIsOpen}
                 // onAfterOpen={afterOpenModal}
@@ -48,7 +73,7 @@ const ModalWrapper: React.FC<IProps> = ({
                             onClick={toggleModal}
                             className="bg-transparent border-0"
                         >
-                            <FontAwesomeIcon icon={faCircleXmark} />
+                            <FontAwesomeIcon className="text-primary" icon={faCircleXmark} />
                         </button>
                     </div>
                 </div>

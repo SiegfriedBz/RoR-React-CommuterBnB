@@ -75,7 +75,7 @@ const ChatsList: React.FC<IProps> = (props) => {
           onClick={handleDeselectConversation}
         >
           <div className="d-flex align-items-center">
-            <FontAwesomeIcon className="text-dark" icon={faComments} />
+            <FontAwesomeIcon className="text-primary" icon={faComments} />
             {" "}<span className="mx-3">Pick a chat</span>
             { selectedFlatUsersKey &&
                 <><span>{" "}</span><FontAwesomeIcon className="text-success" icon={faHandPointLeft} /></>
