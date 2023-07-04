@@ -1,7 +1,7 @@
 databases:
-  - name: swapBnb
-    databaseName: swapBnb
-    user: swapBnb
+  - name: commuter_bnb
+    databaseName: commuter_bnb_production
+    user: commuter_bnb
 
 services:
   - type: web
