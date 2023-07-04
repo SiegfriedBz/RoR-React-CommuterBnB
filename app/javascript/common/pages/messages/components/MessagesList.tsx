@@ -34,12 +34,12 @@ const MessagesList: React.FC<IProps> = (props) => {
               return (
                 <li key={messageToRead.messageId}>
                   <p>{ user.email === messageToRead.recipientEmail ? 
-                    <><FontAwesomeIcon className="text-dark" icon={faComment} />{" "}{ messageToRead.authorEmail.split("@")[0] }</>
+                    <><FontAwesomeIcon className="text-primary" icon={faComment} />{" "}{ messageToRead.authorEmail.split("@")[0] }</>
                     : <><FontAwesomeIcon className="text-dark" icon={faCommentDots} />{" "}Me </>
                     }
                   </p>
                   <p className={user.email === messageToRead.recipientEmail ?
-                      "p-1 bg-primary-subtle border border-primary-subtle rounded-3"
+                      "p-2 bg-primary-subtle border border-primary-subtle rounded-3"
                       :""}
                   >
                     { messageToRead.content }
