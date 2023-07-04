@@ -305,7 +305,7 @@ const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) =>
                                     {/* reject booking request */}
                                     { status === "pending" ?
                                         <ButtonSlide
-                                            className="btn-slide-sm btn-slide-yellow right-slide mx-auto my-1 w-100"
+                                            className="btn-slide-sm btn-slide-warning right-slide mx-auto my-1 w-100"
                                             onClick={() => handleRejectTransactionRequest(transactionRequestId)}
                                         >
                                             <FontAwesomeIcon icon={faTrashCan} />
@@ -334,7 +334,7 @@ const BookingRequestCard: React.FC = (props: IProps, forwardedRef: React.Ref) =>
                             {/* reject booking request */}
                             { status === "pending" ?
                                 <ButtonSlide
-                                    className="btn-slide-sm btn-slide-yellow right-slide mx-2 my-1 w-100"
+                                    className="btn-slide-sm btn-slide-warning right-slide mx-2 my-1 w-100"
                                     onClick={() => handleRejectTransactionRequest(transactionRequestId)}
                                 >
                                     <FontAwesomeIcon icon={faTrashCan} />

@@ -59,8 +59,14 @@ const FlatDetailsPage: React.FC = () => {
        if(!window.confirm("Are you sure you want to delete this property?")) return null
 
         const fetchedData = await deleteFlat(selectedFlatId)
-        
-        if(fetchedData) {
+        if(!fetchedData) {
+            return setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
+        }
+
+        const [response, data] = fetchedData
+
+        if(response.ok) {
+            setFlashMessage({ message: data.message, type: "success" })
             navigate('/')
             deleteFlatInContext(flat?.flatId)
         } else {
@@ -78,25 +84,28 @@ const FlatDetailsPage: React.FC = () => {
             <div className="my-2">
                 { currentUserIsOwner &&
                     <>
-                        <span className="fw-bolder text-dark d-block">You own this property</span>
-                        <Link 
-                            to={`/edit-property/${flat?.flatId}`}
-                            >
-                                 <ButtonSlide
-                                    className="btn-slide btn-slide-blue top-slide me-2"
-                                 >
-                                    <FontAwesomeIcon icon={faCloudArrowUp} />
-                                    {" "}Update my property
-                                </ButtonSlide>
+                        <span className="fw-bolder fs-5 text-success d-block">You own this property</span>
+                        <span className='d-block w-50 my-2'>
+                            <Link 
+                                to={`/edit-property/${flat?.flatId}`}
+                                >
+                                    <ButtonSlide className="btn-slide-sm btn-slide-info top-slide"
+                                    >
+                                        <FontAwesomeIcon icon={faCloudArrowUp} />
+                                        {" "}Update my property
+                                    </ButtonSlide>
                             </Link>
-                        <ButtonSlide 
-                            type="button" 
-                            onClick={handleDeleteFlat}
-                            className="btn-slide btn-slide-red bottom-slide me-2"
+                        </span>
+                        <span className='d-block w-50 my-2'>
+                            <ButtonSlide 
+                                type="button" 
+                                onClick={handleDeleteFlat}
+                                className="btn-slide-sm btn-slide-danger bottom-slide"
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
                                 {" "}Delete my property
-                        </ButtonSlide>
+                            </ButtonSlide>
+                        </span>
                     </>
                 }
             </div>
@@ -124,7 +133,7 @@ const FlatDetailsPage: React.FC = () => {
                     to="/my-profile"
                     >
                         <ButtonSlide
-                            className="btn-slide btn-slide-blue top-slide"
+                            className="btn-slide-sm btn-slide-info top-slide"
                         >
                             <FontAwesomeIcon icon={faCloudArrowUp} />
                             {" "}Update my profile

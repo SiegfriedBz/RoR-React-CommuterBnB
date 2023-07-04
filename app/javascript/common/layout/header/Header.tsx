@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, NavLink, useNavigate, useLocation} from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { useMessagesContext, useUserContext } from '../../contexts'
 import SearchBar from './SearchBar'
+import { TypeAnimationWrapper } from '../../components'
 
 const Header: React.FC = () => {
     //* hooks & context
@@ -21,6 +22,9 @@ const Header: React.FC = () => {
     const navigate = useNavigate()
     const { user, setTokenInStorage } = useUserContext()
     const { notificationConversationKeyRef } = useMessagesContext()
+
+    //* state
+    const [animationIsVisible, setAnimationIsVisible] = useState<boolean>(true)
 
     //* handlers
     const handleLogout = () => {
@@ -48,7 +52,6 @@ const Header: React.FC = () => {
         return location.pathname === '/'
     }
 
-
     // SearchBar on home page
     const renderSearchBarOnHomePage = () => {
         if (!isHomePage()) return null
@@ -72,7 +75,7 @@ const Header: React.FC = () => {
                 </a>
                 
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Search">
-                <div className="header--nav-search-bar">
+                <div className="header--mobile-search-bar">
                     <SearchBar />
                 </div>
                 </div>
@@ -80,7 +83,23 @@ const Header: React.FC = () => {
         )
     }
 
+    // TypeAnimation on home page
+    const toggleTypeAnimationIsVisible = () => {
+        setAnimationIsVisible(prev => !prev)
+    }
+
+    const renderTypeAnimationOnHomePage = () => {
+        if (!isHomePage()) return null
+
+        return (
+            <div className={animationIsVisible ? "container text-center visible" : "invisible"}>
+                <TypeAnimationWrapper customClass={"text-primary fs-3 mt-0 mt-lg-5 mb-1"}/>
+            </div>
+        )
+    }
+
     return (
+        <>
         <header className="header--wrapper">
             <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid">
@@ -90,8 +109,9 @@ const Header: React.FC = () => {
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                             aria-label="Toggle navigation"
+                            onClick={toggleTypeAnimationIsVisible}
                     >
-                        <FontAwesomeIcon className="text-dark fs-3" icon={faBarsStaggered} />
+                        <FontAwesomeIcon className="text-primary fs-3" icon={faBarsStaggered} />
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul className="navbar-nav">
@@ -105,7 +125,7 @@ const Header: React.FC = () => {
                                         <NavLink className="dropdown-item" to='/my-messages'>
                                             <span className="d-flex justify-content-between align-items-center">
                                                 <span>
-                                                    <FontAwesomeIcon className="text-dark" icon={faEnvelope} />{" "}Messages
+                                                    <FontAwesomeIcon className="text-primary" icon={faEnvelope} />{" "}Messages
                                                 </span>
                                                 <span>
                                                     { renderNotificationBell() }
@@ -115,22 +135,22 @@ const Header: React.FC = () => {
                                     </li>
                                     <li>
                                         <NavLink className="dropdown-item" to='/my-booking-requests'>
-                                            <FontAwesomeIcon className="text-dark" icon={faReceipt} />{" "}Booking requests
+                                            <FontAwesomeIcon className="text-primary" icon={faReceipt} />{" "}Booking requests
                                         </NavLink>
                                     </li>
                                     <li>
                                         <NavLink className="dropdown-item" to='/my-payments'>
-                                            <FontAwesomeIcon className="text-dark" icon={faMoneyCheck} />{" "}Payments
+                                            <FontAwesomeIcon className="text-primary" icon={faMoneyCheck} />{" "}Payments
                                         </NavLink>
                                     </li>
                                     <li>
                                         <NavLink className="dropdown-item" to='/add-property'>
-                                            <FontAwesomeIcon className="text-dark" icon={faHouseCircleCheck} />{" "}Add property
+                                            <FontAwesomeIcon className="text-primary" icon={faHouseCircleCheck} />{" "}Add property
                                         </NavLink>
                                     </li>
                                     <li>
                                         <NavLink className="dropdown-item" to='/my-profile'>
-                                        <FontAwesomeIcon className="text-dark" icon={faUser} />{" "}Profile
+                                        <FontAwesomeIcon className="text-primary" icon={faUser} />{" "}Profile
                                         </NavLink>
                                     </li>  
                                 </ul>
@@ -167,6 +187,8 @@ const Header: React.FC = () => {
             {/* search bar on lg-up home page */}
             { renderSearchBarOnHomePage() }
         </header>
+        { renderTypeAnimationOnHomePage() }
+        </>
     )
 };
 

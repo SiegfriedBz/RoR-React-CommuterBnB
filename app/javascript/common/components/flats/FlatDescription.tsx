@@ -23,19 +23,19 @@ const FlatDescription: React.FC<IFlat> = ({ flat }) => {
         <>
             <h1>{title}</h1>
             <h3>
-                <FontAwesomeIcon icon={faFontAwesome} />
+                <FontAwesomeIcon className="text-primary" icon={faFontAwesome} />
                 {" "}{description}
             </h3>
             <span className="d-block">
-                <FontAwesomeIcon icon={faHouse} />
+                <FontAwesomeIcon className="text-primary" icon={faHouse} />
                 {" "}{address}
             </span>
             <span className="d-block my-1">
-                <FontAwesomeIcon icon={faArrowUpShortWide} />
+                <FontAwesomeIcon className="text-primary" icon={faArrowUpShortWide} />
                 {" "}{flatCategory}
             </span>
             <span className="d-block">
-                <FontAwesomeIcon icon={faMoneyBill} />
+                <FontAwesomeIcon className="text-primary" icon={faMoneyBill} />
                 {" "}<FontAwesomeIcon icon={faDollarSign} />
                 {pricePerNightInCents/100} per night
             </span>

@@ -33,29 +33,27 @@ const App: React.FC = () => {
         createRoutesFromElements(
             <Route path="/" element={<TopContextLayout />}>
                 <Route path="" element={<ToastLayout />}>
-                        <Route path="" element={<HomePage />} />
-                        <Route path="properties/:id" element={<FlatDetailsPage />} />
-                        <Route path="auth" element={<AuthPage />} />
-                        <Route path="about" element={<AboutPage />} />
-                        <Route path="" element={<ProtectedRouteLayout />} >
-                            <Route path="my-profile" element={ <UserPage /> } />
-                            <Route path="add-property" element={ <CreateFlatPage /> } />
-                            {/* TO FIX */}
-                            <Route path="edit-property/:id" element={ <CreateFlatPage /> } />
-                            {/*  */}
-                            {/* TO FIX */}
-                            <Route path="" element={ <BookingsLayout /> }>
-                            {/*  */}
-                                <Route path="properties/:id/requests" element={ <BookingFormsPage /> }>
-                                    <Route path="booking" element={ <BookingForm /> } />
-                                    <Route path="message" element={ <MessageForm /> } />
-                                </Route>
-                                <Route path="my-booking-requests" element={ <BookingListPage /> } />
+                    <Route path="" element={<HomePage />} />
+                    <Route path="properties/:id" element={<FlatDetailsPage />} />
+                    <Route path="auth" element={<AuthPage />} />
+                    <Route path="about" element={<AboutPage />} />
+                    <Route path="" element={<ProtectedRouteLayout />} >
+                        <Route path="my-profile" element={ <UserPage /> } />
+                        <Route path="add-property" element={ <CreateFlatPage /> } />
+                        <Route path="edit-property/:id" element={ <CreateFlatPage /> } />
+                        {/* TO FIX */}
+                        <Route path="" element={ <BookingsLayout /> }>
+                        {/*  */}
+                            <Route path="properties/:id/requests" element={ <BookingFormsPage /> }>
+                                <Route path="booking" element={ <BookingForm /> } />
+                                <Route path="message" element={ <MessageForm /> } />
                             </Route>
-                            <Route path="my-messages" element={ <MessagesPage /> } />
-                            <Route path="my-payments" element={ <PaymentsPage /> } />
+                            <Route path="my-booking-requests" element={ <BookingListPage /> } />
                         </Route>
+                        <Route path="my-messages" element={ <MessagesPage /> } />
+                        <Route path="my-payments" element={ <PaymentsPage /> } />
                     </Route>
+                </Route>
                 <Route path="*" element={<NotFoundPage />} />
             </Route>
         )

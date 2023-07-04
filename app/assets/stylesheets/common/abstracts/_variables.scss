@@ -1,90 +1,42 @@
-// colors
-$green-dark: hsl(182, 96%, 17%);
-$green: hsl(182, 96%, 27%);
-$green-light: hsl(182, 96%, 37%);
-$green-lighter: hsl(182, 96%, 47%);
-$green-lightest: hsl(182, 96%, 57%);
-$green-xlightest: hsl(182, 96%, 77%);
-$green-xxlightest: hsl(182, 96%, 87%);
-$green-xxxlightest: hsl(182, 96%, 97%);
-$green-xxxxlightest: hsl(182, 96%, 98%);
+//* custom
+$primary-light: hsl(182, 96%, 37%);
+$primary-lighter: hsl(182, 96%, 97%);
+$secondary-light: hsl(0, 0%, 70%);
+$success-light: hsl(182, 96%, 87%);
+$dark-light: hsl(0, 0%, 40%);
+$info-light: hsl(210, 100%, 70%);
+$warning-light: hsl(45, 100%, 70%);
+$danger-light: hsl(0, 100%, 70%);
 
-$blue: hsl(210, 100%, 50%);
-$blue-light: hsl(210, 100%, 60%);
-$blue-lighter: hsl(210, 100%, 70%);
-$blue-lightest: hsl(210, 100%, 80%);
-$blue-super-lightest: hsl(210, 100%, 90%);
-
-$gold: hsl(45, 100%, 50%);
-$gold-light: hsl(45, 100%, 60%);
-$gold-lighter: hsl(45, 100%, 70%);
-$gold-lightest: hsl(45, 100%, 80%);
-$gold-xlightest: hsl(45, 100%, 90%);
-
-$red: hsl(0, 100%, 50%);
-$red-light: hsl(0, 100%, 60%);
-$red-lighter: hsl(0, 100%, 70%);
-$red-lightest: hsl(0, 100%, 80%);
-$red-super-lightest: hsl(0, 100%, 90%);
-
-$gray: hsl(0, 0%, 50%);
-$gray-light: hsl(0, 0%, 70%);
-$gray-lighter: hsl(0, 0%, 90%);
-$gray-lightest: hsl(0, 0%, 95%);
-$gray-xlightest: hsl(0, 0%, 98%);
-$gray-xxlightest: hsl(0, 0%, 99%);
-
+//* BS overrides
+$primary: hsl(182, 96%, 27%);
+$secondary: hsl(0, 0%, 50%);
+$success: hsl(182, 96%, 42%);
 $dark: hsl(0, 0%, 20%);
-$dark-light: hsl(0, 0%, 30%);
-$dark-lighter: hsl(0, 0%, 40%);
-$dark-lightest: hsl(0, 0%, 50%);
-$dark-super-lightest: hsl(0, 0%, 80%);
-
-
-
-// BS overrides
-$dark: $green-dark;
-$primary: $green;
-$secondary: $green-xxxlightest;
-$success: $green-light;
-
-$info: $blue-light;
-$warning: $gold-light;
-$danger: $red-light;
-$light: $gray-lightest;
+$info: hsl(210, 100%, 60%);
+$warning: hsl(45, 100%, 60%);
+$danger: hsl(0, 100%, 60%);
+$light: hsl(0, 0%, 99%);
 $white: white;
 $black: black;
 
-// _form
-$form-switch-color: $green-light;
-$form-switch-checked-color: white;
-$form-check-input-checked-bg-color: $green-light;
-// _input
-$input-focus-box-shadow: 0 0 0 0.1rem rgba($green-light, 0.25);
-/* _navbar */
-$navbar-light-color: $green-light;
-$navbar-light-toggler-border-color: $green-dark;
-$navbar-toggler-focus-width: 0.08rem;
+// 
+$body-bg: $white;
+$header-bg: $primary-lighter;
 
-
-// custom
-$A: rgb(101, 39, 190);
-$B: rgb(150, 129, 235);
-$C: rgb(69, 207, 221);
-$D: hsl(175, 66%, 79%);
-$E: hsl(175, 66%, 96%);
-
-$body-bg: $gray-xxlightest;
-// $body-bg: $gray-xxlightest;
-// $body-bg: $E;
-// $body-bg: $secondary;
-$header-bg: $gray-xxlightest;
-// $header-bg: $primary;
-// $header-bg-gradient: linear-gradient(to right, $primary, $success, $secondary);
 // $header-bg-gradient: linear-gradient(to right, $success, $secondary);
-// $header-bg-gradient: linear-gradient(to right, $A, $B, $C, $D);
-// $header-bg-gradient: linear-gradient(to right, $C, $D);
-
-
-
-
+// _form form-control
+$form-switch-color: $success;
+$form-switch-checked-color: $white;
+$form-check-input-checked-bg-color: $success;
+$dropdown-color: $primary;
+$dropdown-bg: $white;
+$dropdown-link-hover-bg: $primary-lighter;
+$dropdown-link-active-color: $white;
+$dropdown-link-active-bg: $primary;
+// _input
+$input-focus-box-shadow: 0 0 0 0.1rem rgba($success, 0.25);
+/* _navbar */
+$navbar-light-color: $success;
+$navbar-light-toggler-border-color: $dark;
+$navbar-toggler-focus-width: 0.08rem;

@@ -58,9 +58,9 @@ const SearchBar = () => {
     }
     
     return (
-        <div className="searchbar--wrapper">
+        <div className="search-bar--container">
             <form 
-                className="search-form"
+                className="search-bar--form"
                 onSubmit={handleSubmit}
             >
                 <div className="form-group me-2">

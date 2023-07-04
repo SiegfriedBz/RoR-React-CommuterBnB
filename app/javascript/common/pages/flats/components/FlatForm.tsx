@@ -175,13 +175,12 @@ const FlatForm: React.FC<IProps> = ({ editFlatId }) => {
         )
     }
 
-    if(editFlatId && !flatToEdit) return <div>Loading...</div>
-    if(isLoading) return <LoadingSpinners />
+    if(editFlatId && isLoading && !flatToEdit) return <LoadingSpinners />
 
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <div className="form-group custom-form">
+                <div className="form-group">
                     <label 
                         htmlFor="title" 
                         className='text-primary mt-2'
@@ -348,7 +347,7 @@ const FlatForm: React.FC<IProps> = ({ editFlatId }) => {
                         className="btn-slide btn-slide-primary top-slide mt-2"
                         >
                             <FontAwesomeIcon icon={faCloudArrowUp} />
-                            {" "}Create property
+                            {" "}{ flatToEdit ? "Update property" : "Create property" }
                     </ButtonSlide>
                 </div>
             </form>

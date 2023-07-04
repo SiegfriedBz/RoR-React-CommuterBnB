@@ -1,13 +1,13 @@
 //* btn-slide/-sm btn-slide-primary/primary/success/info/warning/danger left/right/bottom/top-slide
-@mixin button-slide-styles($base-color, $accent-color-start, $accent-color-end) {
+@mixin button-slide-styles($base-color, $color-start, $color-end) {
     position: relative;
     z-index: 0;
     padding: .5rem 1rem;
     border-radius: .25rem;
 
-    color: $accent-color-start;
+    color: $color-start;
     background-color: transparent;
-    border: .08rem solid $accent-color-start;
+    border: .04rem solid $color-start;
 
     transition: color .25s ease-in-out;
 
@@ -29,7 +29,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background: linear-gradient(to left, $accent-color-start, $accent-color-end);
+            background: linear-gradient(to left, $color-start, $color-end);
 
             transform: scaleX(0);
             transform-origin: right;
@@ -47,7 +47,7 @@
         }
 
         &.btn-selected:hover {
-            border: 0.08rem solid $gold;
+            border: 0.08rem solid $color-start;
         }
 
         &::before {
@@ -59,7 +59,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background: linear-gradient(to right, $accent-color-start, $accent-color-end);
+            background: linear-gradient(to right, $color-start, $color-end);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform .3s ease-in-out;
@@ -84,7 +84,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background: linear-gradient($accent-color-start, $accent-color-end);
+            background: linear-gradient($color-start, $color-end);
             transform: scaleY(0);
             transform-origin: top;
             transition: transform .3s ease-in-out;
@@ -109,7 +109,7 @@
             bottom: 0;
             right: 0;
             border-radius: .25rem;
-            background: linear-gradient(to top, $accent-color-start, $accent-color-end);
+            background: linear-gradient(to top, $color-start, $color-end);
 
             transform: scaleY(0);
             transform-origin: bottom;
@@ -120,23 +120,23 @@
 
 .btn-slide {
     &.btn-slide-primary {
-        @include button-slide-styles(var(--bs-white), $green, $green-light);
+        @include button-slide-styles($white, $primary, $primary-light);
     }
 
-    &.btn-slide-yellow {
-        @include button-slide-styles(var(--bs-white), $gold-light, $gold-lighter);
+    &.btn-slide-warning {
+        @include button-slide-styles($white, $warning, $warning-light);
     }
 
-    &.btn-slide-red {
-        @include button-slide-styles(var(--bs-white), $red, $red-light);
+    &.btn-slide-danger {
+        @include button-slide-styles($white, $danger, $danger-light);
     }
 
     &.btn-slide-dark {
-        @include button-slide-styles(var(--bs-white), $dark-light, $dark-lighter);
+        @include button-slide-styles($white, $dark, $dark-light);
     }
 
-    &.btn-slide-blue {
-        @include button-slide-styles(var(--bs-white), $blue-light, $blue-lighter);
+    &.btn-slide-info {
+        @include button-slide-styles($white, $info, $info-light);
     }
 }
 
@@ -147,42 +147,43 @@
     padding: .25rem .5rem !important;
 }
 
+
 //* double-button 
-.double-button {
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    transition: 2s ease-in-out;
+// .double-button {
+//     display: flex;
+//     justify-content: center;
+//     cursor: pointer;
+//     transition: 2s ease-in-out;
 
 
-    &:hover {
-        .pill-button {
-            background-color: blue;
-        }
+//     &:hover {
+//         .pill-button {
+//             background-color: blue;
+//         }
 
-        .round-button {
-            background-color: blue;
-        }
-    }
+//         .round-button {
+//             background-color: blue;
+//         }
+//     }
 
-    .pill-button {
-        background-color: $primary;
-        color: white;
-        // border-radius: 1rem;
-        // padding: 0.5rem 1rem;
-    }
+//     .pill-button {
+//         background-color: $primary;
+//         color: white;
+//         // border-radius: 1rem;
+//         // padding: 0.5rem 1rem;
+//     }
 
-    .round-button {
-        // margin-left: 1rem;
-        background-color: $primary;
-        border-radius: 50%;
-        // padding: 0.5rem;
+//     .round-button {
+//         // margin-left: 1rem;
+//         background-color: $primary;
+//         border-radius: 50%;
+//         // padding: 0.5rem;
 
-        span {
-            color: white;
-            // font-size: 1rem;
-            font-weight: bolder;
-        }
-    }
+//         span {
+//             color: white;
+//             // font-size: 1rem;
+//             font-weight: bolder;
+//         }
+//     }
 
-}
+// }

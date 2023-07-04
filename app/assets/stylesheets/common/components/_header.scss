@@ -1,65 +1,68 @@
 .header--wrapper {
     position: relative;
     background-color: $header-bg;
-    // background: $header-bg-gradient;
+    z-index: 9000;
     height: 6rem;
     margin-bottom: 1.2rem;
-    border-bottom: 1px solid $gray-light;
-    // font-weight: 700;
-    text-shadow: 0 0.1rem 0.1rem $gray-light;;
+    border-bottom: 1px solid $secondary;
+    text-shadow: 0 0.01rem 0.01rem $light;
 
     a {
-        color: $green;
-        // color: $white;
+        color: $primary;
 
         &:hover {
             color: $dark;
         }
     }
 
-        .header--main-search-bar {
-            display: none;
-            position: absolute;
-            bottom: - 1.8rem;
-    
-            @include media-breakpoint-up(lg) { 
-                display: block;
-                left: 10%;
-             }
+    .header--main-search-bar {
+        background-color: $primary-lighter;
+        display: none;
+        position: absolute;
+        bottom: - 1.8rem;
+        border-radius: 0.8rem;
 
-            @include media-breakpoint-up(xl) { 
-                display: block;
-                left: 21%;
-             }
-    
-             @include media-breakpoint-up(xxl) { 
-                display: block;
-                left: 26%;
-             }
-        }
-    
-        .header--nav-search-bar {
+        @include media-breakpoint-up(lg) { 
             display: block;
+            left: 10%;
+            }
+
+        @include media-breakpoint-up(xl) { 
+            display: block;
+            left: 21%;
+            }
+
+            @include media-breakpoint-up(xxl) { 
+            display: block;
+            left: 26%;
+            }
+    }
+
+    .header--mobile-search-bar {
+        display: block;
+
+        @include media-breakpoint-up(lg) { 
+            display: none;
+        }
+    }
+
+    .search-bar--container {
+        background-color: $primary-lighter;
+        padding: 0.16rem 0.42rem;
+        border-radius: 0.8rem;
+        
+        .search-bar--form {
+            background-color: $white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
 
             @include media-breakpoint-up(lg) { 
-                display: none;
-             }
-        }
-
-        .searchbar--wrapper {
-            background-color: $secondary;
-            padding: 0.16rem 0.42rem;
-            border-radius: 0.8rem;
-
-            .search-form {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-
-                @include media-breakpoint-up(lg) { 
-                    flex-direction: row;
-                    align-items: center;
-                 }
+                background-color: $primary-lighter;
+                flex-direction: row;
+                align-items: center;
+                border-radius: 0.8rem;
             }
         }
+    }
 }

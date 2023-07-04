@@ -71,7 +71,7 @@ const ReviewForm: React.FC<IProps> = (props) => {
                 </div>
                 <ButtonSlide 
                     type="submit"
-                    className="btn-slide btn-slide-blue right-slide mt-2"
+                    className="btn-slide btn-slide-info right-slide mt-2"
                     onClick={handleSubmit}
                 >
                    <FontAwesomeIcon icon={faPaperPlane} />

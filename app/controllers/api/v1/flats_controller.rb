@@ -75,7 +75,7 @@ class Api::V1::FlatsController < ApplicationController
         return render json: { message: 'Only owner can delete its property.'},
             status: :unauthorized unless current_user_is_owner(@flat)
 
-        if flat.destroy
+        if @flat.destroy
             render json: { message: "Property ##{params[:id]} was deleted sucessfully" },
                 status: :ok
         else
