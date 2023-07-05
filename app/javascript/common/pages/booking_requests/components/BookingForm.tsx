@@ -127,15 +127,13 @@ const BookingForm: React.FC = () => {
         }
         
         // create booking request
-        const fetchedNewTransactionRequest = await createBookingRequest(responderFlat.flatId, formValues)
-                
-        if(fetchedNewTransactionRequest) {
-            const data= fetchedNewTransactionRequest[1]
-            setFlashMessage({ message: data.message, type: "success" })
-        } else {
-            setFlashMessage({ message: "Booking request creation went wrong", type: "warning" })
-        }
+        const fetchedData = await createBookingRequest(responderFlat.flatId, formValues)
         
+        if(!fetchedData) return 
+
+        const { message } = fetchedData[1]
+        setFlashMessage({ message: message, type: "success" })
+
         setFormValues((prev) => {
             return {
                 ...prev,
@@ -143,8 +141,6 @@ const BookingForm: React.FC = () => {
                 ending_date: initFormValues.ending_date
             }
         })
-
-        // nav to
         navigate("/my-booking-requests")
     }
 
