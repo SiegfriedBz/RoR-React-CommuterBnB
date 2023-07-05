@@ -7,7 +7,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    box-shadow: $secondary 0 1px 1px 1px;
+    border-radius: 4px;
 
     .auth-page--form-input-group {
         display: flex;
@@ -16,5 +17,6 @@
         border-radius: 8px;
         background-color: white;
         min-width: 312px;
+        box-shadow: $secondary 0 1px 1px 1px;
     }
 }
