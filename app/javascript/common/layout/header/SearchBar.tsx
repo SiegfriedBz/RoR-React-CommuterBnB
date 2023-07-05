@@ -1,17 +1,27 @@
 import React, { useState } from 'react'
-import { useFetch } from '../../hooks/useFetch';
-import { useAppContext, useFlatsContext } from '../../contexts';
-import DateRangePickerWrapper from '../../components/DateRangePickerWrapper';
-import ButtonSlide from '../../components/buttons/ButtonSlide';
+import { useFetch } from '../../hooks/useFetch'
+import { useAppContext, useFlatsContext } from '../../contexts'
+import DateRangePickerWrapper from '../../components/DateRangePickerWrapper'
+import ButtonSlide from '../../components/buttons/ButtonSlide'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    faMagnifyingGlass
+} from '@fortawesome/free-solid-svg-icons'
 
 const initFormValues = {
     city: '',
     country: '',
     starting_date: null,
     ending_date: null,
-};
+}
 
-const SearchBar = () => {
+interface IProps {
+    closeAllCollapse?: () => void
+}
+
+const SearchBar: React.FC<IProps> = (props) => {
+    const { closeAllCollapse } = props
+
     //* hooks
     const { getFlats } = useFetch()
     const { setFlashMessage } = useAppContext()
@@ -55,6 +65,8 @@ const SearchBar = () => {
 
         setFlatsInContext(filteredFlats)
         setFormValues(initFormValues)
+        // mobile handle header margin bottom
+        closeAllCollapse()
     }
     
     return (
@@ -86,7 +98,10 @@ const SearchBar = () => {
                     setFormValues={setFormValues}
                 />
                 <ButtonSlide className="bg-white btn-slide btn-slide-primary right-slide ms-lg-2 mt-1 mt-lg-0">
-                    <span>Search</span>
+                    <span>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                       {" "}Search
+                    </span>
                 </ButtonSlide>
             </form>
         </div>
