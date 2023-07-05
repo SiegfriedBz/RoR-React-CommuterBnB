@@ -29,7 +29,7 @@ const NewsLetterSuscribe = () => {
             <div className="d-flex justify-content-center align-items-center">
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Your email"
                 value={email}
                 onChange={handleChange}
                 required

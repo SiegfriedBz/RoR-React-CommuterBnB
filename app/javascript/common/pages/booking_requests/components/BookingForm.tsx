@@ -199,7 +199,7 @@ const BookingForm: React.FC = () => {
                             />
                         <label 
                             htmlFor="#isExchange"
-                            className={`form-check-label ${isExchange ? "text-exchange-checked" :  "text-exchange"}`}
+                            className={`form-check-label ${isExchange ? "text-success" :  "text-primary"}`}
                             >Exchange
                         </label>
                     </div>

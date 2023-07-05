@@ -107,7 +107,7 @@ const BookingRequestListPage: React.FC = () => {
         <div ref={containerRef}>
           <div ref={topRef} className="d-flex justify-content-center w-100 mt-2 mb-3">
             <ButtonSlide
-              className=" fs-5 btn-slide btn-slide-primary bottom-slide"
+              className="fs-5 btn-slide btn-slide-primary bottom-slide"
               onClick={() => setShowOnlyPending(!showOnlyPending)}
             >
               <FontAwesomeIcon icon={faEye} />
@@ -118,7 +118,7 @@ const BookingRequestListPage: React.FC = () => {
           <div className="row row-cols-1 row-cols-xl-2 mx-auto">
 
             {/* ( <div className={`mx-auto ${selectedBookingRequests.length > 0 && "row row-cols-1 row-cols-lg-2 gb-2gx-lg-2 row-cols-xl-1 gx-xl-0"}`}> */}
-            ( <div className={`mx-auto col`}>
+            <div className={`mx-auto col`}>
               {selectedBookingRequests?.map((bookingRequest) => {
                 return (
                   <BookingRequestCard
@@ -132,8 +132,7 @@ const BookingRequestListPage: React.FC = () => {
                 )
               })}
             </div>
-            )
-
+            
             {/* <div className={`mx-auto col ${selectedBookingRequests.length > 0 && "col"}`}> */}
             <div className={`mx-auto col`}>
               <div className='sticky-top'>

@@ -28,7 +28,7 @@ const HomePage = () => {
                         <MapView />
                         <NewsLetterSuscribe />
                     </>
-                    :  <PaginatedWrapper flatsPerPage={8} />
+                    : <PaginatedWrapper flatsPerPage={8} />
                 }
             </div>
         </div>

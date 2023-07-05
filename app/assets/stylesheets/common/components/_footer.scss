@@ -1,27 +1,21 @@
-  /* Footer Styles */
 .footer {
     position: absolute;
-    bottom: 0;
+    bottom: -6rem;
     width: 100%;
-    margin-top: 1.2rem;
-    // padding: 1.2rem;
-    background-color: $secondary;
+    padding: 1.2rem;
+    background-color: $footer-bg;
+    transition: .25s ease-in-out;
 
     a {
-        color: $dark;
+        color: $primary;
 
         &:hover {
-            color: $primary;
+            color: $success;
         }
     }
 
     .icon-footer {
-        color: $dark;
         font-size: 2rem;
-    
-        &:hover {
-            color: $primary;
-        }
     }
 }
       
