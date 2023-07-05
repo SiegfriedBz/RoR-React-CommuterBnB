@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, forwardRef, useRef, useImperativeHandle } from 'react'
 import { Link, NavLink, useNavigate, useLocation} from "react-router-dom"
 import clsx from "clsx"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,12 +17,18 @@ import { useMessagesContext, useUserContext } from '../../contexts'
 import SearchBar from './SearchBar'
 import { TypeAnimationWrapper } from '../../components'
 
-const Header: React.FC = () => {
+const Header: React.FC = (props, forwardedRef) => {
     //* hooks & context
     const location = useLocation()
     const navigate = useNavigate()
+    const headerRef = useRef(null)
     const { user, setTokenInStorage } = useUserContext()
     const { notificationConversationKeyRef } = useMessagesContext()
+
+    useImperativeHandle(forwardedRef, () => (
+        { goIntoView: () => headerRef.current?.scrollIntoView({ behavior: 'smooth' }) }
+        )
+    )
 
     //* state
     const [burgerCollapseVisible, setBurgerCollapseVisible] = useState<boolean>(false)
@@ -133,7 +139,7 @@ const Header: React.FC = () => {
 
     return (
         <>
-        <header className={headerWrapperClass}>
+        <header ref={headerRef} className={headerWrapperClass}>
             <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid pt-2">
                     <Link className="navbar-brand fs-2" to='/'>SwapBnb</Link>
@@ -231,4 +237,4 @@ const Header: React.FC = () => {
     )
 };
 
-export default Header
+export default forwardRef(Header)

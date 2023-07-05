@@ -5,12 +5,17 @@ import {
     faGithubAlt, 
     faLinkedin } from '@fortawesome/free-brands-svg-icons'
 
-const Footer = () => {
+const Footer = ({ scrollToHeaderTop }) => {
 
     return (
         <footer className="footer">
             <div className="d-flex mx-md-5 justify-content-between align-items-center">
-            <Link className="navbar-brand fs-3" to='/'>SwapBnb</Link>
+            <Link
+                onClick={scrollToHeaderTop}
+                className="navbar-brand fs-3"
+                to='/'
+            >SwapBnb
+            </Link>
             {/* <Link className="navbar-brand" to='/about'>About us</Link> */}
                 <div className="d-flex">
                     <a 
