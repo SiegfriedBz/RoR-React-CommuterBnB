@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, NavLink, useNavigate, useLocation} from "react-router-dom"
+import clsx from "clsx"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUser,
@@ -24,11 +25,35 @@ const Header: React.FC = () => {
     const { notificationConversationKeyRef } = useMessagesContext()
 
     //* state
-    const [animationIsVisible, setAnimationIsVisible] = useState<boolean>(true)
+    const [burgerCollapseVisible, setBurgerCollapseVisible] = useState<boolean>(false)
+    const [mySwapBnbCollapseVisible, setMySwapBnbCollapseVisible] = useState<boolean>(false)
+    const [mobileSearchBarCollapseVisible, setMobileSearchBarCollapseVisible] = useState<boolean>(false)
 
     //* handlers
     const handleLogout = () => {
         setTokenInStorage("{}")
+    }
+
+    // handlers to push down content on mobile
+    const toggleBurgerCollapseVisible = () => {
+        setBurgerCollapseVisible(prev => !prev)
+        setMySwapBnbCollapseVisible(false)
+        setMobileSearchBarCollapseVisible(false)
+    }
+
+    const closeAllCollapse = () => {
+        setMySwapBnbCollapseVisible(false)
+        setMobileSearchBarCollapseVisible(false)
+    }
+
+    const toggleMySwapBnbCollapseVisible = () => {
+        setMySwapBnbCollapseVisible(prev => !prev)
+        setMobileSearchBarCollapseVisible(false)
+    }
+
+    const toggleMobileSearchBarCollapseVisible = () => {
+        setMySwapBnbCollapseVisible(false)
+        setMobileSearchBarCollapseVisible(prev => !prev)
     }
 
     const handleBellClick = () => {
@@ -48,6 +73,7 @@ const Header: React.FC = () => {
             : null
     }
 
+    // check if Home Page
     const isHomePage = () => {
         return location.pathname === '/'
     }
@@ -70,37 +96,44 @@ const Header: React.FC = () => {
         return (
             <li className="nav-item dropdown my-auto d-block d-lg-none">
                 <a className="nav-link dropdown-toggle fs-5" href="#" id="navbarDropdownMenuLink-Search"
-                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                    onClick={toggleMobileSearchBarCollapseVisible}
+                    >
                     Search
                 </a>
-                
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Search">
                 <div className="header--mobile-search-bar">
-                    <SearchBar />
+                    <SearchBar
+                        closeAllCollapse={closeAllCollapse}
+                    />
                 </div>
                 </div>
             </li>
         )
     }
 
-    // TypeAnimation on home page
-    const toggleTypeAnimationIsVisible = () => {
-        setAnimationIsVisible(prev => !prev)
-    }
 
+    // TypeAnimation on home page
     const renderTypeAnimationOnHomePage = () => {
         if (!isHomePage()) return null
 
         return (
-            <div className={animationIsVisible ? "container text-center visible" : "invisible"}>
+            <div className={burgerCollapseVisible ? "invisible" : "container text-center visible"}>
                 <TypeAnimationWrapper customClass={"text-primary fs-3 mt-0 mt-lg-5 mb-1"}/>
             </div>
         )
     }
 
+    const headerWrapperClass = clsx("header--wrapper", {
+        "mobile-extended" : burgerCollapseVisible,
+        "mobile-extended-xl" : mySwapBnbCollapseVisible,
+        "mobile-extended-xxl" : mobileSearchBarCollapseVisible,
+        "": !burgerCollapseVisible && !mySwapBnbCollapseVisible && !mobileSearchBarCollapseVisible
+    })
+
     return (
         <>
-        <header className="header--wrapper">
+        <header className={headerWrapperClass}>
             <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid pt-2">
                     <Link className="navbar-brand fs-2" to='/'>SwapBnb</Link>
@@ -109,7 +142,7 @@ const Header: React.FC = () => {
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                             aria-label="Toggle navigation"
-                            onClick={toggleTypeAnimationIsVisible}
+                            onClick={toggleBurgerCollapseVisible}
                     >
                         <FontAwesomeIcon className="text-primary fs-3" icon={faBarsStaggered} />
                     </button>
@@ -117,15 +150,17 @@ const Header: React.FC = () => {
                         <ul className="navbar-nav">
                             <li className="nav-item dropdown my-auto">
                                 <a className="nav-link dropdown-toggle fs-5" href="#" id="navbarDropdownMenuLink"
-                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                    onClick={toggleMySwapBnbCollapseVisible}
+                                >
                                     My SwapBnb
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li>
+                                    <li onClick={closeAllCollapse}>
                                         <NavLink className="dropdown-item" to='/my-messages'>
                                             <span className="d-flex justify-content-between align-items-center">
                                                 <span>
-                                                    <FontAwesomeIcon className="text-primary" icon={faEnvelope} />{" "}Messages
+                                                    <FontAwesomeIcon icon={faEnvelope} />{" "}Messages
                                                 </span>
                                                 <span>
                                                     { renderNotificationBell() }
@@ -133,24 +168,24 @@ const Header: React.FC = () => {
                                             </span>
                                         </NavLink>
                                     </li>
-                                    <li>
+                                    <li onClick={closeAllCollapse}>
                                         <NavLink className="dropdown-item" to='/my-booking-requests'>
-                                            <FontAwesomeIcon className="text-primary" icon={faReceipt} />{" "}Booking requests
+                                            <FontAwesomeIcon icon={faReceipt} />{" "}Booking requests
                                         </NavLink>
                                     </li>
-                                    <li>
+                                    <li onClick={closeAllCollapse}>
                                         <NavLink className="dropdown-item" to='/my-payments'>
-                                            <FontAwesomeIcon className="text-primary" icon={faMoneyCheck} />{" "}Payments
+                                            <FontAwesomeIcon icon={faMoneyCheck} />{" "}Payments
                                         </NavLink>
                                     </li>
-                                    <li>
+                                    <li onClick={closeAllCollapse}>
                                         <NavLink className="dropdown-item" to='/add-property'>
-                                            <FontAwesomeIcon className="text-primary" icon={faHouseCircleCheck} />{" "}Add property
+                                            <FontAwesomeIcon icon={faHouseCircleCheck} />{" "}Add property
                                         </NavLink>
                                     </li>
-                                    <li>
+                                    <li onClick={closeAllCollapse}>
                                         <NavLink className="dropdown-item" to='/my-profile'>
-                                        <FontAwesomeIcon className="text-primary" icon={faUser} />{" "}Profile
+                                            <FontAwesomeIcon icon={faUser} />{" "}Profile
                                         </NavLink>
                                     </li>  
                                 </ul>
@@ -159,10 +194,14 @@ const Header: React.FC = () => {
                             {/* search bar on mobile home page */}
                             { renderSearchBarOnHomePageMobile() }
 
-                            <li className="nav-item my-auto">
+                            <li onClick={closeAllCollapse}
+                                className="nav-item my-auto"
+                            >
                                 <NavLink className="nav-link fs-5" to='/about'>About</NavLink>
                             </li>
-                            <li className="nav-item">
+                            <li onClick={closeAllCollapse}
+                                className="nav-item"
+                            >
                                 { user?.email ?
                                     <Link
                                         className="nav-link fs-5"

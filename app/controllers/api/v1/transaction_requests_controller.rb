@@ -19,9 +19,23 @@ class Api::V1::TransactionRequestsController < ApplicationController
         responder_flat = Flat.find_by(id: params[:flat_id])
 
         return render json: { message: 'You can not book your own flat.'},
-            status: :unauthorized if current_user_owns(responder_flat)
+            status: :unprocessable_entity if current_user_owns(responder_flat)
 
         transaction_request = TransactionRequest.new(transaction_request_params)
+
+        # check if flat(s) is(are) bookable for the given dates (done only for responder_flat in FE)
+        if !transaction_request.flats_bookable_for_dates?
+            message = ""
+            if transaction_request.initiator_flat_id.present?
+                message = "One of the properties is not available at these dates"
+            else
+                message = "The requested property is not available at these dates"
+            end
+
+            return render json: { message: message },
+            status: :unprocessable_entity
+        end
+
         transaction_request.initiator_id = current_user.id
 
         if transaction_request.save
@@ -41,7 +55,7 @@ class Api::V1::TransactionRequestsController < ApplicationController
             status: :not_found if transaction_request.nil?
 
             return render json: { message: 'You are not authorized to update this booking request.'},
-            status: :unauthorized unless current_user_is_involved(transaction_request)
+            status: :unprocessable_entity unless current_user_is_involved(transaction_request)
 
         if transaction_request.update(transaction_request_params)
             render json: { message: "Booking request ##{params[:id]} updated sucessfully" },

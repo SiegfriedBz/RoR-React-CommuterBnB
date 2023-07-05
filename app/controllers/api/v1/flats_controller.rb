@@ -53,7 +53,7 @@ class Api::V1::FlatsController < ApplicationController
         return render json: { message: 'Property not found.'}, status: :not_found if @flat.nil?
 
         return render json: { message: 'Only owner can update its property.' },
-            status: :unauthorized unless current_user_is_owner(@flat)
+            status: :unprocessable_entity unless current_user_is_owner(@flat)
 
         attach_images(@flat) if params[:flat][:images].present?
     
@@ -73,7 +73,7 @@ class Api::V1::FlatsController < ApplicationController
         return render json: { message: 'Property not found.'}, status: :not_found if @flat.nil?
 
         return render json: { message: 'Only owner can delete its property.'},
-            status: :unauthorized unless current_user_is_owner(@flat)
+            status: :unprocessable_entity unless current_user_is_owner(@flat)
 
         if @flat.destroy
             render json: { message: "Property ##{params[:id]} was deleted sucessfully" },

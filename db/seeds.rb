@@ -146,7 +146,7 @@ flat10 = Flat.new(
   title: 'Cosy Flat in Piraeus',
   description: 'Awesome flat in Piraeus',
   street: '',
-  city: "Rhodes",
+  city: "Piraeus",
   country: "Greece",
   price_per_night_in_cents: 10000,
   category: :entire_place

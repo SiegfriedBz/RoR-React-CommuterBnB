@@ -1,8 +1,7 @@
 //* custom
-
 $primary-light: hsl(182, 96%, 37%);
 $primary-lighter: hsl(182, 74%, 72%);
-$primary-test: hsl(182, 96%, 86%);
+$primary-l-lighter: hsl(182, 96%, 94%);
 $primary-x-lighter: hsl(182, 96%, 97%);
 $secondary-light: hsl(0, 0%, 70%);
 $success-light: hsl(182, 96%, 87%);
@@ -10,6 +9,8 @@ $dark-light: hsl(0, 0%, 40%);
 $info-light: hsl(210, 100%, 70%);
 $warning-light: hsl(45, 100%, 70%);
 $danger-light: hsl(0, 100%, 70%);
+
+$dark-green: hsl(182, 21%, 25%);
 
 //* BS overrides
 $primary: hsl(182, 96%, 27%);
@@ -23,18 +24,18 @@ $light: hsl(0, 0%, 99%);
 $white: white;
 $black: black;
 
-// 
-$body-bg: $white;
-$header-bg: $primary-x-lighter;
-$footer-bg: $primary-x-lighter;
 
-// $header-bg-gradient: linear-gradient(to right, $success, $secondary);
+// 
+// custom
+$body-bg: $white;
+// $header-footer-bg: $primary-x-lighter;
+$header-footer-bg-gradient: linear-gradient(to right, $primary-l-lighter, $primary-x-lighter);
 // form 
-$form-switch-color: $success;
+$form-switch-color: $secondary;
 $form-switch-checked-color: $white;
 $form-check-input-checked-bg-color: $success;
 // dropdown
-$dropdown-color: $primary;
+// $dropdown-color: $primary;
 $dropdown-bg: $primary-x-lighter;
 
 $dropdown-link-hover-bg: $primary;
@@ -42,9 +43,11 @@ $dropdown-link-active-color: $white;
 $dropdown-link-active-bg: $primary;
 
 // input
-$input-focus-box-shadow: 0 0 0 0.1rem rgba($success, 0.25);
+// $input-focus-box-shadow: 0 0 0 0.08rem rgba($success, 0.25);
+$input-focus-box-shadow: 0 0 0 0.04rem $success;
 
 // navbar
 $navbar-light-color: $primary;
+$navbar-light-active-color: $dark-green;
 $navbar-light-toggler-border-color: $primary;
 $navbar-toggler-focus-width: 0.08rem;

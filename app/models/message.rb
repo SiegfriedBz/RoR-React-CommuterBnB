@@ -8,18 +8,6 @@ class Message < ApplicationRecord
 
     scope :author_or_recipient_for_user, -> (user_id) { where("author_id = :user_id OR recipient_id = :user_id", user_id: user_id) }
 
-    # scope :user_involved, ->(user_id) {
-    #     join(:transaction_request).where(author_id: user_id)
-    #                               .or.where(transaction_request: {responder_id: user_id})
-    #                               .or.where(transaction_request: {initiator_id: user_id})
-        
-    #   }
-      
-    # def recipient(author_id, flat)
-    #     return initiator if flat.responder_id === author_id
-    #     flat.responder
-    # end
-
     private
 
     def broadcast_message

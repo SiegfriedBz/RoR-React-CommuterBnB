@@ -14,7 +14,7 @@ const fetchDefaultOptions = {
 export const useFetch = () => {
     //* context
     const { setFlashMessage, setIsLoading } = useAppContext()
-    const { tokenInStorage: token } = useUserContext()
+    const { setTokenInStorage, tokenInStorage: token } = useUserContext()
     //* fetch
     const fetchData = async (url: string, options={}, expectedStatus: number) => {
         setIsLoading(true)
@@ -22,19 +22,31 @@ export const useFetch = () => {
 
         try{
             const response: Response = await fetch(url, { ...fetchDefaultOptions, ...options })
+            
             if (response.status === expectedStatus) {
+                // if status is expected
                 const data = await response.json()
                 
                 return [response, data]
-            } else {
+            } else if (response.status === 422) {
+                // if unprocessable entity (e.g. flat already booked)
+                const message = await response.json()
+
+                setFlashMessage({ message: message.message, type: "warning" })
+                return
+            }
+            else {
                 const error = await response.json()
                 throw new Error(error)
             }
-        } catch (err) {
-            setFlashMessage({ message: err.message, type: "danger" })
-        } finally {
-            setIsLoading(false)
-        }
+            } catch (err) {
+            // logout user
+            // setTokenInStorage("{}")
+            // setFlashMessage({ message: err.message, type: "danger" })
+            console.log("useFetch err.message",  err.message)
+            } finally {
+                setIsLoading(false)
+            }
     }
 
     //* user *//

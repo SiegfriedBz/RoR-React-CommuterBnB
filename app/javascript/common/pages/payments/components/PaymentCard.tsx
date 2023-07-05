@@ -86,7 +86,7 @@ const PaymentCard: React.FC = (props) => {
 
         // set currentUserIsPayer & currentUserFlat
         const currentUserIsPayer = user?.userId === payer?.userId
-        const currentUserFlat = currentUserIsPayer ? payeeFlat : payerFlat
+        const currentUserFlat = currentUserIsPayer ? payerFlat : payeeFlat
 
         // set secondUserFlat
         const secondUserFlat = currentUserIsPayer ? payeeFlat : payerFlat
@@ -180,8 +180,8 @@ const PaymentCard: React.FC = (props) => {
                         </span>
                     </div>
                     <div className="my-2">
-                        <span className="card-text d-block text-primary">
-                            <FontAwesomeIcon icon={faReceipt} />
+                        <span className="card-text d-block">
+                            <FontAwesomeIcon className="text-primary" icon={faReceipt} />
                             {" "}Booking request #{transactionRequestId}
                         </span>
                     </div>
@@ -198,7 +198,7 @@ const PaymentCard: React.FC = (props) => {
                             { currentUserFlat && 
                                 <div className="my-2">
                                     <span className="card-text d-block">
-                                        <FontAwesomeIcon className="text-dark" icon={faHouse} />
+                                        <FontAwesomeIcon className="text-primary" icon={faHouse} />
                                         {" "}My property
                                     </span>
                                     <span className="card-text d-block">
@@ -209,7 +209,7 @@ const PaymentCard: React.FC = (props) => {
                             { secondUserFlat && 
                                 <div className="my-2">
                                     <span className="card-text d-block">
-                                        <FontAwesomeIcon className="text-dark" icon={faHouse} />
+                                        <FontAwesomeIcon className="text-primary" icon={faHouse} />
                                         {" "}{currentUserIsPayer ? name(payee?.email) : name(payer?.email)}'s property
                                     </span>
                                     <span className="card-text d-block">
@@ -224,24 +224,24 @@ const PaymentCard: React.FC = (props) => {
                     <>
                         <div className="my-2">
                             <span className="card-text d-block">
-                                <FontAwesomeIcon className="text-dark" icon={faMoneyCheckDollar} />
+                                <FontAwesomeIcon className="text-primary" icon={faMoneyCheckDollar} />
                                 {" "}Payer is{" "}{currentUserIsPayer ? "Me" : name(payer?.email)}
                             </span>
                             { payerFlat && 
                                 <span className="card-text d-block">
-                                    <FontAwesomeIcon className="text-dark" icon={faHouse} />
+                                    <FontAwesomeIcon className="text-primary" icon={faHouse} />
                                     {" "}{ address(payerFlat) }
                                 </span>
                             }
                         </div>
                         <div className="mb-2">
                             <span className="card-text d-block">
-                                <FontAwesomeIcon className="text-dark" icon={faHandHoldingDollar} />
+                                <FontAwesomeIcon className="text-primary" icon={faHandHoldingDollar} />
                                 {" "}Payee is{" "}{currentUserIsPayer ? name(payee?.email) : "Me" }
                             </span>
                             { payeeFlat &&
                                 <span className="card-text d-block">
-                                    <FontAwesomeIcon className="text-dark" icon={faHouse} />
+                                    <FontAwesomeIcon className="text-primary" icon={faHouse} />
                                     {" "}{ address(payeeFlat) }
                                 </span>
                             }
