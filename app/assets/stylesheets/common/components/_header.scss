@@ -1,56 +1,98 @@
 .header--wrapper {
     position: relative;
-    background-color: $header-bg;
+    // background-color: $header-footer-bg;
+    background: $header-footer-bg-gradient;
     z-index: 9000;
     height: 6rem;
     margin-bottom: 1.2rem;
-    border-bottom: 1px solid $secondary;
-    text-shadow: 0 0.01rem 0.01rem $light;
+    border-bottom: 0.025rem solid $secondary;
+    text-shadow: 0 0.01rem 0.01rem $secondary;
+
+    //* handle mobile margin bottom on collapse
+    // burgerCollapseVisible
+    &.mobile-extended {
+        margin-bottom: 124px;
+        @include media-breakpoint-up(lg) { 
+            margin-bottom: 1.2rem;
+        }
+    }
+    // mySwapBnbCollapseVisible
+    &.mobile-extended-xl {
+        margin-bottom: 284px;
+        @include media-breakpoint-up(lg) { 
+            margin-bottom: 1.2rem;
+        }
+    }
+    // mobileSearchBarCollapseVisible
+    &.mobile-extended-xxl {
+        margin-bottom: 332px;
+        @include media-breakpoint-up(lg) { 
+            margin-bottom: 1.2rem;
+        }
+    }
 
     a {
         color: $primary;
 
-        &:hover, &:active {
-            color: $success;
+        &:hover, &:focus, &:active {
+            color: $dark-green;
         }
     }
 
     ul {
+        background: $header-footer-bg-gradient;
+        border: 0.025rem solid $secondary;
+        border-radius: 0.25rem;
+        padding: 0 0.5rem;
+        ul {
+            opacity: 1;
+            padding: 0;
+            margin: 0 0.5rem;
+            // border: 1px solid $primary;
+            // border: none;
+            opacity: 1;
+            border: none;
+            // background: $header-footer-bg-gradient;
 
-            ul {
-                opacity: 1;
-                // background-color: $header-bg;
-                border: 1px solid $primary;
-                border-radius: 0.01rem;
+            // background-color: $white;
+            // background: $header-footer-bg-gradient;
 
-                li {
-                    padding: .5rem 1rem;
-                    // margin: 0;
+            li {
+                // background-color: $white;
+                background: $header-footer-bg-gradient;
+                // padding: 0 1rem;
+                margin: 0;
+                a {
+                    &:hover {
+                        color: $primary-x-lighter;
+                    }
                 }
             }
-
-        
+        }
     }
 
     @include media-breakpoint-up(lg) { 
-        // background-color: $header-bg;
         ul {
+            border: none;
+            ul {
+                border: 0.025rem solid $secondary;
+                border-radius: 0.25rem;
 
-                ul {
-                    // background-color: $header-bg;
-                    // border: none;
-
-                    li {
-                        padding: 0;
+                li {
+                    padding: 0;
+                    a {
+                        &:hover {
+                            color: $primary-x-lighter;
+                        }
                     }
                 }
-
-
+            }
         }
     }
 
     .header--main-search-bar {
-        background-color: $primary-x-lighter;
+        // background-color: $primary-x-lighter;
+        background: $header-footer-bg-gradient;
         display: none;
         position: absolute;
         bottom: - 1.8rem;
@@ -81,7 +123,8 @@
     }
 
     .search-bar--container {
-        background-color: $primary-x-lighter;
+        // background-color: $primary-x-lighter;
+        background: $header-footer-bg-gradient;
         padding: 0.16rem 0.42rem;
         border-radius: 0.8rem;
         

@@ -3,7 +3,8 @@
     bottom: -6rem;
     width: 100%;
     padding: 1.2rem;
-    background-color: $footer-bg;
+    // background-color: $header-footer-bg;
+    background: $header-footer-bg-gradient;
     transition: .25s ease-in-out;
 
     a {
