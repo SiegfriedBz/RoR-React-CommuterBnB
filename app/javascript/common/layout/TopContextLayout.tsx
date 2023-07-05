@@ -14,7 +14,7 @@ const TopContextLayout: React.FC<any> = () => {
                         <main className="container mt-2">
                             <Outlet />
                         </main>
-                        {/* <Footer /> */}
+                        <Footer />
                     </MessagesContextProvider>
                 </FlatsContextProvider>
             </UserContextProvider>

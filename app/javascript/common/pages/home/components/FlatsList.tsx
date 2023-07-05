@@ -10,8 +10,6 @@ interface IProps {
 const FlatsList: React.FC<IProps> = ({ flatsForThisPage }) => {
 
     if(!flatsForThisPage) return <LoadingSpinners />
-
-    console.log("flatsForThisPage", flatsForThisPage)
     
     return (
         <>

@@ -164,23 +164,22 @@ const Header: React.FC = () => {
                             </li>
                             <li className="nav-item">
                                 { user?.email ?
-                                    <NavLink
-                                        className="nav-link text-primary fs-5"
+                                    <Link
+                                        className="nav-link fs-5"
                                         onClick={handleLogout}   
                                     >
                                         { user.email.split("@")[0]}{" "}
                                         <FontAwesomeIcon icon={faRightFromBracket} />
-                                    </NavLink>
+                                    </Link>
                                     :
-                                        <NavLink 
-                                            className="nav-link text-primary fs-5"
+                                        <Link 
+                                            className="nav-link fs-5"
                                             to='/auth'
                                         >
                                             <FontAwesomeIcon icon={faRightToBracket} />
-                                        </NavLink>
+                                        </Link>
                                 }
                             </li>
-                        {/* </div> */}
                         </ul>
                     </div>
                 </div>
