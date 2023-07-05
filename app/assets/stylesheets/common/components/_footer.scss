@@ -3,9 +3,9 @@
     bottom: -6rem;
     width: 100%;
     padding: 1.2rem;
-    // background-color: $header-footer-bg;
-    background: $header-footer-bg-gradient;
+    background: $bg-main-gradient;
     transition: .25s ease-in-out;
+    border-top: 0.025rem solid $secondary;
 
     a {
         color: $primary;

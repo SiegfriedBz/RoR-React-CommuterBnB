@@ -1,7 +1,7 @@
 .header--wrapper {
     position: relative;
     // background-color: $header-footer-bg;
-    background: $header-footer-bg-gradient;
+    background: $bg-main-gradient;
     z-index: 9000;
     height: 6rem;
     margin-bottom: 1.2rem;
@@ -40,7 +40,7 @@
     }
 
     ul {
-        background: $header-footer-bg-gradient;
+        background: $bg-main-gradient;
         border: 0.025rem solid $secondary;
         border-radius: 0.25rem;
         padding: 0 0.5rem;
@@ -52,14 +52,14 @@
             // border: none;
             opacity: 1;
             border: none;
-            // background: $header-footer-bg-gradient;
+            // background: $bg-main-gradient;
 
             // background-color: $white;
-            // background: $header-footer-bg-gradient;
+            // background: $bg-main-gradient;
 
             li {
                 // background-color: $white;
-                background: $header-footer-bg-gradient;
+                background: $bg-main-gradient;
                 // padding: 0 1rem;
                 margin: 0;
                 a {
@@ -92,7 +92,7 @@
 
     .header--main-search-bar {
         // background-color: $primary-x-lighter;
-        background: $header-footer-bg-gradient;
+        background: $bg-main-gradient;
         display: none;
         position: absolute;
         bottom: - 1.8rem;
@@ -124,7 +124,7 @@
 
     .search-bar--container {
         // background-color: $primary-x-lighter;
-        background: $header-footer-bg-gradient;
+        background: $bg-main-gradient;
         padding: 0.16rem 0.42rem;
         border-radius: 0.8rem;
         

@@ -20,7 +20,8 @@ const NewsLetterSuscribe = () => {
   };
 
   return (
-    <div className="my-5">
+    <div className="newsletter--wrapper">
+
         <h3>
             <FontAwesomeIcon icon={faEnvelopeOpenText} />
             {" "}<span>Subscribe to our Newsletter</span>
