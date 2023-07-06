@@ -12,6 +12,6 @@ export interface IUser {
 export interface IUserContext {
     user?: IUser,
     setUser: React.Dispatch<React.SetStateAction<IUser>>,
-    tokenInStorage?: string,
+    tokenInStorage: string,
     setTokenInStorage: React.Dispatch<React.SetStateAction<string>>,
 }
