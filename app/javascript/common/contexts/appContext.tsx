@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react'
+import React, { useState, useEffect, useRef, createContext, useContext } from 'react'
 import { IFlashMessage, IAppContext } from '../utils/interfaces'
 
 export const initFlashMessage = {
@@ -17,9 +17,22 @@ interface IProps {
 export const AppContextProvider: React.FC<IProps> = ({ children } ) => {
     const [flashMessage, setFlashMessage] = useState<IFlashMessage>(initFlashMessage)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const mapboxTokenRef = useRef(null)
+
+    useEffect(() => {
+        const root = document.getElementById('root')
+        if(!root) return
+
+        const mapboxToken = root.dataset['mapbox']
+        if(!mapboxToken) return
+
+        mapboxTokenRef.current = mapboxToken
+
+      }, [])
 
     return (
         <AppContext.Provider value={{
+                mapboxTokenRef,
                 flashMessage,
                 setFlashMessage,
                 isLoading,
