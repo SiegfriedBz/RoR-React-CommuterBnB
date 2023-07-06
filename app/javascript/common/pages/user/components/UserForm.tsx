@@ -78,27 +78,16 @@ const UserForm: React.FC<IUserContext> = ({ user, setUser }) => {
             return
         }
 
-        const response = fetchedData[0]
-        const data = fetchedData[1]
-        if(!response || response.status !== 200 || !data) {
+        const [response, data] = fetchedData
+
+        if(!response || response.status !== 200 || !data?.user) {
             setFlashMessage({ message: 'Something went wrong, please try again', type: "warning" })
             return
         }
 
-        // TRANSIENT FIX 
-        setUser({ ...user, email: formValues.email, description: formValues.description })
-        try {
-        // TODO: GET NEW TOKEN FROM SERVER (like authenticate page POST /login||/signup)
-        // let token = response.headers.get('Authorization')
-        // token = token?.split(' ')[1]
-        // const serializedToken = JSON.stringify(token)
-        // setTokenInStorage(serializedToken)
-
+        setUser({ ...user, ...data?.user })
         setFlashMessage({ message: data.message, type: "success" })
-        setTimeout(() => navigate('/'), 1500)
-        } catch (err) {
-            setFlashMessage({ message: err.message, type: "danger" })
-        }
+        setTimeout(() => navigate('/'), 3000)
     }
 
     if(isLoading) return <LoadingSpinners />

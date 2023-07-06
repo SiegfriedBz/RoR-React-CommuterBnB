@@ -41,7 +41,7 @@ export const UserContextProvider: React.FC<IProps> = ({ children }) => {
     const [user, setUser] = useState(() => {
         const decodedToken = decodeToken((tokenInStorage))
 
-        if(!decodedToken?.user_id || !decodedToken?.email || !decodedToken?.role) {
+        if(!decodedToken?.user_id) {
             return initUser
         }
 
@@ -54,7 +54,6 @@ export const UserContextProvider: React.FC<IProps> = ({ children }) => {
     useEffect(() => {
         const decodedToken = decodeToken(tokenInStorage)
         if (!decodedToken) {
-            // if no user logged in / on log out
             return setUser(initUser)
         }
 

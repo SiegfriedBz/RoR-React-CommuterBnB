@@ -35,7 +35,11 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
       current_user.image.attach(user_params[:image]) if user_params[:image].present?
 
     if current_user.update(user_params.except(:image))
-      render json: { message: 'You updated your profile successfully' }
+      render json: {
+        user: UserSerializer.new(current_user).serializable_hash[:data][:attributes],
+        message: 'You updated your profile successfully' 
+      }, status: :ok
+
     else
       render json: { errors: current_user.errors.full_messages }, status: :unprocessable_entity
     end
@@ -82,7 +86,7 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   def respond_with(resource, _opts = {})
     if resource.persisted? 
       render json: {
-        data: UserSerializer.new(resource).serializable_hash[:data][:attributes],
+        user: UserSerializer.new(resource).serializable_hash[:data][:attributes],
         message: 'You signed up sucessfully'
       }, status: :created
     else
