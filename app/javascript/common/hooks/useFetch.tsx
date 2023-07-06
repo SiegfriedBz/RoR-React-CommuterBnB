@@ -40,10 +40,9 @@ export const useFetch = () => {
                 throw new Error(error)
             }
             } catch (err) {
-            // logout user
-            // setTokenInStorage("{}")
-            // setFlashMessage({ message: err.message, type: "danger" })
-            console.log("useFetch err.message",  err.message)
+                // logout user
+                setTokenInStorage("{}")
+                setFlashMessage({ message: err.message, type: "danger" })
             } finally {
                 setIsLoading(false)
             }

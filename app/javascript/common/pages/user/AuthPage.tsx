@@ -19,12 +19,14 @@ const initFormValues = {
     password_confirmation: ''
 }
 
+//** signup & login */
+//** setUser + setToken in local storage */
 const AuthPage: React.FC = () => {
     //* hooks & context
     const { authenticate } = useFetch()
     const navigate = useNavigate()
     const { setFlashMessage, isLoading } = useAppContext()
-    const { setTokenInStorage } = useUserContext()
+    const { setUser, setTokenInStorage } = useUserContext()
 
     //* state
     const [formValues, setFormValues] = useState<IFormData>(initFormValues)
@@ -55,6 +57,9 @@ const AuthPage: React.FC = () => {
         try {
         const serializedToken = JSON.stringify(token)
         setTokenInStorage(serializedToken)
+        if(data?.user) {
+            setUser(data.user)
+        }
 
         setFlashMessage({ message: data.message, type: "success" })
         setTimeout(() => navigate('/'), 1500)

@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
   database: commuter_bnb_production
   username: commuter_bnb
   password: <%= ENV["COMMUTER_BNB_DATABASE_PASSWORD"] %>
