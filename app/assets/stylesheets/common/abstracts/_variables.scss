@@ -24,11 +24,9 @@ $light: hsl(0, 0%, 99%);
 $white: white;
 $black: black;
 
-
 // 
 // custom
 $body-bg: $white;
-// $header-footer-bg: $primary-x-lighter;
 $bg-main-gradient: linear-gradient(to right, $primary-l-lighter, $primary-x-lighter);
 // form 
 $form-switch-color: $secondary;
@@ -43,7 +41,6 @@ $dropdown-link-active-color: $white;
 $dropdown-link-active-bg: $primary;
 
 // input
-// $input-focus-box-shadow: 0 0 0 0.08rem rgba($success, 0.25);
 $input-focus-box-shadow: 0 0 0 0.04rem $success;
 
 // navbar

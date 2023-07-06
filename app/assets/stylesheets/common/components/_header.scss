@@ -1,6 +1,5 @@
 .header--wrapper {
     position: relative;
-    // background-color: $header-footer-bg;
     background: $bg-main-gradient;
     z-index: 9000;
     height: 6rem;
@@ -33,7 +32,6 @@
 
     a {
         color: $primary;
-
         &:hover, &:focus, &:active {
             color: $dark-green;
         }
@@ -48,20 +46,12 @@
             opacity: 1;
             padding: 0;
             margin: 0 0.5rem;
-            // border: 1px solid $primary;
-            // border: none;
             opacity: 1;
             border: none;
-            // background: $bg-main-gradient;
-
-            // background-color: $white;
-            // background: $bg-main-gradient;
-
             li {
-                // background-color: $white;
                 background: $bg-main-gradient;
-                // padding: 0 1rem;
                 margin: 0;
+
                 a {
                     &:hover {
                         color: $primary-x-lighter;
@@ -91,7 +81,6 @@
     }
 
     .header--main-search-bar {
-        // background-color: $primary-x-lighter;
         background: $bg-main-gradient;
         display: none;
         position: absolute;
@@ -106,24 +95,22 @@
         @include media-breakpoint-up(xl) { 
             display: block;
             left: 21%;
-            }
+        }
 
-            @include media-breakpoint-up(xxl) { 
+        @include media-breakpoint-up(xxl) { 
             display: block;
             left: 26%;
-            }
+        }
     }
 
     .header--mobile-search-bar {
         display: block;
-
         @include media-breakpoint-up(lg) { 
             display: none;
         }
     }
 
     .search-bar--container {
-        // background-color: $primary-x-lighter;
         background: $bg-main-gradient;
         padding: 0.16rem 0.42rem;
         border-radius: 0.8rem;
