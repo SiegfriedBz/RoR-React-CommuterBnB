@@ -17,7 +17,8 @@ import { useMessagesContext, useUserContext } from '../../contexts'
 import SearchBar from './SearchBar'
 import { TypeAnimationWrapper } from '../../components'
 
-const Header: React.FC = (props, forwardedRef) => {
+
+const Header: React.FC = (props, forwardedRef: React.Ref) => {
     //* hooks & context
     const location = useLocation()
     const navigate = useNavigate()
@@ -47,7 +48,7 @@ const Header: React.FC = (props, forwardedRef) => {
         setMobileSearchBarCollapseVisible(false)
     }
 
-    const closeAllCollapse = () => {
+    const closeCollapse = () => {
         setMySwapBnbCollapseVisible(false)
         setMobileSearchBarCollapseVisible(false)
     }
@@ -110,7 +111,7 @@ const Header: React.FC = (props, forwardedRef) => {
                 <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-Search">
                 <div className="header--mobile-search-bar">
                     <SearchBar
-                        closeAllCollapse={closeAllCollapse}
+                        closeCollapse={closeCollapse}
                     />
                 </div>
                 </div>
@@ -162,7 +163,7 @@ const Header: React.FC = (props, forwardedRef) => {
                                     My SwapBnb
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li onClick={closeAllCollapse}>
+                                    <li onClick={closeCollapse}>
                                         <NavLink className="dropdown-item" to='/my-messages'>
                                             <span className="d-flex justify-content-between align-items-center">
                                                 <span>
@@ -174,22 +175,22 @@ const Header: React.FC = (props, forwardedRef) => {
                                             </span>
                                         </NavLink>
                                     </li>
-                                    <li onClick={closeAllCollapse}>
+                                    <li onClick={closeCollapse}>
                                         <NavLink className="dropdown-item" to='/my-booking-requests'>
                                             <FontAwesomeIcon icon={faReceipt} />{" "}Booking requests
                                         </NavLink>
                                     </li>
-                                    <li onClick={closeAllCollapse}>
+                                    <li onClick={closeCollapse}>
                                         <NavLink className="dropdown-item" to='/my-payments'>
                                             <FontAwesomeIcon icon={faMoneyCheck} />{" "}Payments
                                         </NavLink>
                                     </li>
-                                    <li onClick={closeAllCollapse}>
+                                    <li onClick={closeCollapse}>
                                         <NavLink className="dropdown-item" to='/add-property'>
                                             <FontAwesomeIcon icon={faHouseCircleCheck} />{" "}Add property
                                         </NavLink>
                                     </li>
-                                    <li onClick={closeAllCollapse}>
+                                    <li onClick={closeCollapse}>
                                         <NavLink className="dropdown-item" to='/my-profile'>
                                             <FontAwesomeIcon icon={faUser} />{" "}Profile
                                         </NavLink>
@@ -200,12 +201,12 @@ const Header: React.FC = (props, forwardedRef) => {
                             {/* search bar on mobile home page */}
                             { renderSearchBarOnHomePageMobile() }
 
-                            <li onClick={closeAllCollapse}
+                            <li onClick={closeCollapse}
                                 className="nav-item my-auto"
                             >
                                 <NavLink className="nav-link fs-5" to='/about'>About</NavLink>
                             </li>
-                            <li onClick={closeAllCollapse}
+                            <li onClick={closeCollapse}
                                 className="nav-item"
                             >
                                 { user?.email ?

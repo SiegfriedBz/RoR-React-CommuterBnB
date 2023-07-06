@@ -1,8 +1,8 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faReceipt } from '@fortawesome/free-solid-svg-icons'
-import { ITransactionUser } from "./BookingRequestCard"
 import { Status } from '../../../components'
+import { ITransactionUser } from "./BookingRequestCard"
 
 interface IProps {
     transactionRequestId: number,

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
 import { useAppContext, useFlatsContext } from '../../contexts'
-import {ButtonSlide} from '../buttons'
+import { ButtonSlide } from '../buttons'
 
 interface IProps {
     children?: React.ReactNode,

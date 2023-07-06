@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate, Navigate, Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faReceipt, faCalendarDays, faTrashCan, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext, useBookingsContext } from '../../contexts'
 import FlatReviewsList from './components/FlatReviewsList'
 import { FlatDescription, FlatCardCarousel, FlatImageGrid, FlatHostedBy, FlatRating } from '../../components/flats'
 import MapView from '../../components/map/MapView'
 import { LoadingSpinners } from '../../components'
-import { IFlat } from '../../utils/interfaces'
 import { ButtonSlide } from '../../components/buttons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faReceipt, faCalendarDays, faTrashCan, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { IFlat } from '../../utils/interfaces'
 
 const FlatDetailsPage: React.FC = () => {
     //* hooks & context

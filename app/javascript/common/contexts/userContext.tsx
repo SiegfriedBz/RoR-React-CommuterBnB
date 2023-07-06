@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
-import { useLocalStorage } from '../hooks'
-import { IUser, IUserContext } from '../utils/interfaces'
 import jwt_decode from 'jwt-decode'
+import { useLocalStorage } from '../hooks'
+import { IUserContext } from '../utils/interfaces'
 
 interface IDecodedToken {
     user_id?: number,
@@ -21,7 +21,7 @@ const initUser = {
 
 const UserContext = createContext(null)
 
-export const useUserContext = () => useContext(UserContext)
+export const useUserContext = (): IUserContext => useContext(UserContext)
 
 const decodeToken = (tokenInStorage: string): IDecodedToken => {
     if(typeof tokenInStorage !== 'string' || tokenInStorage === '{}') {
@@ -32,12 +32,12 @@ const decodeToken = (tokenInStorage: string): IDecodedToken => {
     return jwt_decode(deserializedToken)
 }
 
-export const UserContextProvider = ({ children }) => {
-    //* state
-    // token in local storage
+interface IProps {
+    children: React.ReactNode
+}
+
+export const UserContextProvider: React.FC<IProps> = ({ children }) => {
     const [tokenInStorage, setTokenInStorage] = useLocalStorage('bnbToken', null)
-   
-    // user 
     const [user, setUser] = useState(() => {
         const decodedToken = decodeToken((tokenInStorage))
 

@@ -10,7 +10,11 @@ const AppContext = createContext(null)
 
 export const useAppContext = (): IAppContext => useContext(AppContext)
 
-export const AppContextProvider: React.FC = ({ children }: any ) => {
+interface IProps {
+    children: React.ReactNode
+}
+
+export const AppContextProvider: React.FC<IProps> = ({ children } ) => {
     const [flashMessage, setFlashMessage] = useState<IFlashMessage>(initFlashMessage)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 

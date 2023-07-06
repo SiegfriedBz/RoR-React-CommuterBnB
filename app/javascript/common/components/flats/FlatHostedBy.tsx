@@ -1,11 +1,11 @@
 import React from 'react'
-import { useAppContext } from '../../contexts'
-import { LoadingSpinners } from '../../components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { useAppContext } from '../../contexts'
+import Avatar from '../user/Avatar'
+import { LoadingSpinners } from '../../components'
 import { formatedDate } from '../../utils/helpers/formatedDate'
 import { IFlat } from '../../utils/interfaces'
-import Avatar from '../user/Avatar'
 
 interface IProps {
   hostFlat?: IFlat

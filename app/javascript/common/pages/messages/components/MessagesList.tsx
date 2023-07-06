@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faCommentDots } from '@fortawesome/free-regular-svg-icons'
 import { MessageForm } from '../../../components/messages'
-import {ButtonScrollToTop} from '../../../components/buttons';
+import { ButtonScrollToTop } from '../../../components/buttons';
 import { IUser, IMessage } from '../../../utils/interfaces'
 
 interface IProps {

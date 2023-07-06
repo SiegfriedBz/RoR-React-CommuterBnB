@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faCircleXmark
- } from '@fortawesome/free-regular-svg-icons'
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
     
 const initCustomStyles = {
   content: {
@@ -21,7 +19,8 @@ const initCustomStyles = {
 interface IProps {
     modalIsOpen: boolean,
     toggleModal: () => void,
-    containerWidth?: number
+    containerWidth?: number,
+    children?: React.ReactNode
 }
 
 const ModalWrapper: React.FC<IProps> = ({ 
@@ -33,9 +32,10 @@ const ModalWrapper: React.FC<IProps> = ({
 
     Modal.setAppElement('#root')
 
-    // wrapper styles
+    //* state
     const [customStyles, setCustomStyles] = useState(initCustomStyles)
 
+    //* effect
     useEffect(() => {
         if(!containerWidth) return 
 

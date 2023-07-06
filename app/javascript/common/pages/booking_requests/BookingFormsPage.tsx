@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, useParams, Outlet, Navigate } from 'react-router-dom'
-import { useFlatsContext } from '../../contexts'
-import { FlatDescription } from '../../components/flats'
-import { LoadingSpinners } from '../../components'
-import { FlatHostedBy } from '../../components/flats'
-import {ButtonSlide} from '../../components/buttons/'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane, faReceipt } from '@fortawesome/free-solid-svg-icons'
+import { useFlatsContext } from '../../contexts'
+import { FlatDescription, FlatHostedBy } from '../../components/flats'
+import { LoadingSpinners } from '../../components'
+import { ButtonSlide } from '../../components/buttons/'
 import { IFlat } from '../../utils/interfaces'
 
 const BookingFormsPage = () => {

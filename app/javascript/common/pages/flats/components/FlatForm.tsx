@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useFetch } from '../../../hooks'
-import { useAppContext, useFlatsContext } from '../../../contexts'
-import { FlatCardCarousel } from '../../../components/flats'
-import {ButtonSlide} from '../../../components/buttons'
-import { DropZoneWrapper, LoadingSpinners } from '../../../components'
-import { IFlat, FlatCategoryType } from '../../../utils/interfaces'
-import FlatCategoryEnum from '../../../utils/constants/flatCategoryEnum'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faFontAwesome, 
@@ -18,7 +11,13 @@ import {
     faDollarSign,
     faCloudArrowUp
 } from '@fortawesome/free-solid-svg-icons'
-
+import { useFetch } from '../../../hooks'
+import { useAppContext, useFlatsContext } from '../../../contexts'
+import { FlatCardCarousel } from '../../../components/flats'
+import {ButtonSlide} from '../../../components/buttons'
+import { DropZoneWrapper, LoadingSpinners } from '../../../components'
+import { IFlat, FlatCategoryType } from '../../../utils/interfaces'
+import FlatCategoryEnum from '../../../utils/constants/flatCategoryEnum'
 
 interface IFormValues {
     title: string,

@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 
-const StarRating = (props) => {
-    const { rating, setRating } = props
+interface IProps {
+    rating: number,
+    setRating: (rating: number) => void
+}
+
+const StarRating: React.FC<IProps> = ({ rating, setRating }) => {
 
     return (
         <div>

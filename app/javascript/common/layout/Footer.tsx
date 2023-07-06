@@ -1,11 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
-    faGithubAlt, 
-    faLinkedin } from '@fortawesome/free-brands-svg-icons'
+import { faGithubAlt, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 
-const Footer = ({ scrollToHeaderTop }) => {
+interface IProps {
+    scrollToHeaderTop: () => void
+}
+
+const Footer: React.FC<IProps> = ({ scrollToHeaderTop }) => {
 
     return (
         <footer className="footer">
