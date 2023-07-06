@@ -3,15 +3,10 @@ import Map, { Marker, Popup } from 'react-map-gl'
 import clsx from "clsx"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDollarSign, faLocationDot } from '@fortawesome/free-solid-svg-icons'
-import { useFlatsContext } from "../../contexts"
+import { useAppContext, useFlatsContext } from "../../contexts"
 import { FlatCard } from '../flats'
 import LoadingSpinners from '../LoadingSpinners'
 import { IFlat } from '../../utils/interfaces'
-
-//************************************************ */
-import mapbox_api_token from "./mapbox_api_token"
-const MAPBOX_TOKEN = mapbox_api_token
-//************************************************ */
 
 const mapStyle = 'mapbox://styles/mapbox/streets-v9'
 
@@ -40,9 +35,9 @@ interface IProps {
 const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     //* context
     // const { user } = useUserContext()
+    const { mapboxTokenRef } = useAppContext()
     const { flats } = useFlatsContext()
     
-
     if(!flats) return <LoadingSpinners />
     
     //* state
@@ -51,7 +46,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
     const [userMarker, setUserMarker] = useState<IUserMarker>({ longitude: 26.85, latitude: 37.76 })
     // const [userFlats, setUserFlats] = useState([])
     const [flatsMarkers, setFlatsMarkers] = useState<IFlatMarker[] | []>([])
-    const [showPopup, setShowPopup] = useState(false)
+    const [showPopup, setShowPopup] = useState(false) 
 
     // set mapSelectedFlat && center map on selected flat
     useEffect(() => {
@@ -137,7 +132,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
             }}
             style={{ height: mapHeight, width: "auto" }}
             mapStyle={mapStyle}
-            mapboxAccessToken={MAPBOX_TOKEN}
+            mapboxAccessToken={mapboxTokenRef?.current}
             onMove={() => { getflatsMarkers() }}
         >
             <>
@@ -166,7 +161,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
             })}
 
             {/* flat popUp */}
-            {showPopup && mapSelectedFlat?.longitude && mapSelectedFlat?.latitude &&
+            { showPopup && mapSelectedFlat?.longitude && mapSelectedFlat?.latitude &&
                 <Popup
                         anchor='bottom'
                         longitude={mapSelectedFlat?.longitude}
@@ -178,7 +173,7 @@ const MapView: React.FC<IProps> = ({ selectedFlatId, mapHeight=600 }) => {
                 >
                     <FlatCard flat={mapSelectedFlat} flatCardOnMap/>
                 </Popup>
-                }
+            }
             </>
         </Map>
     )
