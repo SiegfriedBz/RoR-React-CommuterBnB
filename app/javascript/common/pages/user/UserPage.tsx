@@ -1,15 +1,10 @@
 import React from 'react'
-import UserForm from './components/UserForm'
 import { useUserContext } from '../../contexts'
+import UserForm from './components/UserForm'
 import Avatar from '../../components/user/Avatar'
 
-  const UserPage = () => {
-      const { 
-        user,
-        setUser,
-        tokenInStorage,
-        setTokenInStorage 
-    } = useUserContext()
+const UserPage: React.FC = () => {
+  const { user, setUser, tokenInStorage, setTokenInStorage } = useUserContext()
   
   return (
     <div>

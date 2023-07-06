@@ -1,7 +1,6 @@
 import React from "react"
 import { IUser } from "./userInterfaces"
 
-
 export interface IIncomingMessage {
     id?: number,
     author?: IUser,
@@ -32,12 +31,13 @@ export interface IConversation {
 
 export interface IMessagesContext {
     messages: IMessage[] | undefined,
-    setMessages: (messages: IMessage[] | undefined) => void,
+    setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>,
     conversations: IConversation[] | undefined,
-    setConversations: (conversations: IConversation[] | undefined) => void
+    setConversations: React.Dispatch<React.SetStateAction<IConversation[]>>,
+    notificationConversationKeyRef: React.MutableRefObject<string | undefined>,
 }
 
 export interface IMessagesChannelsKeys {
     messagesChannelsKeys : string[] | undefined,
-    setMessagesChannelsKeys: (messagesChannelsKeys: string[] | undefined) => void
+    setMessagesChannelsKeys: React.Dispatch<React.SetStateAction<string>>,
 }

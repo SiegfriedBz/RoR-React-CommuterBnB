@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComments, faComment, faBell, faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { ButtonSlide } from "../../../components/buttons"
 import { IUser, IFlat, IMessage } from '../../../utils/interfaces'
 
@@ -20,7 +20,7 @@ interface IProps {
     transactionRequestId?: number
 }
 
-const ChatListElement = (props) => {
+const ChatListElement: React.FC<IProps> = (props) => {
     const {
         user,
         flatUsersKey,

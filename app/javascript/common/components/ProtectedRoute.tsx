@@ -2,7 +2,11 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useUserContext } from '../contexts'
 
-const ProtectedRoute: React.FC<any, any> = ({ children }) => {
+interface IProps {
+    children: React.ReactNode
+}
+
+const ProtectedRoute: React.FC<IProps> = ({ children }) => {
     const { user } = useUserContext()
     
     if (!user?.userId) {

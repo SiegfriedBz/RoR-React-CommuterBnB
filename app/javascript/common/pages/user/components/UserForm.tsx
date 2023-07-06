@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useFetch } from '../../../hooks'
-import { useAppContext, useUserContext } from '../../../contexts'
-import { IUser } from '../../../utils/interfaces'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAt, faMedal, faFaceSmile, faUnlock, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { useFetch } from '../../../hooks'
+import { useAppContext } from '../../../contexts'
 import { ButtonSlide } from '../../../components/buttons'
 import LoadingSpinners from '../../../components/LoadingSpinners'
 import DropZoneWrapper from '../../../components/DropZoneWrapper'
+import { IUser, IUserContext } from '../../../utils/interfaces'
 
 interface IFormValues extends IUser {
     password: string,
@@ -22,13 +22,7 @@ const initFormValues = {
     image: '',
 }
 
-const UserForm: React.FC = (props) => {
-    //* props
-    const { user,
-        setUser,
-        tokenInStorage,
-        setTokenInStorage 
-    } = props
+const UserForm: React.FC<IUserContext> = ({ user, setUser }) => {
     //* hooks & context
     const navigate = useNavigate()
     const { updateUser } = useFetch()

@@ -1,7 +1,6 @@
 import React from 'react'
 import { ITransactionUser } from './BookingRequestCard'
-import {ButtonSlide} from '../../../components/buttons/'
-
+import { ButtonSlide } from '../../../components/buttons/'
 
 interface IProps {
     transactionRequestId: number,

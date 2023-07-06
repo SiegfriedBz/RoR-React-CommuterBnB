@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons'
 import {ButtonSlide} from './buttons'
 
-const NewsLetterSuscribe = () => {
+const NewsLetterSuscribe: React.FC = () => {
   const [email, setEmail] = useState('')
 
   const handleChange = (e) => {
@@ -12,10 +12,8 @@ const NewsLetterSuscribe = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Here you can perform any necessary actions with the email (e.g., send it to a backend API)
     console.log("NewsLetterSuscribe handleSubmit Email")
     
-    // Reset the email input field
     setEmail('')
   };
 

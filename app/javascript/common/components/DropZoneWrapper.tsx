@@ -1,7 +1,15 @@
 import React from 'react'
 import Dropzone from 'react-dropzone'
 
-const DropZoneWrapper: React.FC = (props) =>  {
+interface IProps {
+    onDrop?: () => void,
+    droppedFiles?: File[],
+    maxFiles?: number,
+    maxSize?: number,
+    multiple?: boolean
+}
+
+const DropZoneWrapper: React.FC<IProps> = (props) =>  {
         const { onDrop, droppedFiles, maxFiles, maxSize, multiple } = props
 
         return (

@@ -1,8 +1,8 @@
 import React from 'react'
-import { useAppContext } from '../../contexts'
-import { LoadingSpinners } from '../../components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFontAwesome, faHouse, faArrowUpShortWide, faMoneyBill, faDollarSign } from '@fortawesome/free-solid-svg-icons'
+import { useAppContext } from '../../contexts'
+import { LoadingSpinners } from '../../components'
 import FlatCategoryEnum from '../../utils/constants/flatCategoryEnum'
 import { IFlat } from '../../utils/interfaces'
 
@@ -15,9 +15,8 @@ const FlatDescription: React.FC<IFlat> = ({ flat }) => {
     const address = `${city}, ${country}`
 
     const flatCategory = category === FlatCategoryEnum.ENTIRE_PLACE_SERVER ?
-    FlatCategoryEnum.ENTIRE_PLACE
-    : FlatCategoryEnum.PRIVATE_ROOM
-
+        FlatCategoryEnum.ENTIRE_PLACE
+        : FlatCategoryEnum.PRIVATE_ROOM
 
     return (
         <>

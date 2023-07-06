@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from "react-router-dom"
-import { useFetch } from '../../hooks'
-import PaymentCard from './components/PaymentCard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse } from '@fortawesome/free-solid-svg-icons'
+import { useFetch } from '../../hooks'
+import PaymentCard from './components/PaymentCard'
 import MapView from '../../components/map/MapView'
 
 const PaymentsPage: React.FC = () => {

@@ -5,8 +5,7 @@ interface IProps {
     image?: string
 }
 
-const Avatar: React.FC<IProps>= (props) => {
-    const { image } = props
+const Avatar: React.FC<IProps>= ({ image }) => {
     const location = useLocation()
 
     const imageClass =  location.pathname.includes("/properties") || 

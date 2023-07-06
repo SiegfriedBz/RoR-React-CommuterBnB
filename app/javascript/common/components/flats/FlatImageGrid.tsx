@@ -1,7 +1,10 @@
 import React from 'react'
-import { IFlat } from '../../utils/interfaces'
 
-const FlatImageGrid: React.FC<IFlat> = ({ images }) => {
+interface IProps {
+    images?: string[]
+}
+
+const FlatImageGrid: React.FC<IProps> = ({ images }) => {
     const selectedImages = images.filter((image: string, index: number) => index < 4)
 
     return (
@@ -9,9 +12,8 @@ const FlatImageGrid: React.FC<IFlat> = ({ images }) => {
             {selectedImages?.map((url: string) => {
                 return (
                     <div 
-                    className="col"
+                        className="col"
                         key={url}
-                        onClick={() => console.log('FlatImageGrid clicked')}
                     >
                         <img src={url} className="d-block w-100 rounded-1" alt="flat view"/>
                     </div>

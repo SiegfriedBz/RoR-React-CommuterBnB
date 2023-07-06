@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../../hooks'
 import { useAppContext } from '../../../contexts'
 import {ButtonSlide} from '../../../components/buttons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import StarRating from './StarRating'
 
 interface IProps {
@@ -12,8 +12,7 @@ interface IProps {
     transactionRequestId: number
 }
 
-const ReviewForm: React.FC<IProps> = (props) => {
-    const { flatId, transactionRequestId } = props
+const ReviewForm: React.FC<IProps> = ({ flatId, transactionRequestId }) => {
 
     //* hooks & context
     const navigate = useNavigate()

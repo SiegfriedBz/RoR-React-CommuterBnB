@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import { useAppContext } from '../contexts'
 
-const ToastLayout = () => {
+const ToastLayout: React.FC = () => {
     const { flashMessage } = useAppContext()
 
     useEffect(() => {

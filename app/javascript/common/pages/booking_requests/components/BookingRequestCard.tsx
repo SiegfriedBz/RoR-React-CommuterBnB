@@ -7,26 +7,20 @@ import React, {
 } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { formatDistanceToNow, differenceInDays } from 'date-fns'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../../hooks'
-import {
-    useAppContext,
-    useUserContext,
-    useFlatsContext,
-    useBookingsContext
-} from '../../../contexts'
-
-import { FlatCardCarousel } from '../../../components/flats'
-import { ModalWrapper, TotalPriceAndDays } from '../../../components'
+import { useAppContext, useUserContext, useFlatsContext, useBookingsContext } from '../../../contexts'
 import BookingInfo from './BookingInfo'
 import BookingAgreementSwitches from './BookingAgreementSwitches'
 import BookingFlatsDetails from './BookingFlatsDetails'
 import BookingGoToPayment from './BookingGoToPayment'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { formatedDate } from '../../../utils/helpers/formatedDate'
-import { IFlat, IBookingRequest } from '../../../utils/interfaces'
+import { ModalWrapper, TotalPriceAndDays } from '../../../components'
+import { FlatCardCarousel } from '../../../components/flats'
 import { ButtonSlide } from '../../../components/buttons/'
 import { MessageForm } from '../../../components/messages'
+import { formatedDate } from '../../../utils/helpers/formatedDate'
+import { IFlat, IBookingRequest } from '../../../utils/interfaces'
 
 export interface ITransactionUser {
     userId: number,

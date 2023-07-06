@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse, faEye } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
 import { useBookingsContext } from '../../contexts'
 import BookingRequestCard from './components/BookingRequestCard'
 import MapView from '../../components/map/MapView'
-import { ButtonSlide, ButtonScrollToTop } from '../../components/buttons/'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faEye } from '@fortawesome/free-solid-svg-icons'
+import { ButtonSlide, ButtonScrollToTop } from '../../components/buttons'
 import { IBookingRequest } from "../../utils/interfaces"
 
 const BookingRequestListPage: React.FC = () => {

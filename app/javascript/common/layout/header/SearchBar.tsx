@@ -16,11 +16,10 @@ const initFormValues = {
 }
 
 interface IProps {
-    closeAllCollapse?: () => void
+    closeCollapse?: () => void
 }
 
-const SearchBar: React.FC<IProps> = (props) => {
-    const { closeAllCollapse } = props
+const SearchBar: React.FC<IProps> = ({ closeCollapse }) => {
 
     //* hooks
     const { getFlats } = useFetch()
@@ -66,7 +65,7 @@ const SearchBar: React.FC<IProps> = (props) => {
         setFlatsInContext(filteredFlats)
         setFormValues(initFormValues)
         // mobile handle header margin bottom
-        closeAllCollapse()
+        closeCollapse()
     }
     
     return (

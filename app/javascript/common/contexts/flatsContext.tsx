@@ -6,16 +6,18 @@ import { flatsActions } from "../actions"
 import { IFlatsContext } from '../utils/interfaces'
 
 export const initState = {
-    flats: [],
+    flats: []
 }
 
 export const FlatsContext = createContext(null)
 
-export const useFlatsContext = (): IFlatsContext => {
-    return useContext(FlatsContext)
+export const useFlatsContext = (): IFlatsContext => useContext(FlatsContext)
+
+interface IProps {
+    children: React.ReactNode
 }
 
-export const FlatsContextProvider = ({ children }: any ) => {
+export const FlatsContextProvider: React.FC<IProps> = ({ children } ) => {
     const { user } = useUserContext()
     const [state, dispatch] = useReducer(flatsReducer, initState)
     const { getFlats, getFlatsWithUserFavorites } = useFetch()

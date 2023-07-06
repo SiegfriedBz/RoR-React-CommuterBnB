@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DoubleButton = () => {
+const DoubleButton: React.FC = () => {
   return (
     <span className="double-button">
         <button className="pill-button">Send message</button>

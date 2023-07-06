@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
-import { useFlatsContext } from '../contexts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons'
+import { useFlatsContext } from '../contexts'
 import LoadingSpinners from './LoadingSpinners'
 import FlatsList from '../pages/home/components/FlatsList'
 import NewsLetterSuscribe from './NewsLetterSuscribe'
 
-const PaginatedWrapper = ({ flatsPerPage }) => {
+interface IProps {
+  flatsPerPage: number
+}
+
+const PaginatedWrapper: React.FC<IProps> = ({ flatsPerPage }) => {
   //* hooks & context
   const { flats } = useFlatsContext()
 

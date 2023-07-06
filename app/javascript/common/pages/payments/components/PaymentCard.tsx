@@ -1,12 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { useUserContext, useFlatsContext } from '../../../contexts'
- import ReviewForm from './ReviewForm'
-import { ModalWrapper, Status } from '../../../components'
-import { ButtonSlide } from '../../../components/buttons'
-import { IUser, IFlat, IReview } from '../../../utils/interfaces'
-import { formatedDate } from '../../../utils/helpers/formatedDate'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import {
     faDollarSign,
     faReceipt,
@@ -16,7 +9,12 @@ import {
     faMoneyCheckDollar,
     faHandHoldingDollar
  } from '@fortawesome/free-solid-svg-icons'
-import { tr } from 'date-fns/locale'
+import { useUserContext, useFlatsContext } from '../../../contexts'
+ import ReviewForm from './ReviewForm'
+import { ModalWrapper, Status } from '../../../components'
+import { ButtonSlide } from '../../../components/buttons'
+import { IUser, IFlat, IReview } from '../../../utils/interfaces'
+import { formatedDate } from '../../../utils/helpers/formatedDate'
 
 interface IProps {
     containerWidth?: number,
@@ -35,7 +33,7 @@ interface IProps {
     }
 }
 
-const PaymentCard: React.FC = (props) => {
+const PaymentCard: React.FC<IProps> = (props) => {
     const { 
         containerWidth,
         payment:

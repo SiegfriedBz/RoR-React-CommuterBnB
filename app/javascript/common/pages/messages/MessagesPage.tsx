@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
-import { useAppContext, useUserContext, useMessagesContext } from '../../contexts'
+import { useUserContext, useMessagesContext } from '../../contexts'
 import ChatsList from './components/ChatsList'
 import MessagesList from './components/MessagesList'
 import MessagesFlat from './components/MessagesFlat'
-import { formatMessagesAndSetConversations } from '../../contexts/helpers/formatMessagesAndSetConversations'
 import { LoadingSpinners } from '../../components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import MapView from '../../components/map/MapView'
+import { formatMessagesAndSetConversations } from '../../contexts/helpers/formatMessagesAndSetConversations'
 
 //* NOTE: flat with messageFlatId always belongs to:
 // - the user contacted from /properties/:id/requests/message
@@ -19,7 +19,6 @@ import MapView from '../../components/map/MapView'
 const MessagesPage: React.FC = () => {
   //* hooks & context
   const topRef = useRef<HTMLElement>(null)
-  const { setFlashMessage } = useAppContext()
   const { user } = useUserContext()
   const { conversations, setConversations } = useMessagesContext()
   const { getUserMessages } = useFetch()

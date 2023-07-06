@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate} from 'react-router-dom'
-import { useFetch } from '../../hooks'
-import { useAppContext, useUserContext } from '../../contexts'
-import {ButtonSlide} from '../../components/buttons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAt, faUnlock, faRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { useFetch } from '../../hooks'
+import { useAppContext, useUserContext } from '../../contexts'
+import { ButtonSlide } from '../../components/buttons'
 import { TypeAnimationWrapper } from '../../components'
 
 interface IFormData {

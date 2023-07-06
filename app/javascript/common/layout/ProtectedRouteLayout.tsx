@@ -2,7 +2,7 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { ProtectedRoute } from '../components'
 
-const ProtectedRouteLayout = () => {
+const ProtectedRouteLayout: React.FC = () => {
   return (
     <ProtectedRoute>
         <Outlet />

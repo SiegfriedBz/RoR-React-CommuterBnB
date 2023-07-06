@@ -5,21 +5,21 @@ import { useAppContext } from "./appContext"
 import { useUserContext } from "./userContext"
 import { formatMessagesAndSetConversations } from './helpers/formatMessagesAndSetConversations'
 import { 
-    IUser,
-    IFlashMessage,
     IIncomingMessage,
-    IMessage,
     IConversation,
     IMessagesContext,
     IMessagesChannelsKeys
  } from '../utils/interfaces'
 
-
 const MessagesContext = createContext(null)
 
-export const useMessagesContext = () => useContext(MessagesContext)
+export const useMessagesContext = (): IMessagesContext => useContext(MessagesContext)
 
-export const MessagesContextProvider: React.FC = ({ children }) => {
+interface IProps {
+    children: React.ReactNode
+}
+
+export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
     //* hooks & context
     const { getUserMessages } = useFetch()
     const { setFlashMessage } = useAppContext()
@@ -91,7 +91,6 @@ export const MessagesContextProvider: React.FC = ({ children }) => {
             if(data.type === "welcome") return
             if(data.type === "confirm_subscription") return
             
-            // if(!!data?.message) return
             const inComingMessage: IIncomingMessage =  data?.message?.message
             if(!inComingMessage) return
             

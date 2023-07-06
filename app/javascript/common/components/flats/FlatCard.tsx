@@ -1,14 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouse, faDollarSign, faHeart, faEye } from '@fortawesome/free-solid-svg-icons'
 import { useFetch } from '../../hooks'
 import { useAppContext, useUserContext, useFlatsContext } from '../../contexts'
 import { FlatCardCarousel, FlatRating } from "../../components/flats"
-import {ButtonSlide} from '../buttons'
+import { ButtonSlide } from '../buttons'
 import { LoadingSpinners } from '../../components'
 import { IFlat } from '../../utils/interfaces'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faDollarSign, faHeart, faEye } from '@fortawesome/free-solid-svg-icons'
-
 
 interface IProps {
     flat?: IFlat,
