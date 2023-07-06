@@ -10,4 +10,5 @@ export interface IAppContext {
     isLoading: boolean,
     setFlashMessage: React.Dispatch<React.SetStateAction<IFlashMessage>>,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    mapboxTokenRef: React.MutableRefObject<string | null>
 }
