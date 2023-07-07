@@ -1,5 +1,19 @@
 // @import 'mapbox-gl/dist/mapbox-gl.css';
 
+// popup close btn
+div.mapboxgl-map { 
+    div.mapboxgl-popup.mapboxgl-popup-anchor-bottom {
+        div.mapboxgl-popup-content {
+            .mapboxgl-popup-close-button {
+                font-size: 1rem;
+                margin: 0.15rem 0.25rem;
+                color: $primary;
+            }
+        }
+    }
+}
+
+// markers
 .map-markers {
   display: flex;
   flex-direction: column;
