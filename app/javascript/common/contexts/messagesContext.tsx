@@ -22,7 +22,7 @@ interface IProps {
 export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
     //* hooks & context
     const { getUserMessages } = useFetch()
-    const { setFlashMessage } = useAppContext()
+    const { envRef, setFlashMessage } = useAppContext()
     const { user, tokenInStorage: token } = useUserContext()
 
     //* state
@@ -62,17 +62,14 @@ export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
         setMessagesChannelsKeys(channelKeys)
     }, [conversations])
 
-    let wsURL = ""
-    if(process.env.NODE_ENV === "production") {
-        wsURL = `wss://swapbnb.onrender.com/cable?token=${encodeURIComponent(token)}`
-    } else {
-        wsURL = `ws://localhost:3000/cable?token=${encodeURIComponent(token)}`
-    }
-
     // set websocket
     useEffect(() => {
         if(typeof token !== 'string' || token === '{}') return
         if(!user?.userId || !messagesChannelsKeys) return
+
+        const wsURL = envRef?.current === "production" ?
+            `ws://swapbnb.onrender.com/cable?token=${encodeURIComponent(token)}`
+            : `ws://localhost:3000/cable?token=${encodeURIComponent(token)}`
 
         const ws = new WebSocket(wsURL)
 
