@@ -62,12 +62,19 @@ export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
         setMessagesChannelsKeys(channelKeys)
     }, [conversations])
 
+    let wsURL = ""
+    if(process.env.NODE_ENV === "production") {
+        wsURL = `wss://swapbnb.onrender.com/cable?token=${encodeURIComponent(token)}`
+    } else {
+        wsURL = `ws://localhost:3000/cable?token=${encodeURIComponent(token)}`
+    }
+
     // set websocket
     useEffect(() => {
         if(typeof token !== 'string' || token === '{}') return
         if(!user?.userId || !messagesChannelsKeys) return
 
-        const ws = new WebSocket(`ws://localhost:3000/cable?token=${encodeURIComponent(token)}`)
+        const ws = new WebSocket(wsURL)
 
         // subscribe to all MessagesChannels
         ws.onopen = () => {
