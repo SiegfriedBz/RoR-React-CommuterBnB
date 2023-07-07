@@ -15,6 +15,6 @@ class User < ApplicationRecord
   enum role: { user: 0, admin: 1 }
 
   def jwt_payload
-    super.merge(user_id: self.id, email: self.email, description: self.description, role: self.role, image: self.image.present? ? self.image.blob.url : "")
+    super.merge(user_id: self.id)
   end
 end
