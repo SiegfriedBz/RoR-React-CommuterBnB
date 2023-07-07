@@ -3,13 +3,13 @@ import React from 'react'
 const LoadingSpinners: React.FC = () => {
   return (
     <div className='d-flex'>
-        <div className="spinner-grow text-secondary" role="status">
+        <div className="spinner-grow spinners" role="status">
             <span className="visually-hidden">Loading...</span>
         </div>
-        <div className="spinner-grow text-secondary mx-2" role="status">
+        <div className="spinner-grow spinners mx-2" role="status">
             <span className="visually-hidden">Loading...</span>
         </div>
-        <div className="spinner-grow text-secondary" role="status">
+        <div className="spinner-grow spinners" role="status">
             <span className="visually-hidden">Loading...</span>
         </div>
     </div>

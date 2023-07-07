@@ -33,7 +33,7 @@ flat1 = Flat.new(
   street: '',
   city: "Valletta",
   country: "Malta",
-  price_per_night_in_cents: 75000,
+  price_per_night_in_cents: 7500,
   category: :entire_place
 )
 attach_images(flat1, filenames[:greece_a])
@@ -46,7 +46,7 @@ flat2 = Flat.new(
   street: '',
   city: "Heraklion",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 5500,
   category: :private_room
 )
 attach_images(flat2, filenames[:greece_b])
@@ -72,7 +72,7 @@ flat4 = Flat.new(
   street: '',
   city: "Mykonos",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 12500,
   category: :private_room
 )
 attach_images(flat4, filenames[:greece_b])
@@ -98,7 +98,7 @@ flat6 = Flat.new(
   street: '',
   city: "Samos",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 10000,
   category: :private_room
 )
 attach_images(flat6, filenames[:greece_d])
@@ -124,7 +124,7 @@ flat8 = Flat.new(
   street: '',
   city: "Zakynthos",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 12500,
   category: :private_room
 )
 attach_images(flat8, filenames[:greece_d])
@@ -136,7 +136,7 @@ flat9 = Flat.new(
   street: '',
   city: "Kalambaka",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 11500,
   category: :private_room
 )
 attach_images(flat9, filenames[:greece_d])
@@ -160,7 +160,7 @@ flat11 = Flat.new(
   street: '',
   city: "Alexandroupoli",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 8500,
   category: :private_room
 )
 attach_images(flat11, filenames[:greece_d])
@@ -184,7 +184,7 @@ flat13 = Flat.new(
   street: '',
   city: "Kalamata",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 9500,
   category: :private_room
 )
 attach_images(flat13, filenames[:greece_b])
@@ -208,7 +208,7 @@ flat15 = Flat.new(
   street: '',
   city: "Patras",
   country: "Greece",
-  price_per_night_in_cents: 20000,
+  price_per_night_in_cents: 12500,
   category: :private_room
 )
 attach_images(flat15, filenames[:greece_b])

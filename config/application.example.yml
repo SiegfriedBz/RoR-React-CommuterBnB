@@ -1,11 +1,5 @@
-# SECRET_KEY_BASE
+# development:
+# /credentials/development.yml.enc
 
-# cloudinary
-cloud_name: ''
-cloud_api_key: ''
-cloud_api_secret: ''
-
-test:
-  # SELENIUM_DRIVER: 'selenium_chrome'
-  SELENIUM_DRIVER: 'selenium_chrome_headless'
-  
+# production:
+# /credentials.yml.enc
