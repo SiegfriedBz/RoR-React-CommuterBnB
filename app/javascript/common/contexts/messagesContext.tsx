@@ -68,7 +68,7 @@ export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
         if(!user?.userId || !messagesChannelsKeys) return
 
         const wsURL = envRef?.current === "production" ?
-            `ws://swapbnb.onrender.com/cable?token=${encodeURIComponent(token)}`
+            `wss://swapbnb.onrender.com/cable?token=${encodeURIComponent(token)}`
             : `ws://localhost:3000/cable?token=${encodeURIComponent(token)}`
 
         const ws = new WebSocket(wsURL)
