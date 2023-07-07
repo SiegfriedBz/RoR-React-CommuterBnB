@@ -29,6 +29,7 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/credentials/development.key
 /config/application.yml
 app/javascript/common/components/map/mapbox_api_token.ts
 
@@ -38,5 +39,3 @@ app/javascript/common/components/map/mapbox_api_token.ts
 /node_modules
 
 /coverage/ 
-
-TODO

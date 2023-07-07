@@ -1,0 +1,71 @@
+# update devise config
+- config/environments/production.rb
+set host to the actual host of the application
+config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+
+# fix 
+class ApplicationController < ActionController::Base
+       # trick response.status 422
+       protect_from_forgery with: :null_session 
+end
+
+
+# ? fix ? 
+Api::V1::Users::RegistrationsController
+Api::V1::Users::SessionsController
+
+REMOVE data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
+message is enough in data from response.json() as token containing user info is sent through JWT,
+and JWT is used in Front-End to setUser in context
+     
+
+# ? update ? authenticate in useFetch + server side
+//==> TODO add password confirmation server side
+// const body = isLoginForm ? { user: { email, password } } : { user: formData }
+
+
+  # FLAT DETAILS PAGE 
+  COMING FROM USENAVIGATE AFTER CREATE FLAT || FORM HOME PAGE AFTER CLICK ON FLAT CARD
+  // 1. render flat with infos fetched from context (from previous getAllFlats fetch)
+  // 2. fetch flat details from backend (getFlatWithOwnerDetailsAndFlatReviews) + update context for this flat
+  // 2': render loading spinners for flat details not yet fetched
+  // 3. render flat with infos fetched from backend
+
+
+# ENV VAR IN REACT 
+? SET AS GLOBAL IN RAILS APP ?
+config/application.rb
+config.mapbox_api_key = ENV['mapbox_api_key']
+<div id="root" window.mapbox_api_key="<%= Rails.application.config.mapbox_api_key %>"</div>
+????
+
+
+# routes.rb
+Rails.application.routes.draw do
+  devise_for :users,
+  path: '',
+  path_names: { 
+    sign_in: 'api/v1/login',
+    sign_out: 'api/v1/logout',
+    registration: 'api/v1/signup'
+  },
+  controllers: {
+    sessions: 'api/v1/users/sessions',
+    registrations: 'api/v1/users/registrations' 
+  }
+
+  get 'home/check'
+  
+  root to: 'components#index'
+  # get 'components/index'
+  # get '/*path', to: 'components#index', via: :all, constraints: lambda { |req| !req.path.start_with?('api/v1') }
+
+  namespace :api do
+    namespace :v1 do
+      resources :flats
+    end
+  end
+  get '/*path', to: 'components#index', via: :all
+
+end
