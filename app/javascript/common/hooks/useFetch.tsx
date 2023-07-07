@@ -23,29 +23,30 @@ export const useFetch = () => {
         try{
             const response: Response = await fetch(url, { ...fetchDefaultOptions, ...options })
             
-            if (response.status === expectedStatus) {
-                // if status is expected
-                const data = await response.json()
-                
-                return [response, data]
-            } else if (response.status === 422) {
+            if (response.status === 422) {
                 // if unprocessable entity (e.g. flat already booked)
                 const message = await response.json()
-
                 setFlashMessage({ message: message.message, type: "warning" })
+
+            } else if (response.status === expectedStatus) {
+                // if status is expected
+                const data = await response.json()
+                return [response, data]
+            }
+        } catch (err) {
+            if(err instanceof SyntaxError) {
+                // if unauthorized
+                // setFlashMessage({ message: "Email and password do not match", type: "warning" })
+                setFlashMessage({ message: "Not authorized, please try again", type: "warning" })
                 return
-            }
-            else {
-                const error = await response.json()
-                throw new Error(error)
-            }
-            } catch (err) {
+            } else {
                 // logout user
                 setTokenInStorage("{}")
-                setFlashMessage({ message: err.message, type: "danger" })
-            } finally {
-                setIsLoading(false)
+                setFlashMessage({ message: "Something went wrong, please try again", type: "danger" })
             }
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     //* user *//
