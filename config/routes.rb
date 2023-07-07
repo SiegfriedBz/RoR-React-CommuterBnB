@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :users, only: %i[show]
       resources :messages, only: %i[index create]
       get 'flats/search', to: 'flats#search'
       resources :flats do
