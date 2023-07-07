@@ -32,12 +32,16 @@ export const useFetch = () => {
                 // if status is expected
                 const data = await response.json()
                 return [response, data]
+
+            } else {
+                const error = await response.json()
+                throw new Error(error)
             }
+
         } catch (err) {
             if(err instanceof SyntaxError) {
                 // if unauthorized
-                // setFlashMessage({ message: "Email and password do not match", type: "warning" })
-                setFlashMessage({ message: "Not authorized, please try again", type: "warning" })
+                setFlashMessage({ message: "Unauthorized, please verify your credentials", type: "warning" })
                 return
             } else {
                 // logout user
