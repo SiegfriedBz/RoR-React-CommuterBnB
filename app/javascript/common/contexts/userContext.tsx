@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
 import jwt_decode from 'jwt-decode'
 import { useLocalStorage } from '../hooks'
-import { IUserContext } from '../utils/interfaces'
+import { IUser, IUserContext } from '../utils/interfaces'
 
 interface IDecodedToken {
     user_id?: number,
@@ -37,29 +37,48 @@ interface IProps {
 }
 
 export const UserContextProvider: React.FC<IProps> = ({ children }) => {
+    const [user, setUser] = useState<IUser>(initUser)
     const [tokenInStorage, setTokenInStorage] = useLocalStorage('bnbToken', null)
-    const [user, setUser] = useState(() => {
+
+    //* effects
+    // set user on mount, athenticate and fetch user if token in storage
+    useEffect(() => {
         const decodedToken = decodeToken((tokenInStorage))
 
         if(!decodedToken?.user_id) {
-            return initUser
-        }
-
-        const { user_id, email, description, role, image } = decodedToken
-        return { userId: user_id, email, description, role, image }
-    })
-
-    //* effects
-    // set user from token in local storage
-    useEffect(() => {
-        const decodedToken = decodeToken(tokenInStorage)
-        if (!decodedToken) {
             return setUser(initUser)
-        }
+        } else {
+            (async () => {
+                const userId = decodedToken.user_id
+                if(!userId) return
 
-        const { user_id, email, description, role, image } = decodedToken
-        setUser({ userId: user_id, email, description, role, image })
+                try{
+                    const response = await getUserDetails(userId)
+                    if(!response.ok) {
+                        const error = await response.json()
+                        throw new Error(error)
+                    }
+
+                    const data = await response.json()
+                    const { user } = data
+                    console.log('user: ', user)
+
+                    setUser(user)
+                } catch (err) {
+                    console.log('err: ', err)
+                }
+            })()
+        }
     }, [tokenInStorage])
+
+    const getUserDetails = async (id: number) => {
+        const url = `/api/v1/users/${id}`
+
+        return await fetch(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${JSON.parse(tokenInStorage)}` }
+        })
+    }
 
     return (
         <UserContext.Provider value={{
