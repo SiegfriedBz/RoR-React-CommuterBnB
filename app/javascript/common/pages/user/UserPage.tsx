@@ -4,7 +4,7 @@ import UserForm from './components/UserForm'
 import Avatar from '../../components/user/Avatar'
 
 const UserPage: React.FC = () => {
-  const { user, setUser, tokenInStorage, setTokenInStorage } = useUserContext()
+  const { user, setUser } = useUserContext()
   
   return (
     <div>
@@ -17,8 +17,6 @@ const UserPage: React.FC = () => {
               <UserForm 
                 user={user}
                 setUser={setUser}
-                tokenInStorage={tokenInStorage}
-                setTokenInStorage={setTokenInStorage}
               />
           </div>
           {/* right panel image from md */}
