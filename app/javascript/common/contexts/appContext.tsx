@@ -17,21 +17,25 @@ interface IProps {
 export const AppContextProvider: React.FC<IProps> = ({ children } ) => {
     const [flashMessage, setFlashMessage] = useState<IFlashMessage>(initFlashMessage)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const envRef = useRef(null)
     const mapboxTokenRef = useRef(null)
 
     useEffect(() => {
         const root = document.getElementById('root')
+
+        console.log('root', root)
         if(!root) return
 
         const mapboxToken = root.dataset['mapbox']
         if(!mapboxToken) return
 
         mapboxTokenRef.current = mapboxToken
-
+        envRef.current = root.dataset['env']
       }, [])
 
     return (
         <AppContext.Provider value={{
+                envRef,
                 mapboxTokenRef,
                 flashMessage,
                 setFlashMessage,

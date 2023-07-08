@@ -22,7 +22,7 @@ interface IProps {
 export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
     //* hooks & context
     const { getUserMessages } = useFetch()
-    const { setFlashMessage } = useAppContext()
+    const { envRef, setFlashMessage } = useAppContext()
     const { user, tokenInStorage: token } = useUserContext()
 
     //* state
@@ -67,7 +67,11 @@ export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
         if(typeof token !== 'string' || token === '{}') return
         if(!user?.userId || !messagesChannelsKeys) return
 
-        const ws = new WebSocket(`ws://localhost:3000/cable?token=${encodeURIComponent(token)}`)
+        const wsURL = envRef?.current === "production" ?
+            `wss://swapbnb.onrender.com/cable?token=${encodeURIComponent(token)}`
+            : `ws://localhost:3000/cable?token=${encodeURIComponent(token)}`
+
+        const ws = new WebSocket(wsURL)
 
         // subscribe to all MessagesChannels
         ws.onopen = () => {
