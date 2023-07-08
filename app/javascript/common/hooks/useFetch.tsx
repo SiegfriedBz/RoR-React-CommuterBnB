@@ -22,9 +22,6 @@ export const useFetch = () => {
 
         try{
             const response: Response = await fetch(url, { ...fetchDefaultOptions, ...options })
-
-            console.log("response", response)
-            
             
             if (response.status === 422) {
                 // if unprocessable entity (e.g. flat already booked)
@@ -42,7 +39,9 @@ export const useFetch = () => {
             }
 
         } catch (err) {
-            setFlashMessage({ message: "Something went wrong, please try again", type: "danger" })
+            // logout user
+            setTokenInStorage("{}")
+            console.log('err: ', err)
         } finally {
             setIsLoading(false)
         }
