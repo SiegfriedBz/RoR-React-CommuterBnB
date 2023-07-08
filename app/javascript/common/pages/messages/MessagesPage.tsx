@@ -66,8 +66,6 @@ const MessagesPage: React.FC = () => {
         <MapView />
       </div>
     )
-
-
   }
   
   return (

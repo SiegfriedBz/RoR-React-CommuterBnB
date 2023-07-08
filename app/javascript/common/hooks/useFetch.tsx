@@ -39,15 +39,7 @@ export const useFetch = () => {
             }
 
         } catch (err) {
-            if(err instanceof SyntaxError) {
-                // if unauthorized
-                setFlashMessage({ message: "Unauthorized, please verify your credentials", type: "warning" })
-                return
-            } else {
-                // logout user
-                setTokenInStorage("{}")
-                setFlashMessage({ message: "Something went wrong, please try again", type: "danger" })
-            }
+            setFlashMessage({ message: "Something went wrong, please try again", type: "danger" })
         } finally {
             setIsLoading(false)
         }
