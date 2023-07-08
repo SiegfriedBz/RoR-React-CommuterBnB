@@ -12,9 +12,8 @@ const ProtectedRoute: React.FC<IProps> = ({ children }) => {
     if (!user?.userId) {
         return (
             <Navigate 
-                to="/auth" 
+                to="/" 
                 replace={true} 
-                // state={{message: "Please loggin to access this page"}}
             />
         )
     }

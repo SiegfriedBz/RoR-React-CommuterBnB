@@ -67,9 +67,6 @@ export const MessagesContextProvider: React.FC<IProps> = ({ children }) => {
         if(typeof token !== 'string' || token === '{}') return
         if(!user?.userId || !messagesChannelsKeys) return
 
-        console.log("token", token)
-        console.log("envRef?.current", envRef?.current)
-
         const wsURL = envRef?.current === "production" ?
             `wss://swapbnb.onrender.com/cable?token=${encodeURIComponent(token)}`
             : `ws://localhost:3000/cable?token=${encodeURIComponent(token)}`
